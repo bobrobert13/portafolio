@@ -36,7 +36,6 @@
 	--color-accent: #4a6a00;
 	--color-accent-ink: #ffffff;
 	--color-plate: #b8e04a;
-	--color-sand: #b45309;
 
 	--font-sans:
 		'DM Sans', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
@@ -70,7 +69,6 @@
 	--color-accent: #c7f24c;
 	--color-accent-ink: #11150a;
 	--color-plate: #c7f24c;
-	--color-sand: #f59e0b;
 }
 
 :root[data-theme='light'] {
@@ -91,6 +89,5 @@
 		--color-accent: #c7f24c;
 		--color-accent-ink: #11150a;
 		--color-plate: #c7f24c;
-		--color-sand: #f59e0b;
 	}
 }

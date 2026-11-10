@@ -51,6 +51,24 @@
 	}
 }
 
+@keyframes rail-focus {
+	from {
+		filter: blur(var(--rail-occlusion, 5px));
+	}
+	to {
+		filter: blur(0);
+	}
+}
+
+@keyframes rail-veil {
+	from {
+		opacity: 0.35;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
 @keyframes rail-progress {
 	from {
 		transform: scaleX(0);
@@ -133,6 +151,35 @@
 
 		.rail-anim.rail-media {
 			--rail-shift: 0px;
+		}
+
+		/* Sections after the hero enter behind a faint veil and blur;
+		   both resolve by the time the panel is aligned. */
+		.rail-slide:not(:first-child) .rail-anim {
+			--rail-occlusion: 5px;
+			animation-name: rail-flow, rail-focus;
+			animation-timeline: --rail, --rail !important;
+			animation-range: cover calc(var(--i, 0) * 100dvh) cover
+					calc((var(--i, 0) + 2) * 100dvh),
+				cover calc(var(--i, 0) * 100dvh) cover
+					calc((var(--i, 0) + 1) * 100dvh);
+		}
+
+		.rail-slide:not(:first-child)::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-color: var(--color-page);
+			pointer-events: none;
+			animation: rail-veil linear both;
+			animation-timeline: --rail !important;
+			animation-range: cover calc(var(--i, 0) * 100dvh) cover
+				calc((var(--i, 0) + 1) * 100dvh);
+		}
+
+		.rail-slide:has(#servicios)::after,
+		.rail-slide:has(#experiencias)::after {
+			background-color: var(--color-band);
 		}
 
 		.rail-slide:nth-child(1) {

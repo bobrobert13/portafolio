@@ -232,7 +232,6 @@ Los tokens viven en `src/infra/styles/theme.css`.
 | `--color-accent` | `#4A6A00` | `#C7F24C` | acento |
 | `--color-accent-ink` | `#FFFFFF` | `#11150A` | texto sobre acento |
 | `--color-plate` | `#B8E04A` | `#C7F24C` | placa del retrato |
-| `--color-sand` | `#B45309` | `#F59E0B` | frente de la erosión y borde de panel |
 
 Contraste: acento claro sobre fondo claro ≈ 5.5:1; acento oscuro sobre fondo
 oscuro ≈ 13:1. El acento no se usa como texto pequeño en modo claro sin
@@ -324,13 +323,14 @@ mientras la página se desplaza en vertical.
   `0% → 50% → 100%` dentro de `rail-flow`; el bloque se erosiona en granos al
   entrar y al salir. El primer panel usa `rail-exit` (`50% → 100%`). Los
   retratos usan la misma máscara con desplazamiento cero para no abrir bordes.
-- Frente visible: el borde derecho de cada panel es una línea de 2 px de
-  `--color-sand` con un halo de 22 px. Esa línea viaja con el track y marca el
-  frente de la transición; el color cambia con el tema (ámbar oscuro en claro,
-  ámbar luminoso en oscuro).
 - Transiciones: opacidad `0.4 → 1 → 0.4` y desplazamiento de 16 px (`0` en
   retratos) a lo largo de `[i, i + 2] × 100dvh`; el panel queda alineado en el
   centro. Texto y medios comparten curva y máscara.
+- Oclusión de entrada: del segundo panel en adelante, cada `.rail-anim` suma
+  `rail-focus` (`blur(5px) → 0`) y cada `.rail-slide` un `::after` con
+  `rail-veil` (`opacity 0.35 → 0`, color de página o banda). Ambos comparten
+  `--rail` y `[i, i + 1] × 100dvh`: la sección aparece velada y desenfocada y
+  recupera el foco al alinear el panel. El hero no la usa.
 - Sin snap: se retiró `scroll-snap` porque producía un rebote al salir del
   primer panel. El desplazamiento queda libre y las fades marcan la transición.
 - La referencia de CodePen usa `html2canvas` + GSAP + 75 canvases por captura.
