@@ -1,0 +1,65 @@
+---
+import ArrowIcon from '@/infra/components/ArrowIcon.astro';
+import BaseButton from '@/infra/components/BaseButton.vue';
+import type { Locale } from '@/config';
+import { homeCopy } from '../i18n';
+
+interface Props {
+	lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = homeCopy[lang].process;
+---
+
+<section id="proceso" class="border-b border-line">
+	<div
+		class="process-head rail-anim flex flex-col items-start gap-6 px-[1.125rem] pt-13 pb-[1.875rem] md:px-6 md:pt-14 lg:flex-row lg:items-end lg:justify-between lg:px-11 lg:pt-19 lg:pb-9.5"
+	>
+		<div class="max-w-[672px]">
+			<h2
+				class="text-[clamp(1.875rem,3.1vw,3.5rem)] leading-[1.08] tracking-[-0.028em] lg:leading-[1.04] lg:tracking-[-0.032em]"
+			>
+				{copy.title}
+			</h2>
+			<p class="mt-4 max-w-[600px] text-base leading-[1.7] text-muted md:mt-5 md:text-[17px]">
+				{copy.description}
+			</p>
+		</div>
+		<BaseButton href="#contacto" variant="ghost">
+			{copy.cta}
+			<ArrowIcon slot="trailing" class="size-4 shrink-0" />
+		</BaseButton>
+	</div>
+
+	<div class="process-body rail-anim px-[1.125rem] pb-12 md:px-6 lg:px-11 lg:pb-17">
+		{
+			copy.rows.map((row) => (
+				<div class="process-row grid gap-6 border-t border-line py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16 lg:py-8.5">
+					<div>
+						<p class="eyebrow flex items-center gap-2">
+							<span class="size-[5px] shrink-0 rounded-full bg-accent" aria-hidden="true" />
+							{row.eyebrow}
+						</p>
+						<h3 class="mt-4 text-[1.375rem] leading-[1.2] tracking-[-0.02em]">{row.title}</h3>
+						<a
+							class="mt-5 inline-flex items-center gap-2 text-[13px] font-medium transition-colors duration-150 hover:text-accent"
+							href="#contacto"
+						>
+							{copy.linkLabel}
+							<ArrowIcon class="size-3.5 shrink-0" />
+						</a>
+					</div>
+					<ul class="self-center divide-y divide-line">
+						{row.items.map((item) => (
+							<li class="process-item grid grid-cols-[78px_1fr] items-baseline gap-3 py-3.5 text-sm">
+								<span class="font-mono text-[10px] text-subtle">{item.kind}</span>
+								<span class="text-ink/85">{item.label}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			))
+		}
+	</div>
+</section>

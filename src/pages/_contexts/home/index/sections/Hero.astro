@@ -1,0 +1,82 @@
+---
+import ArrowIcon from '@/infra/components/ArrowIcon.astro';
+import BaseButton from '@/infra/components/BaseButton.vue';
+import { site, type Locale } from '@/config';
+import { homeCopy } from '../i18n';
+
+interface Props {
+	lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = homeCopy[lang].hero;
+const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#contacto';
+---
+
+<section
+	id="inicio"
+	class="relative grid grid-cols-1 border-b border-line lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+>
+	<div
+		class="hero-copy rail-anim relative z-2 flex flex-col justify-center px-[1.125rem] pt-[8.75rem] pb-11 md:px-6 md:pt-18 md:pb-14 lg:pl-11 lg:pr-9 lg:pt-22 lg:pb-18 min-[1440px]:pr-11"
+	>
+		<p class="eyebrow">{copy.eyebrow}</p>
+		<h1
+			class="mt-5 max-w-[clamp(600px,40vw,1000px)] text-[clamp(2.6875rem,5.35vw,7rem)] leading-none tracking-[-0.04em]"
+		>
+			{copy.title.map((line) => <span class="block">{line}</span>)}
+		</h1>
+		<p
+			class="mt-6 max-w-[clamp(510px,32vw,680px)] text-[clamp(1.0625rem,1.55vw,1.75rem)] leading-[1.5] text-muted"
+		>
+			{copy.lead}
+		</p>
+		<div class="mt-7 flex flex-wrap items-center gap-2.5 lg:mt-8.5">
+			<BaseButton href={contactHref}>
+				{copy.primaryCta}
+				<ArrowIcon slot="trailing" class="size-4 shrink-0" />
+			</BaseButton>
+			<BaseButton href="#servicios" variant="ghost">
+				{copy.secondaryCta}
+				<ArrowIcon slot="trailing" class="size-4 shrink-0" />
+			</BaseButton>
+		</div>
+		<dl
+			class="mt-8 grid grid-cols-3 gap-3 border-t border-line pt-[1.375rem] lg:mt-11 lg:pt-6"
+		>
+			{
+				copy.stats.map((stat) => (
+					<div class="flex flex-col-reverse gap-1">
+						<dt class="text-[0.6875rem] text-muted">{stat.label}</dt>
+						<dd class="font-mono text-[1.4375rem] leading-[1.25]">{stat.value}</dd>
+					</div>
+				))
+			}
+		</dl>
+		<p class="rail-hint" aria-hidden="true">
+			{copy.scrollHint}
+			<ArrowIcon class="size-4 shrink-0" />
+		</p>
+	</div>
+
+	<div
+		class="rail-anim rail-media relative h-[390px] overflow-hidden bg-plate [mask-image:linear-gradient(#000_82%,transparent_100%)] lg:h-auto lg:min-h-[520px] lg:[mask-image:none]"
+	>
+		<img
+			src="/img/portrait-placeholder.jpg"
+			alt={copy.portraitAlt}
+			width="1200"
+			height="1800"
+			loading="eager"
+			fetchpriority="high"
+			decoding="async"
+			class="absolute inset-0 h-full w-full object-cover object-[center_22%] grayscale mix-blend-multiply md:object-[center_42%] lg:object-top"
+		/>
+		<div
+			class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-page)_0%,transparent_42%)]"
+			aria-hidden="true"
+		>
+		</div>
+		<div class="noise absolute inset-0" aria-hidden="true"></div>
+	</div>
+</section>

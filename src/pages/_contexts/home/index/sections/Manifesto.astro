@@ -1,0 +1,25 @@
+---
+import type { Locale } from '@/config';
+import { homeCopy } from '../i18n';
+
+interface Props {
+	lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = homeCopy[lang].manifesto;
+---
+
+<section
+	id="manifiesto"
+	class="border-b border-line px-[1.125rem] py-13 md:px-6 md:py-14 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16 lg:px-11 lg:py-19"
+>
+	<h2
+		class="rail-anim max-w-[clamp(510px,31vw,640px)] text-[1.75rem] leading-[1.08] tracking-[-0.03em] md:text-[2.0625rem] lg:text-[clamp(2.5rem,2.6vw,3rem)]"
+	>
+		{copy.title}
+	</h2>
+	<div class="rail-anim mt-7 space-y-[22px] text-[1.0625rem] leading-[1.75] text-muted lg:mt-0 lg:max-w-[46rem]">
+		{copy.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+	</div>
+</section>

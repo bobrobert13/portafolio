@@ -1,0 +1,99 @@
+---
+import BaseLayout from '@/infra/layouts/BaseLayout.astro';
+import { site, type Locale } from '@/config';
+import Hero from './sections/Hero.astro';
+import Manifesto from './sections/Manifesto.astro';
+import Services from './sections/Services.astro';
+import Process from './sections/Process.astro';
+import Contact from './sections/Contact.astro';
+import Testimonials from './sections/Testimonials.astro';
+import About from './sections/About.astro';
+import { homeCopy } from './i18n';
+
+interface Props {
+	lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = homeCopy[lang];
+const panels = 7;
+---
+
+<BaseLayout locale={lang} title={`${copy.meta.title} · ${site.name}`} description={copy.meta.description}>
+	<div class="rail" style={`--rail-panels: ${panels}`}>
+		<div class="rail-stage">
+			<div class="rail-track">
+				<div class="rail-slide"><Hero lang={lang} /></div>
+				<div class="rail-slide"><Manifesto lang={lang} /></div>
+				<div class="rail-slide"><Services lang={lang} /></div>
+				<div class="rail-slide"><Process lang={lang} /></div>
+				<div class="rail-slide"><Contact lang={lang} /></div>
+				<div class="rail-slide"><Testimonials lang={lang} /></div>
+				<div class="rail-slide"><About lang={lang} /></div>
+			</div>
+			<div class="rail-progress" aria-hidden="true"></div>
+		</div>
+	</div>
+</BaseLayout>
+
+<script>
+	const rail = document.querySelector<HTMLElement>('.rail');
+	const wide = window.matchMedia('(min-width: 1024px) and (prefers-reduced-motion: no-preference)');
+
+	if (rail) {
+		const slides = Array.from(rail.querySelectorAll<HTMLElement>('.rail-slide'));
+		const last = slides.length - 1;
+
+		const isRail = () => wide.matches && CSS.supports('animation-timeline: view()');
+
+		const indexOf = (target: Element | null) => {
+			const slide = target?.closest<HTMLElement>('.rail-slide');
+			return slide ? slides.indexOf(slide) : -1;
+		};
+
+		const scrollFor = (index: number) => {
+			const top = rail.getBoundingClientRect().top + window.scrollY;
+			const travel = rail.offsetHeight - window.innerHeight;
+			return top + (index / last) * travel;
+		};
+
+		const currentIndex = () => {
+			const top = rail.getBoundingClientRect().top + window.scrollY;
+			const travel = rail.offsetHeight - window.innerHeight;
+			return Math.round(((window.scrollY - top) / travel) * last);
+		};
+
+		const goToHash = () => {
+			if (!isRail() || last < 1) return;
+			const target = document.getElementById(window.location.hash.slice(1));
+			const index = indexOf(target);
+			if (index >= 0) {
+				window.scrollTo({ top: scrollFor(index), behavior: 'auto' });
+			}
+		};
+
+		document.addEventListener('click', (event) => {
+			if (!isRail() || last < 1) return;
+			const link = (event.target as Element | null)?.closest?.('a[href^="#"]');
+			if (!link) return;
+			const hash = link.getAttribute('href') ?? '';
+			const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+			const index = indexOf(target);
+			if (!target || index < 0) return;
+			event.preventDefault();
+			window.scrollTo({ top: scrollFor(index), behavior: 'smooth' });
+			history.replaceState(null, '', hash);
+		});
+
+		document.addEventListener('focusin', (event) => {
+			if (!isRail() || last < 1) return;
+			const index = indexOf(event.target as Element);
+			if (index >= 0 && index !== currentIndex()) {
+				window.scrollTo({ top: scrollFor(index), behavior: 'instant' });
+			}
+		});
+
+		window.addEventListener('hashchange', goToHash);
+		requestAnimationFrame(goToHash);
+	}
+</script>

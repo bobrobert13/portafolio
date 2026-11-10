@@ -1,0 +1,74 @@
+---
+import ArrowIcon from '@/infra/components/ArrowIcon.astro';
+import BaseButton from '@/infra/components/BaseButton.vue';
+import { site, type Locale } from '@/config';
+import { homeCopy } from '../i18n';
+
+interface Props {
+	lang: Locale;
+}
+
+const { lang } = Astro.props;
+const copy = homeCopy[lang].contact;
+const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#contacto';
+---
+
+<section
+	id="contacto"
+	class="grid gap-9 border-b border-line px-[1.125rem] py-13 md:px-6 md:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.72fr)] lg:gap-12 lg:px-11 lg:py-13"
+>
+	<div class="rail-anim">
+		<p class="eyebrow">{copy.eyebrow}</p>
+		<h2
+			class="mt-5 text-[clamp(1.875rem,3.1vw,3.5rem)] leading-[1.08] tracking-[-0.028em] lg:leading-[1.04] lg:tracking-[-0.032em]"
+		>
+			{copy.title}
+		</h2>
+		<p class="mt-5 max-w-[600px] text-[17px] leading-[1.7] text-muted">
+			{copy.description}
+		</p>
+		<p
+			class="mt-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[11px] font-medium"
+		>
+			<span class="size-[5px] shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+			{copy.badge}
+		</p>
+		<h3 class="mt-8 text-[1.375rem] leading-[1.2] tracking-[-0.02em]">
+			{copy.subheading}
+		</h3>
+		<p class="mt-2.5 max-w-[560px] text-[15px] leading-[1.7] text-muted">{copy.detail}</p>
+		<dl class="mt-6 grid gap-3 border-t border-line pt-5 text-sm sm:grid-cols-2">
+			{
+				copy.meta.map((entry) => (
+					<div>
+						<dt class="text-[11px] text-subtle">{entry.label}</dt>
+						<dd class="mt-0.5 text-ink/85">{entry.value}</dd>
+					</div>
+				))
+			}
+		</dl>
+	</div>
+
+	<div
+		class="rail-anim flex flex-col justify-between rounded-card border border-accent/25 bg-surface bg-[linear-gradient(150deg,color-mix(in_oklab,var(--color-accent)_8%,transparent),transparent_50%)] p-7"
+	>
+		<p class="eyebrow" style="--eyebrow-color: var(--color-accent)">{copy.panel.eyebrow}</p>
+		<div
+			class="my-8 flex items-center gap-1 font-mono text-[clamp(3.5rem,7vw,5.5rem)] leading-none tracking-[-0.06em] text-accent"
+			aria-hidden="true"
+		>
+			<span>{copy.panel.from}</span>
+			<ArrowIcon direction="up-right" class="size-[0.55em] shrink-0" />
+			<span>{copy.panel.to}</span>
+		</div>
+		<p class="text-[1.375rem] leading-[1.4]">{copy.panel.lines}</p>
+		{
+			site.contactEmail && (
+				<BaseButton class="mt-6 w-full" href={contactHref}>
+					{copy.panel.cta}
+					<ArrowIcon slot="trailing" class="size-4 shrink-0" />
+				</BaseButton>
+			)
+		}
+	</div>
+</section>
