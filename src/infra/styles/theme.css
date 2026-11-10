@@ -1,0 +1,96 @@
+/*
+ * Design tokens. Tailwind 4 is CSS-first: every variable in `@theme` becomes a
+ * utility (bg-page, text-ink, border-line, rounded-card…) and stays available as
+ * a CSS custom property. `static` keeps all of them in the output even when a
+ * utility is not used yet.
+ *
+ * Add colors, fonts, radii and shadows here — never hardcode them in components.
+ * Reference: `docs/visual-reference.md`.
+ */
+
+/* Self-hosted latin subsets. No third-party font request at runtime. */
+@font-face {
+	font-family: 'DM Sans';
+	src: url('/fonts/dm-sans-latin.woff2') format('woff2');
+	font-weight: 300 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
+	font-weight: 400 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@theme static {
+	--color-page: #fbfaf5;
+	--color-band: #f4f4ea;
+	--color-ink: #12140e;
+	--color-muted: #5e6259;
+	--color-subtle: #666b60;
+	--color-line: #e0e1d5;
+	--color-surface: #eff0e4;
+	--color-accent: #4a6a00;
+	--color-accent-ink: #ffffff;
+	--color-plate: #b8e04a;
+	--color-sand: #b45309;
+
+	--font-sans:
+		'DM Sans', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+	--font-mono:
+		'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+	--radius-xs: 5px;
+	--radius-nav: 6px;
+	--radius-cta: 7px;
+	--radius-sm: 8px;
+	--radius-btn: 9px;
+	--radius-card: 10px;
+
+	/* Inset highlight used by filled buttons; the only shadow in the system. */
+	--shadow-btn: inset 0 1px 0 0 rgb(255 255 255 / 0.16);
+}
+
+/*
+ * Explicit theme (set by the header toggle). Unlayered on purpose: these
+ * blocks must win over the generated `@layer theme` defaults.
+ */
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	--color-page: #080a07;
+	--color-band: #0d100b;
+	--color-ink: #f2f4ec;
+	--color-muted: #a7ac9f;
+	--color-subtle: #858a7e;
+	--color-line: rgb(255 255 255 / 0.08);
+	--color-surface: #11150e;
+	--color-accent: #c7f24c;
+	--color-accent-ink: #11150a;
+	--color-plate: #c7f24c;
+	--color-sand: #f59e0b;
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+}
+
+/* System preference, unless the visitor explicitly chose light. */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		color-scheme: dark;
+		--color-page: #080a07;
+		--color-band: #0d100b;
+		--color-ink: #f2f4ec;
+		--color-muted: #a7ac9f;
+		--color-subtle: #858a7e;
+		--color-line: rgb(255 255 255 / 0.08);
+		--color-surface: #11150e;
+		--color-accent: #c7f24c;
+		--color-accent-ink: #11150a;
+		--color-plate: #c7f24c;
+		--color-sand: #f59e0b;
+	}
+}

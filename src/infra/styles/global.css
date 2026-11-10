@@ -1,0 +1,11 @@
+/*
+ * Single stylesheet entry point, imported once by `BaseLayout.astro`.
+ *
+ * Order matters: Tailwind first, then tokens, element defaults and custom
+ * utilities so each layer can override the previous one.
+ */
+@import 'tailwindcss';
+@import './theme.css';
+@import './base.css';
+@import './rail.css';
+@import './utilities.css';

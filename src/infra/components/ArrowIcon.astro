@@ -1,0 +1,26 @@
+---
+interface Props {
+	direction?: 'right' | 'up-right';
+	class?: string;
+}
+
+const { direction = 'right', class: className } = Astro.props;
+
+const paths = {
+	right:
+		'M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z',
+	'up-right':
+		'M8.25 3.75H19.5a.75.75 0 0 1 .75.75v11.25a.75.75 0 0 1-1.5 0V6.31L5.03 20.03a.75.75 0 0 1-1.06-1.06L17.69 5.25H8.25a.75.75 0 0 1 0-1.5Z',
+} as const;
+---
+
+<svg
+	class={className}
+	viewBox="0 0 24 24"
+	fill="currentColor"
+	xmlns="http://www.w3.org/2000/svg"
+	aria-hidden="true"
+	focusable="false"
+>
+	<path fill-rule="evenodd" clip-rule="evenodd" d={paths[direction]} />
+</svg>
