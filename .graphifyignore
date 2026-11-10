@@ -1,0 +1,8 @@
+node_modules/
+graphify-out/
+.agents/
+.qoder/
+.vscode/
+.astro/
+dist/
+package-lock.json

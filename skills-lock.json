@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "skills": {
+    "astro": {
+      "source": "astrolicious/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/astro/SKILL.md",
+      "computedHash": "ebefe26b231d32379c14e41a46c2de7b4b0184543bedab7febdabe4fb21fba4e"
+    },
+    "astro-vue": {
+      "source": "methedrone/astro-skills",
+      "sourceType": "github",
+      "skillPath": "astro-vue/SKILL.md",
+      "computedHash": "7b97de4e7850a7b2690e3c11b7dd00459a4acab889d8ad930bdd56792eeac1c1"
+    },
+    "context-engineering": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/context-engineering/SKILL.md",
+      "computedHash": "7cea895d30d9b519abb3ddd7562d26ef91590ab4022d1460fed6ad70c264599a"
+    },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/impeccable/SKILL.md",
+      "computedHash": "429a02927342b87bc7b33872dffe4e1419700aea095f69805c6630f141372187"
+    },
+    "no-ai-slop": {
+      "source": "petergyang/no-ai-slop",
+      "sourceType": "github",
+      "skillPath": "skills/no-ai-slop/SKILL.md",
+      "computedHash": "77d287e3c8e09874e144ee35f6fb0ee1adcf609012c7c3273e9c8fe2054ce5af"
+    },
+    "seo-vue-astro": {
+      "source": "chaoticsurfer/seo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/seo-vue-astro/SKILL.md",
+      "computedHash": "17fe5c3386a81f77f0fa7fa12a809a8681af9ae8cd661db2a096c5ca389943b4"
+    },
+    "vue-patterns": {
+      "source": "affaan-m/ecc",
+      "sourceType": "github",
+      "skillPath": "skills/vue-patterns/SKILL.md",
+      "computedHash": "0fd03b3c1f40323f61b65f6033cdb6e332e8367cbccb11b2b02159f5a10679ba"
+    }
+  }
+}
