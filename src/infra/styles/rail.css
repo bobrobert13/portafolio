@@ -16,7 +16,7 @@
 		transform: translateX(0);
 	}
 	to {
-		transform: translateX(calc((var(--rail-panels, 7) - 1) * -100%));
+		transform: translateX(calc((var(--rail-panels, 8) - 1) * -100%));
 	}
 }
 
@@ -52,19 +52,21 @@
 }
 
 @keyframes rail-focus {
-	from {
+	0%,
+	18% {
 		filter: blur(var(--rail-occlusion, 5px));
 	}
-	to {
+	100% {
 		filter: blur(0);
 	}
 }
 
 @keyframes rail-veil {
-	from {
+	0%,
+	18% {
 		opacity: 0.35;
 	}
-	to {
+	100% {
 		opacity: 0;
 	}
 }
@@ -87,6 +89,11 @@
 	@supports (animation-timeline: view()) {
 		html:has(.rail) {
 			scroll-padding-top: 0;
+			scrollbar-width: none;
+		}
+
+		html:has(.rail)::-webkit-scrollbar {
+			display: none;
 		}
 
 		/* The header floats over the stage so the first panel fills the
@@ -99,7 +106,7 @@
 
 		.rail {
 			position: relative;
-			height: calc(var(--rail-panels, 7) * 100dvh);
+			height: calc(var(--rail-panels, 8) * 100dvh);
 			view-timeline: --rail block;
 		}
 
@@ -124,7 +131,7 @@
 			animation: rail-travel linear both;
 			animation-timeline: --rail !important;
 			animation-range: cover 100dvh cover
-				calc(var(--rail-panels, 7) * 100dvh);
+				calc(var(--rail-panels, 8) * 100dvh);
 			will-change: transform;
 		}
 
@@ -178,7 +185,7 @@
 		}
 
 		.rail-slide:has(#servicios)::after,
-		.rail-slide:has(#experiencias)::after {
+		.rail-slide:has(#herramientas)::after {
 			background-color: var(--color-band);
 		}
 
@@ -203,7 +210,9 @@
 		.rail-slide:nth-child(7) {
 			--i: 6;
 		}
-
+		.rail-slide:nth-child(8) {
+			--i: 7;
+		}
 		/* The first panel is already on screen: it only fades out. */
 		.rail-slide:first-child .rail-anim {
 			animation-name: rail-exit;
@@ -234,7 +243,7 @@
 			animation: rail-progress linear both;
 			animation-timeline: --rail !important;
 			animation-range: cover 100dvh cover
-				calc(var(--rail-panels, 7) * 100dvh);
+				calc(var(--rail-panels, 8) * 100dvh);
 		}
 
 		/* Scroll hint, visible only on the first panel. */
@@ -277,26 +286,26 @@
 			padding: 1.25rem;
 		}
 
-		.rail-slide #proceso {
+		.rail-slide #construccion {
 			display: flex;
 			flex-direction: column;
 			justify-content: safe center;
 		}
 
-		.rail-slide #proceso .process-head {
+		.rail-slide #construccion .process-head {
 			padding-top: 4rem;
 			padding-bottom: 1.5rem;
 		}
 
-		.rail-slide #proceso .process-body {
+		.rail-slide #construccion .process-body {
 			padding-bottom: 1rem;
 		}
 
-		.rail-slide #proceso .process-row {
+		.rail-slide #construccion .process-row {
 			padding-block: 1rem;
 		}
 
-		.rail-slide #proceso .process-item {
+		.rail-slide #construccion .process-item {
 			padding-block: 0.5rem;
 		}
 
@@ -306,18 +315,38 @@
 			padding-bottom: 3rem;
 		}
 
-		.rail-slide #experiencias {
+		.rail-slide #perfil > div:last-child {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			padding-top: 3rem;
-			padding-bottom: 2rem;
 		}
 
-		.rail-slide #sobre-mi > div:last-child {
+		.rail-slide #perfil .profile-contact {
+			margin-top: 2rem;
+			padding-top: 1.5rem;
+		}
+
+		.rail-slide #proyectos,
+		.rail-slide #herramientas {
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
+			justify-content: safe center;
+		}
+
+		.rail-slide #proyectos > div:first-child,
+		.rail-slide #herramientas > div:first-child {
+			padding-top: 4rem;
+			padding-bottom: 1.5rem;
+		}
+
+		.rail-slide #proyectos > div:last-child,
+		.rail-slide #herramientas > div:last-child {
+			padding-bottom: 1.5rem;
+		}
+
+		.rail-slide #proyectos .company-card {
+			min-height: 9.5rem;
+			padding: 1.1rem;
 		}
 
 		/* Shorter laptops: keep every panel inside the stage. */
@@ -327,17 +356,33 @@
 				padding-bottom: 1.5rem;
 			}
 
-			.rail-slide #proceso .process-head {
+			.rail-slide #construccion .process-head {
 				padding-top: 4rem;
 				padding-bottom: 0.75rem;
 			}
 
-			.rail-slide #proceso .process-row {
+			.rail-slide #construccion .process-row {
 				padding-block: 0.5rem;
 			}
 
-			.rail-slide #proceso .process-body {
+			.rail-slide #construccion .process-body {
 				padding-bottom: 1rem;
+			}
+
+			.rail-slide #perfil .profile-contact {
+				margin-top: 1.5rem;
+				padding-top: 1rem;
+			}
+
+			.rail-slide #proyectos > div:first-child,
+			.rail-slide #herramientas > div:first-child {
+				padding-top: 4rem;
+				padding-bottom: 0.75rem;
+			}
+
+			.rail-slide #proyectos .company-card {
+				min-height: 8rem;
+				padding: 0.9rem;
 			}
 		}
 	}

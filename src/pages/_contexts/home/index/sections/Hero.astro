@@ -10,7 +10,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const copy = homeCopy[lang].hero;
-const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#contacto';
+const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#perfil-contacto';
 ---
 
 <section
@@ -36,7 +36,7 @@ const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#contac
 				{copy.primaryCta}
 				<ArrowIcon slot="trailing" class="size-4 shrink-0" />
 			</BaseButton>
-			<BaseButton href="#servicios" variant="ghost">
+			<BaseButton href="#proyectos" variant="ghost">
 				{copy.secondaryCta}
 				<ArrowIcon slot="trailing" class="size-4 shrink-0" />
 			</BaseButton>

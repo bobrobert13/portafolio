@@ -328,11 +328,22 @@ mientras la página se desplaza en vertical.
   centro. Texto y medios comparten curva y máscara.
 - Oclusión de entrada: del segundo panel en adelante, cada `.rail-anim` suma
   `rail-focus` (`blur(5px) → 0`) y cada `.rail-slide` un `::after` con
-  `rail-veil` (`opacity 0.35 → 0`, color de página o banda). Ambos comparten
-  `--rail` y `[i, i + 1] × 100dvh`: la sección aparece velada y desenfocada y
-  recupera el foco al alinear el panel. El hero no la usa.
+  `rail-veil` (`opacity 0.35 → 0`, color de página o banda). Ambos mantienen su
+  valor pleno el 18 % inicial y comparten `--rail` y
+  `[i, i + 1] × 100dvh`: la sección aparece velada y desenfocada y recupera el
+  foco al alinear el panel. El hero no la usa.
 - Sin snap: se retiró `scroll-snap` porque producía un rebote al salir del
   primer panel. El desplazamiento queda libre y las fades marcan la transición.
+- Scroll: la barra vertical se oculta en el riel (`scrollbar-width: none` +
+  `::-webkit-scrollbar`); la rueda avanza o retrocede un panel con
+  `smoothScrollTo` (~580 ms por panel, `easeOutCubic`), acumula delta durante
+  15 ms y bloquea el siguiente paso mientras dura la animación. Los enlaces de
+  ancla usan la misma animación; en los extremos (hero y footer) vuelve el scroll
+  nativo; teclado y foco conservan su navegación.
+- Volver arriba: botón flotante abajo a la derecha; aparece al entrar en el
+  último panel o al llegar al final de la página, usa `smoothScrollTo(0)` y se
+  oculta al volver. En desktop la flecha apunta a la izquierda (el riel vuelve
+  al inicio); en móvil apunta hacia arriba. El label sale de `ui.ts`.
 - La referencia de CodePen usa `html2canvas` + GSAP + 75 canvases por captura.
   Aquí se sustituye por una máscara de grano CSS: mismo lenguaje visual sin
   dependencias, sin capturar el DOM y sin 75 capas por panel.

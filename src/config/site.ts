@@ -16,6 +16,11 @@ export const site = {
   name: env.siteName,
   url: env.siteUrl,
   contactEmail: env.contactEmail,
+  socials: {
+    linkedin:
+      'https://www.linkedin.com/in/robert-caraballo-trebor-js-289a22167/',
+    github: 'https://github.com/bobrobert13',
+  },
   routes: {
     home: '',
   },

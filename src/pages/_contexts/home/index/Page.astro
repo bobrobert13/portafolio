@@ -1,13 +1,16 @@
 ---
 import BaseLayout from '@/infra/layouts/BaseLayout.astro';
+import ArrowIcon from '@/infra/components/ArrowIcon.astro';
+import { t } from '@/i18n/ui';
 import { site, type Locale } from '@/config';
 import Hero from './sections/Hero.astro';
+import Profile from './sections/Profile.astro';
+import BuildProcess from './sections/BuildProcess.astro';
+import Projects from './sections/Projects.astro';
+import Tools from './sections/Tools.astro';
 import Manifesto from './sections/Manifesto.astro';
 import Services from './sections/Services.astro';
-import Process from './sections/Process.astro';
 import Contact from './sections/Contact.astro';
-import Testimonials from './sections/Testimonials.astro';
-import About from './sections/About.astro';
 import { homeCopy } from './i18n';
 
 interface Props {
@@ -16,7 +19,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const copy = homeCopy[lang];
-const panels = 7;
+const panels = 8;
 ---
 
 <BaseLayout locale={lang} title={`${copy.meta.title} · ${site.name}`} description={copy.meta.description}>
@@ -24,16 +27,27 @@ const panels = 7;
 		<div class="rail-stage">
 			<div class="rail-track">
 				<div class="rail-slide"><Hero lang={lang} /></div>
+				<div class="rail-slide"><Profile lang={lang} /></div>
+				<div class="rail-slide"><BuildProcess lang={lang} /></div>
+				<div class="rail-slide"><Projects lang={lang} /></div>
+				<div class="rail-slide"><Tools lang={lang} /></div>
 				<div class="rail-slide"><Manifesto lang={lang} /></div>
 				<div class="rail-slide"><Services lang={lang} /></div>
-				<div class="rail-slide"><Process lang={lang} /></div>
 				<div class="rail-slide"><Contact lang={lang} /></div>
-				<div class="rail-slide"><Testimonials lang={lang} /></div>
-				<div class="rail-slide"><About lang={lang} /></div>
 			</div>
 			<div class="rail-progress" aria-hidden="true"></div>
 		</div>
 	</div>
+	<button
+		type="button"
+		class="back-to-top fixed end-5 bottom-5 z-40 grid size-11 translate-y-2 place-items-center rounded-full border border-line bg-page/90 text-ink opacity-0 pointer-events-none backdrop-blur-sm transition-[opacity,transform] duration-300 hover:border-ink/25 hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+		aria-label={t(lang, 'a11y.backToTop')}
+		title={t(lang, 'a11y.backToTop')}
+		aria-hidden="true"
+		tabindex="-1"
+	>
+		<ArrowIcon direction="right" class="size-4 -rotate-90 lg:rotate-180" />
+	</button>
 </BaseLayout>
 
 <script>
@@ -43,6 +57,7 @@ const panels = 7;
 	if (rail) {
 		const slides = Array.from(rail.querySelectorAll<HTMLElement>('.rail-slide'));
 		const last = slides.length - 1;
+		const dialogOpen = () => Boolean(document.querySelector('dialog[open]'));
 
 		const isRail = () => wide.matches && CSS.supports('animation-timeline: view()');
 
@@ -63,11 +78,33 @@ const panels = 7;
 			return Math.round(((window.scrollY - top) / travel) * last);
 		};
 
+		let wheelLock = 0;
+		let scrollFrame = 0;
+
+		const smoothScrollTo = (target: number) => {
+			const start = window.scrollY;
+			const distance = target - start;
+			if (Math.abs(distance) < 2) return;
+			const duration = Math.min(1200, 500 + (Math.abs(distance) / window.innerHeight) * 80);
+			const started = performance.now();
+			cancelAnimationFrame(scrollFrame);
+			wheelLock = started + duration + 60;
+			const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+			const frame = (now: number) => {
+				const progress = Math.min(1, (now - started) / duration);
+				window.scrollTo({ top: start + distance * ease(progress), behavior: 'instant' });
+				if (progress < 1) scrollFrame = requestAnimationFrame(frame);
+			};
+			scrollFrame = requestAnimationFrame(frame);
+		};
+
 		const goToHash = () => {
 			if (!isRail() || last < 1) return;
 			const target = document.getElementById(window.location.hash.slice(1));
 			const index = indexOf(target);
 			if (index >= 0) {
+				cancelAnimationFrame(scrollFrame);
+				wheelLock = 0;
 				window.scrollTo({ top: scrollFor(index), behavior: 'auto' });
 			}
 		};
@@ -81,19 +118,91 @@ const panels = 7;
 			const index = indexOf(target);
 			if (!target || index < 0) return;
 			event.preventDefault();
-			window.scrollTo({ top: scrollFor(index), behavior: 'smooth' });
+			smoothScrollTo(scrollFor(index));
 			history.replaceState(null, '', hash);
 		});
+
+		let wheelAcc = 0;
+		let wheelTimer = 0;
+
+		window.addEventListener(
+			'wheel',
+			(event) => {
+				if (!isRail() || last < 1 || dialogOpen()) return;
+				if (event.ctrlKey || event.metaKey || event.altKey || event.deltaY === 0) return;
+
+				const top = rail.getBoundingClientRect().top + window.scrollY;
+				const travel = rail.offsetHeight - window.innerHeight;
+				if (window.scrollY < top - 1 || window.scrollY > top + travel + 1) return;
+
+				if (performance.now() < wheelLock) {
+					wheelLock = Math.max(wheelLock, performance.now() + 100);
+					event.preventDefault();
+					return;
+				}
+
+				const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+				const delta = event.deltaY * unit;
+				const direction = Math.sign(delta);
+				const current = currentIndex();
+				if ((direction > 0 && current >= last) || (direction < 0 && current <= 0)) return;
+
+				event.preventDefault();
+				wheelAcc += delta;
+				window.clearTimeout(wheelTimer);
+				wheelTimer = window.setTimeout(() => {
+					if (Math.abs(wheelAcc) <= 4) return;
+					const next = Math.max(0, Math.min(last, currentIndex() + Math.sign(wheelAcc)));
+					smoothScrollTo(scrollFor(next));
+					wheelAcc = 0;
+				}, 15);
+			},
+			{ passive: false },
+		);
 
 		document.addEventListener('focusin', (event) => {
 			if (!isRail() || last < 1) return;
 			const index = indexOf(event.target as Element);
 			if (index >= 0 && index !== currentIndex()) {
+				cancelAnimationFrame(scrollFrame);
+				wheelLock = 0;
 				window.scrollTo({ top: scrollFor(index), behavior: 'instant' });
 			}
 		});
 
 		window.addEventListener('hashchange', goToHash);
 		requestAnimationFrame(goToHash);
+
+		const backToTop = document.querySelector<HTMLButtonElement>('.back-to-top');
+		const lastSlide = slides[slides.length - 1];
+
+		const setBackToTop = (show: boolean) => {
+			if (!backToTop) return;
+			backToTop.classList.toggle('opacity-0', !show);
+			backToTop.classList.toggle('translate-y-2', !show);
+			backToTop.classList.toggle('pointer-events-none', !show);
+			backToTop.classList.toggle('opacity-100', show);
+			backToTop.classList.toggle('translate-y-0', show);
+			backToTop.classList.toggle('pointer-events-auto', show);
+			backToTop.setAttribute('aria-hidden', String(!show));
+			backToTop.tabIndex = show ? 0 : -1;
+		};
+
+		const updateBackToTop = () => {
+			const atBottom =
+				window.scrollY + window.innerHeight >=
+				document.documentElement.scrollHeight - 80;
+			const atLast = lastSlide
+				? isRail()
+					? currentIndex() >= last
+					: lastSlide.getBoundingClientRect().top < window.innerHeight * 0.9
+				: false;
+			setBackToTop(atBottom || atLast);
+		};
+
+		window.addEventListener('scroll', updateBackToTop, { passive: true });
+		window.addEventListener('resize', updateBackToTop);
+		updateBackToTop();
+		backToTop?.addEventListener('click', () => smoothScrollTo(0));
 	}
 </script>

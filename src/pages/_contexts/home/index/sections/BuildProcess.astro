@@ -10,9 +10,10 @@ interface Props {
 
 const { lang } = Astro.props;
 const copy = homeCopy[lang].process;
+const contactHref = '#perfil-contacto';
 ---
 
-<section id="proceso" class="border-b border-line">
+<section id="construccion" class="border-b border-line">
 	<div
 		class="process-head rail-anim flex flex-col items-start gap-6 px-[1.125rem] pt-13 pb-[1.875rem] md:px-6 md:pt-14 lg:flex-row lg:items-end lg:justify-between lg:px-11 lg:pt-19 lg:pb-9.5"
 	>
@@ -26,7 +27,7 @@ const copy = homeCopy[lang].process;
 				{copy.description}
 			</p>
 		</div>
-		<BaseButton href="#contacto" variant="ghost">
+		<BaseButton href={contactHref} variant="ghost">
 			{copy.cta}
 			<ArrowIcon slot="trailing" class="size-4 shrink-0" />
 		</BaseButton>
@@ -44,7 +45,7 @@ const copy = homeCopy[lang].process;
 						<h3 class="mt-4 text-[1.375rem] leading-[1.2] tracking-[-0.02em]">{row.title}</h3>
 						<a
 							class="mt-5 inline-flex items-center gap-2 text-[13px] font-medium transition-colors duration-150 hover:text-accent"
-							href="#contacto"
+							href={contactHref}
 						>
 							{copy.linkLabel}
 							<ArrowIcon class="size-3.5 shrink-0" />

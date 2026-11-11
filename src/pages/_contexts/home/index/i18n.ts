@@ -15,7 +15,7 @@ const es = {
 		title: ['Sitios rápidos.', 'Sin ruido.', 'Para durar.'],
 		lead: 'Diseño y construyo sitios que se generan en el build y se sirven como HTML. Sin dependencias innecesarias, con el foco en la velocidad y el contenido.',
 		primaryCta: 'Hablemos',
-		secondaryCta: 'Ver servicios',
+		secondaryCta: 'Ver proyectos',
 		scrollHint: 'Desplaza',
 		portraitAlt: 'Retrato provisional del autor',
 		stats: [
@@ -26,10 +26,32 @@ const es = {
 	},
 	manifesto: {
 		title: 'La velocidad empieza en el diseño.',
-		paragraphs: [
-			'Trabajo con sitios que se generan en el build y se sirven como HTML. No hay servidor que mantener ni JavaScript que hidrate cada bloque.',
-			'Antes de escribir componentes defino la jerarquía, la tipografía y los tokens de color. Así el sistema aguanta páginas nuevas sin inventar estilos por el camino.',
-			'El resultado es un sitio que carga rápido, se navega con teclado y se puede mantener seis meses después sin recordar cómo funcionaba.',
+		lead: 'Arquitectura, tolerancia, trazabilidad, servidores, sostenibilidad y costo. Decisiones que se toman antes de la primera línea y se notan en el coste de cada cambio.',
+		cards: [
+			{
+				title: 'Arquitectura',
+				detail: 'Límites, módulos y contratos antes del primer componente.',
+			},
+			{
+				title: 'Tolerancia',
+				detail: 'Fallos previstos, reintentos y degradación controlada.',
+			},
+			{
+				title: 'Trazabilidad',
+				detail: 'Logs, métricas y decisiones que se pueden reconstruir.',
+			},
+			{
+				title: 'Servidores',
+				detail: 'Entornos, despliegue y capacidad con margen.',
+			},
+			{
+				title: 'Sostenibilidad',
+				detail: 'Documentación y deuda bajo control para seguir cambiando.',
+			},
+			{
+				title: 'Costos',
+				detail: 'Menos fricción y un coste por cambio que se puede defender.',
+			},
 		],
 	},
 	services: {
@@ -83,46 +105,46 @@ const es = {
 		],
 	},
 	process: {
-		title: '¿Cómo trabajamos?',
+		title: '¿Cómo trabajo?',
 		description:
-			'Cuatro fases cortas. Cada una deja algo que se puede revisar.',
-		cta: 'Empezar una conversación',
+			'Cuatro fases cortas. En cada una te muestro algo concreto para revisar juntos.',
+		cta: 'Cuéntame tu proyecto',
 		linkLabel: 'Hablemos de esta fase',
 		rows: [
 			{
 				eyebrow: 'Fase 01',
-				title: 'Diagnóstico',
+				title: 'Escucho y ordeno',
 				items: [
-					{ kind: 'Alcance', label: 'Objetivo y límites' },
-					{ kind: 'Contenido', label: 'Textos e idiomas' },
-					{ kind: 'Referencias', label: 'Sitios que te gustan' },
+					{ kind: 'Objetivo', label: 'Qué necesitas y qué no' },
+					{ kind: 'Contenido', label: 'Textos, idiomas y referencias' },
+					{ kind: 'Alcance', label: 'Qué entra en la primera versión' },
 				],
 			},
 			{
 				eyebrow: 'Fase 02',
-				title: 'Diseño',
+				title: 'Diseño contigo',
 				items: [
 					{ kind: 'Jerarquía', label: 'Navegación y secciones' },
-					{ kind: 'Tipografía', label: 'Escala y ritmo' },
-					{ kind: 'Tokens', label: 'Color, radios y bordes' },
+					{ kind: 'Tipografía', label: 'Escala, ritmo y tono' },
+					{ kind: 'Sistema', label: 'Tokens, color y componentes' },
 				],
 			},
 			{
 				eyebrow: 'Fase 03',
-				title: 'Construcción',
+				title: 'Construyo y reviso',
 				items: [
-					{ kind: 'Astro', label: 'Rutas estáticas' },
-					{ kind: 'Componentes', label: 'Vue sin hidratación' },
+					{ kind: 'Astro', label: 'Rutas estáticas y contenido' },
+					{ kind: 'Vue', label: 'Interacción sin ruido' },
 					{ kind: 'i18n', label: 'ES y EN desde el inicio' },
 				],
 			},
 			{
 				eyebrow: 'Fase 04',
-				title: 'Entrega',
+				title: 'Entrego y te dejo listo',
 				items: [
-					{ kind: 'Build', label: 'Salida estática' },
-					{ kind: 'Despliegue', label: 'CDN y dominio' },
-					{ kind: 'Documentación', label: 'Cómo editar el sitio' },
+					{ kind: 'Build', label: 'Salida estática verificada' },
+					{ kind: 'Despliegue', label: 'Dominio, CDN y analítica' },
+					{ kind: 'Traspaso', label: 'Documentación y cómo editar' },
 				],
 			},
 		],
@@ -148,28 +170,6 @@ const es = {
 			cta: 'Escríbeme',
 		},
 	},
-	testimonials: {
-		eyebrow: 'Experiencias · Espacio por llenar',
-		items: [
-			{
-				label: 'Testimonio pendiente · 01',
-				quote: 'El primer proyecto tendrá aquí su historia.',
-				author: 'Nombre y proyecto',
-			},
-			{
-				label: 'Testimonio pendiente · 02',
-				quote: 'El segundo contará cómo fue el proceso.',
-				author: 'Nombre y proyecto',
-			},
-			{
-				label: 'Testimonio pendiente · 03',
-				quote: 'El tercero puede venir de alguien que leyó una guía.',
-				author: 'Nombre y proyecto',
-			},
-		],
-		stackLabel: 'Stack que uso',
-		stack: ['Astro', 'Vue', 'Tailwind CSS', 'TypeScript', 'Node.js'],
-	},
 	about: {
 		greeting: 'Hola, soy',
 		paragraphs: [
@@ -177,6 +177,344 @@ const es = {
 			'Este espacio reúne el trabajo, las decisiones técnicas y las cosas que aprendo mientras construyo. Si tienes un proyecto en marcha, escríbeme.',
 		],
 		cta: 'Escríbeme',
+	},
+	profile: {
+		eyebrow: 'Sobre mí · Contacto',
+		contactEyebrow: 'Contacto',
+		contactLead: '¿Tienes un proyecto en mente? Hablemos por las redes.',
+		emailLabel: 'Escríbeme',
+		linkedin: 'LinkedIn',
+		github: 'GitHub',
+	},
+	projects: {
+		eyebrow: 'Proyectos · Soluciones',
+		title: 'Experiencia y soluciones.',
+		description:
+			'Una selección de empresas en las que trabajé, con sus proyectos, mi participación y las soluciones que apliqué en cada uno.',
+		experienceLabel: 'Empresas',
+		projectsLabel: 'Proyectos',
+		participationLabel: 'Mi participación',
+		solutionsLabel: 'Soluciones estrella',
+		stackLabel: 'Tecnologías',
+		openLabel: 'Abrir carta',
+		closeLabel: 'Cerrar carta',
+		cardEyebrow: 'Carta de experiencia',
+		cta: 'Hablemos',
+		items: [
+			{
+				slug: 'cuantia',
+				name: 'Cuantia',
+				meta: 'Fintech · Frontend',
+				period: '2024 — 2025',
+				detail: 'Interfaces y componentes para una plataforma financiera.',
+				tags: ['Vue 3', 'TypeScript', 'Vite'],
+				participation: [
+					'Construí la interfaz del panel financiero y sus estados de carga, error y vacío.',
+					'Definí componentes reutilizables y el flujo de datos entre filtros y tablas.',
+					'Revisé teclado, foco y contraste con el equipo de producto.',
+				],
+				projects: [
+					{
+						name: 'Panel de tesorería',
+						detail: 'Vista operativa para cuentas, movimientos y conciliación.',
+						participation: [
+							'Modelé los estados de carga y error del panel.',
+							'Implementé filtros y tablas con columnas configurables.',
+							'Ajusté el flujo de conciliación con el equipo financiero.',
+						],
+						solutions: [
+							{
+								title: 'Tabla operativa',
+								detail: 'Filtros, paginación y estados sin recargas.',
+							},
+							{
+								title: 'Sistema de componentes',
+								detail: 'Vue + TypeScript para vistas densas.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'Vite', 'REST APIs'],
+					},
+					{
+						name: 'Portal de clientes',
+						detail: 'Acceso de clientes a saldos, documentos y soporte.',
+						participation: [
+							'Construí el flujo de acceso y recuperación.',
+							'Integré documentos y descargas firmadas.',
+							'Revisé accesibilidad y mensajes de error.',
+						],
+						solutions: [
+							{
+								title: 'Acceso seguro',
+								detail: 'Sesiones y recuperación con mensajes claros.',
+							},
+							{
+								title: 'Documentos',
+								detail: 'Descargas y estados de disponibilidad.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'REST APIs', 'Tailwind CSS'],
+					},
+				],
+			},
+			{
+				slug: 'orinocodev',
+				name: 'OrinocoDev',
+				meta: 'Estudio digital · Full stack',
+				period: '2023 — 2024',
+				detail: 'Sitios y productos para un estudio de desarrollo.',
+				tags: ['Astro', 'Vue 3', 'Node.js'],
+				participation: [
+					'Diseñé la arquitectura de sitios y rutas estáticas del estudio.',
+					'Construí secciones y componentes reutilizables en Vue.',
+					'Dejé el despliegue y la documentación para editar sin depender de mí.',
+				],
+				projects: [
+					{
+						name: 'Sitio del estudio',
+						detail: 'Sitio bilingüe con casos y servicios.',
+						participation: [
+							'Definí rutas estáticas y contenido bilingüe.',
+							'Construí secciones y componentes reutilizables.',
+							'Dejé el despliegue documentado.',
+						],
+						solutions: [
+							{
+								title: 'Sitio bilingüe',
+								detail: 'Astro + i18n con rutas y metadatos por idioma.',
+							},
+							{
+								title: 'Kit editorial',
+								detail: 'Bloques de contenido listos para nuevas páginas.',
+							},
+						],
+						stack: ['Astro', 'TypeScript', 'Tailwind CSS', 'i18n'],
+					},
+					{
+						name: 'Kit de producto',
+						detail: 'Bloques de interfaz para nuevos productos del estudio.',
+						participation: [
+							'Extraje patrones de los sitios existentes.',
+							'Construí componentes Vue con estados y variantes.',
+							'Documenté el uso y los tokens.',
+						],
+						solutions: [
+							{
+								title: 'Design system',
+								detail: 'Componentes y tokens para productos nuevos.',
+							},
+							{
+								title: 'Documentación viva',
+								detail: 'Ejemplos y reglas de uso junto al código.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'Tailwind CSS', 'Vite'],
+					},
+				],
+			},
+			{
+				slug: 'glgfreight',
+				name: 'glgfreight',
+				meta: 'Logística · Web app',
+				period: '2023 — 2024',
+				detail: 'Panel operativo para una empresa de transporte y carga.',
+				tags: ['Vue 3', 'Node.js', 'PostgreSQL'],
+				participation: [
+					'Desarrollé el panel operativo para seguimiento de carga y transportistas.',
+					'Integré APIs internas y normalicé filtros, tablas y estados.',
+					'Añadí alertas y vistas de detalle para el equipo de operaciones.',
+				],
+				projects: [
+					{
+						name: 'Torre de control',
+						detail: 'Seguimiento de carga y estado de transportistas.',
+						participation: [
+							'Construí la vista de seguimiento en tiempo real.',
+							'Integré APIs internas y normalicé estados.',
+							'Añadí filtros y alertas para operaciones.',
+						],
+						solutions: [
+							{
+								title: 'Panel operativo',
+								detail: 'Vue + APIs para seguimiento y gestión diaria.',
+							},
+							{
+								title: 'Alertas de incidencias',
+								detail: 'Webhooks y estados para el equipo de operaciones.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'REST APIs', 'Webhooks'],
+					},
+					{
+						name: 'Portal de transportistas',
+						detail: 'Acceso de transportistas a viajes y documentos.',
+						participation: [
+							'Diseñé el flujo de viajes y evidencias.',
+							'Implementé cargas y validaciones.',
+							'Revisé el estado vacío y los errores.',
+						],
+						solutions: [
+							{
+								title: 'Portal de viajes',
+								detail: 'Vista de viajes, documentos y evidencias.',
+							},
+							{
+								title: 'Cargas validadas',
+								detail: 'Formularios y reglas para documentación.',
+							},
+						],
+						stack: ['Vue 3', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+					},
+				],
+			},
+			{
+				slug: 'colegio-simon-bolivar',
+				name: 'Colegio Simón Bolívar',
+				meta: 'Educación · Sitio institucional',
+				period: '2023',
+				detail: 'Sitio y flujo de admisiones para una institución educativa.',
+				tags: ['Astro', 'i18n'],
+				participation: [
+					'Construí el sitio institucional y el flujo de admisiones.',
+					'Organicé el contenido bilingüe y los formularios de contacto.',
+					'Revisé accesibilidad, SEO local y metadatos por idioma.',
+				],
+				projects: [
+					{
+						name: 'Sitio institucional',
+						detail: 'Presentación, noticias y vida escolar.',
+						participation: [
+							'Organicé la arquitectura de contenido.',
+							'Construí las rutas y secciones bilingües.',
+							'Revisé SEO local y metadatos.',
+						],
+						solutions: [
+							{
+								title: 'Sitio bilingüe',
+								detail: 'Astro + i18n con rutas y canonical por idioma.',
+							},
+							{
+								title: 'Contenido institucional',
+								detail: 'Secciones y noticias fáciles de editar.',
+							},
+						],
+						stack: ['Astro', 'TypeScript', 'Tailwind CSS', 'i18n'],
+					},
+					{
+						name: 'Admisiones 2025',
+						detail: 'Flujo de admisiones y formularios.',
+						participation: [
+							'Diseñé el flujo de admisiones.',
+							'Construí formularios y validaciones.',
+							'Revisé accesibilidad y mensajes.',
+						],
+						solutions: [
+							{
+								title: 'Admisiones en línea',
+								detail: 'Formularios y contenido estático sin servidor.',
+							},
+							{
+								title: 'Formularios accesibles',
+								detail: 'Validaciones y mensajes claros.',
+							},
+						],
+						stack: ['Astro', 'TypeScript', 'Formularios', 'Accesibilidad'],
+					},
+				],
+			},
+			{
+				slug: 'orinocoio',
+				name: 'OrinocoIO',
+				meta: 'Producto · Full stack',
+				period: '2024 — 2025',
+				detail: 'Herramientas y servicios web para un equipo de producto.',
+				tags: ['Node.js', 'Vue 3', 'PostgreSQL'],
+				participation: [
+					'Desarrollé herramientas internas y flujos de usuario para el equipo.',
+					'Modelé APIs y datos para automatizar tareas repetitivas.',
+					'Dejé pruebas y despliegue documentados para seguir iterando.',
+				],
+				projects: [
+					{
+						name: 'Consola interna',
+						detail: 'Herramientas internas para operaciones y soporte.',
+						participation: [
+							'Construí la consola y sus flujos de usuario.',
+							'Modelé APIs y permisos.',
+							'Dejé pruebas y despliegue documentados.',
+						],
+						solutions: [
+							{
+								title: 'Consola interna',
+								detail: 'Node + Vue para operaciones y soporte.',
+							},
+							{
+								title: 'Permisos por rol',
+								detail: 'Flujos y accesos según el equipo.',
+							},
+						],
+						stack: ['Vue 3', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+					},
+					{
+						name: 'Automatización de soporte',
+						detail: 'Clasificación y respuestas asistidas por IA.',
+						participation: [
+							'Diseñé el flujo de clasificación.',
+							'Integré la API del modelo y reglas de negocio.',
+							'Añadí trazas y revisión humana.',
+						],
+						solutions: [
+							{
+								title: 'Triage asistido',
+								detail: 'Clasificación de solicitudes con reglas y modelo.',
+							},
+							{
+								title: 'Revisión humana',
+								detail: 'Trazas y aprobación antes de responder.',
+							},
+						],
+						stack: ['Node.js', 'LLM APIs', 'PostgreSQL', 'Webhooks'],
+					},
+				],
+			},
+		],
+	},
+	tools: {
+		eyebrow: 'Herramientas · Tecnología e IA',
+		title: 'El kit con el que construyo.',
+		description:
+			'Tecnologías que uso a diario y habilidades de IA que aplico al desarrollo.',
+		groups: [
+			{
+				title: 'Frontend',
+				note: 'Interfaces, componentes y sistemas de diseño.',
+				items: ['Astro', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'HTML y CSS', 'Vite'],
+			},
+			{
+				title: 'Backend',
+				note: 'APIs, lógica de servidor e integraciones.',
+				items: ['Node.js', 'APIs REST', 'Webhooks', 'Autenticación'],
+			},
+			{
+				title: 'Datos',
+				note: 'Modelado, almacenamiento y consultas.',
+				items: ['PostgreSQL', 'Prisma', 'Redis', 'SQL'],
+			},
+			{
+				title: 'IA',
+				note: 'Agentes, contexto y flujos asistidos.',
+				items: ['Agent skills', 'Context engineering', 'Firecrawl', 'Graphify', 'LLM APIs'],
+			},
+			{
+				title: 'DevOps',
+				note: 'Entrega, entornos y automatización.',
+				items: ['Git y GitHub', 'Docker', 'CI/CD', 'Linux', 'Vercel'],
+			},
+			{
+				title: 'Diseño',
+				note: 'Tipografía, tokens y accesibilidad.',
+				items: ['Figma', 'Design tokens', 'Accesibilidad', 'Tipografía'],
+			},
+		],
 	},
 };
 
@@ -193,7 +531,7 @@ const en: HomeCopy = {
 		title: ['Fast sites.', 'No noise.', 'Built to last.'],
 		lead: 'I design and build sites that render at build time and ship as HTML. No unnecessary dependencies, with speed and content as the focus.',
 		primaryCta: "Let's talk",
-		secondaryCta: 'See services',
+		secondaryCta: 'See projects',
 		scrollHint: 'Scroll',
 		portraitAlt: 'Temporary author portrait',
 		stats: [
@@ -204,10 +542,32 @@ const en: HomeCopy = {
 	},
 	manifesto: {
 		title: 'Speed starts in the design.',
-		paragraphs: [
-			'I work with sites that are generated at build time and served as HTML. There is no server to maintain and no JavaScript hydrating every block.',
-			'Before writing components I define hierarchy, typography and color tokens. That keeps the system usable for new pages without inventing one-off styles.',
-			'The result is a site that loads fast, works with a keyboard and can be maintained six months later without remembering how it worked.',
+		lead: 'Architecture, tolerance, traceability, servers, sustainability and cost. Decisions made before the first line and felt in the cost of every change.',
+		cards: [
+			{
+				title: 'Architecture',
+				detail: 'Boundaries, modules and contracts before the first component.',
+			},
+			{
+				title: 'Tolerance',
+				detail: 'Expected failures, retries and controlled degradation.',
+			},
+			{
+				title: 'Traceability',
+				detail: 'Logs, metrics and decisions that can be reconstructed.',
+			},
+			{
+				title: 'Servers',
+				detail: 'Environments, deployment and capacity with headroom.',
+			},
+			{
+				title: 'Sustainability',
+				detail: 'Documentation and debt under control to keep changing.',
+			},
+			{
+				title: 'Costs',
+				detail: 'Less friction and a cost per change you can defend.',
+			},
 		],
 	},
 	services: {
@@ -261,45 +621,46 @@ const en: HomeCopy = {
 		],
 	},
 	process: {
-		title: 'How do we work?',
-		description: 'Four short phases. Each one leaves something to review.',
-		cta: 'Start a conversation',
+		title: 'How do I work?',
+		description:
+			'Four short phases. At each one I show you something concrete to review together.',
+		cta: 'Tell me about your project',
 		linkLabel: "Let's talk about this phase",
 		rows: [
 			{
 				eyebrow: 'Phase 01',
-				title: 'Discovery',
+				title: 'I listen and organize',
 				items: [
-					{ kind: 'Scope', label: 'Goal and limits' },
-					{ kind: 'Content', label: 'Copy and languages' },
-					{ kind: 'References', label: 'Sites you like' },
+					{ kind: 'Goal', label: "What you need and what you don't" },
+					{ kind: 'Content', label: 'Copy, languages and references' },
+					{ kind: 'Scope', label: 'What ships in the first version' },
 				],
 			},
 			{
 				eyebrow: 'Phase 02',
-				title: 'Design',
+				title: 'I design with you',
 				items: [
 					{ kind: 'Hierarchy', label: 'Navigation and sections' },
-					{ kind: 'Typography', label: 'Scale and rhythm' },
-					{ kind: 'Tokens', label: 'Color, radii and borders' },
+					{ kind: 'Typography', label: 'Scale, rhythm and tone' },
+					{ kind: 'System', label: 'Tokens, color and components' },
 				],
 			},
 			{
 				eyebrow: 'Phase 03',
-				title: 'Build',
+				title: 'I build and review',
 				items: [
-					{ kind: 'Astro', label: 'Static routes' },
-					{ kind: 'Components', label: 'Vue without hydration' },
+					{ kind: 'Astro', label: 'Static routes and content' },
+					{ kind: 'Vue', label: 'Interaction without noise' },
 					{ kind: 'i18n', label: 'ES and EN from day one' },
 				],
 			},
 			{
 				eyebrow: 'Phase 04',
-				title: 'Delivery',
+				title: 'I deliver and hand over',
 				items: [
-					{ kind: 'Build', label: 'Static output' },
-					{ kind: 'Deploy', label: 'CDN and domain' },
-					{ kind: 'Docs', label: 'How to edit the site' },
+					{ kind: 'Build', label: 'Verified static output' },
+					{ kind: 'Deploy', label: 'Domain, CDN and analytics' },
+					{ kind: 'Handover', label: 'Docs and how to edit' },
 				],
 			},
 		],
@@ -325,28 +686,6 @@ const en: HomeCopy = {
 			cta: 'Email me',
 		},
 	},
-	testimonials: {
-		eyebrow: 'Experiences · Space to fill',
-		items: [
-			{
-				label: 'Testimonial pending · 01',
-				quote: 'The first project will tell its story here.',
-				author: 'Name and project',
-			},
-			{
-				label: 'Testimonial pending · 02',
-				quote: 'The second one will describe how the process went.',
-				author: 'Name and project',
-			},
-			{
-				label: 'Testimonial pending · 03',
-				quote: 'The third may come from someone who read a guide.',
-				author: 'Name and project',
-			},
-		],
-		stackLabel: 'Stack I use',
-		stack: ['Astro', 'Vue', 'Tailwind CSS', 'TypeScript', 'Node.js'],
-	},
 	about: {
 		greeting: "Hi, I'm",
 		paragraphs: [
@@ -354,6 +693,344 @@ const en: HomeCopy = {
 			'This space collects the work, the technical decisions and what I learn while building. If you have a project in motion, write to me.',
 		],
 		cta: 'Email me',
+	},
+	profile: {
+		eyebrow: 'About · Contact',
+		contactEyebrow: 'Contact',
+		contactLead: "Have a project in mind? Let's talk on the networks.",
+		emailLabel: 'Email me',
+		linkedin: 'LinkedIn',
+		github: 'GitHub',
+	},
+	projects: {
+		eyebrow: 'Projects · Solutions',
+		title: 'Experience and solutions.',
+		description:
+			'A selection of companies I have worked with, their projects, my participation and the solutions I applied in each one.',
+		experienceLabel: 'Companies',
+		projectsLabel: 'Projects',
+		participationLabel: 'My participation',
+		solutionsLabel: 'Star solutions',
+		stackLabel: 'Technologies',
+		openLabel: 'Open card',
+		closeLabel: 'Close card',
+		cardEyebrow: 'Experience card',
+		cta: "Let's talk",
+		items: [
+			{
+				slug: 'cuantia',
+				name: 'Cuantia',
+				meta: 'Fintech · Frontend',
+				period: '2024 — 2025',
+				detail: 'Interfaces and components for a financial platform.',
+				tags: ['Vue 3', 'TypeScript', 'Vite'],
+				participation: [
+					'I built the financial dashboard interface and its loading, error and empty states.',
+					'I defined reusable components and the data flow between filters and tables.',
+					'I reviewed keyboard, focus and contrast with the product team.',
+				],
+				projects: [
+					{
+						name: 'Treasury dashboard',
+						detail: 'Operations view for accounts, movements and reconciliation.',
+						participation: [
+							'I modeled the dashboard loading and error states.',
+							'I implemented filters and tables with configurable columns.',
+							'I adjusted the reconciliation flow with the finance team.',
+						],
+						solutions: [
+							{
+								title: 'Operational table',
+								detail: 'Filters, pagination and states without reloads.',
+							},
+							{
+								title: 'Component system',
+								detail: 'Vue + TypeScript for dense views.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'Vite', 'REST APIs'],
+					},
+					{
+						name: 'Client portal',
+						detail: 'Client access to balances, documents and support.',
+						participation: [
+							'I built the access and recovery flow.',
+							'I integrated documents and signed downloads.',
+							'I reviewed accessibility and error messages.',
+						],
+						solutions: [
+							{
+								title: 'Secure access',
+								detail: 'Sessions and recovery with clear messages.',
+							},
+							{
+								title: 'Documents',
+								detail: 'Downloads and availability states.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'REST APIs', 'Tailwind CSS'],
+					},
+				],
+			},
+			{
+				slug: 'orinocodev',
+				name: 'OrinocoDev',
+				meta: 'Digital studio · Full stack',
+				period: '2023 — 2024',
+				detail: 'Sites and products for a development studio.',
+				tags: ['Astro', 'Vue 3', 'Node.js'],
+				participation: [
+					'I designed the studio site architecture and static routes.',
+					'I built reusable sections and components in Vue.',
+					'I left deployment and documentation ready to edit without me.',
+				],
+				projects: [
+					{
+						name: 'Studio site',
+						detail: 'Bilingual site with case studies and services.',
+						participation: [
+							'I defined static routes and bilingual content.',
+							'I built reusable sections and components.',
+							'I left the deployment documented.',
+						],
+						solutions: [
+							{
+								title: 'Bilingual site',
+								detail: 'Astro + i18n with per-language routes and metadata.',
+							},
+							{
+								title: 'Editorial kit',
+								detail: 'Content blocks ready for new pages.',
+							},
+						],
+						stack: ['Astro', 'TypeScript', 'Tailwind CSS', 'i18n'],
+					},
+					{
+						name: 'Product kit',
+						detail: 'Interface blocks for the studio’s new products.',
+						participation: [
+							'I extracted patterns from the existing sites.',
+							'I built Vue components with states and variants.',
+							'I documented usage and tokens.',
+						],
+						solutions: [
+							{
+								title: 'Design system',
+								detail: 'Components and tokens for new products.',
+							},
+							{
+								title: 'Living documentation',
+								detail: 'Examples and usage rules next to the code.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'Tailwind CSS', 'Vite'],
+					},
+				],
+			},
+			{
+				slug: 'glgfreight',
+				name: 'glgfreight',
+				meta: 'Logistics · Web app',
+				period: '2023 — 2024',
+				detail: 'Operations dashboard for a freight and transport company.',
+				tags: ['Vue 3', 'Node.js', 'PostgreSQL'],
+				participation: [
+					'I developed the operations dashboard for freight and carrier tracking.',
+					'I integrated internal APIs and normalized filters, tables and states.',
+					'I added alerts and detail views for the operations team.',
+				],
+				projects: [
+					{
+						name: 'Control tower',
+						detail: 'Freight tracking and carrier status.',
+						participation: [
+							'I built the real-time tracking view.',
+							'I integrated internal APIs and normalized states.',
+							'I added filters and alerts for operations.',
+						],
+						solutions: [
+							{
+								title: 'Operations dashboard',
+								detail: 'Vue + APIs for daily tracking and management.',
+							},
+							{
+								title: 'Incident alerts',
+								detail: 'Webhooks and status views for the operations team.',
+							},
+						],
+						stack: ['Vue 3', 'TypeScript', 'REST APIs', 'Webhooks'],
+					},
+					{
+						name: 'Carrier portal',
+						detail: 'Carrier access to trips and documents.',
+						participation: [
+							'I designed the trip and evidence flow.',
+							'I implemented uploads and validations.',
+							'I reviewed the empty state and errors.',
+						],
+						solutions: [
+							{
+								title: 'Trip portal',
+								detail: 'Trips, documents and evidence in one view.',
+							},
+							{
+								title: 'Validated uploads',
+								detail: 'Forms and rules for documentation.',
+							},
+						],
+						stack: ['Vue 3', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+					},
+				],
+			},
+			{
+				slug: 'colegio-simon-bolivar',
+				name: 'Colegio Simón Bolívar',
+				meta: 'Education · Institutional site',
+				period: '2023',
+				detail: 'Site and admissions flow for a school.',
+				tags: ['Astro', 'i18n'],
+				participation: [
+					'I built the institutional site and the admissions flow.',
+					'I organized bilingual content and contact forms.',
+					'I reviewed accessibility, local SEO and per-language metadata.',
+				],
+				projects: [
+					{
+						name: 'Institutional site',
+						detail: 'Presentation, news and school life.',
+						participation: [
+							'I organized the content architecture.',
+							'I built the bilingual routes and sections.',
+							'I reviewed local SEO and metadata.',
+						],
+						solutions: [
+							{
+								title: 'Bilingual site',
+								detail: 'Astro + i18n with per-language routes and canonical.',
+							},
+							{
+								title: 'Institutional content',
+								detail: 'Sections and news that are easy to edit.',
+							},
+						],
+						stack: ['Astro', 'TypeScript', 'Tailwind CSS', 'i18n'],
+					},
+					{
+						name: 'Admissions 2025',
+						detail: 'Admissions flow and forms.',
+						participation: [
+							'I designed the admissions flow.',
+							'I built forms and validations.',
+							'I reviewed accessibility and messages.',
+						],
+						solutions: [
+							{
+								title: 'Online admissions',
+								detail: 'Forms and static content without a server.',
+							},
+							{
+								title: 'Accessible forms',
+								detail: 'Validations and clear messages.',
+							},
+						],
+						stack: ['Astro', 'TypeScript', 'Forms', 'Accessibility'],
+					},
+				],
+			},
+			{
+				slug: 'orinocoio',
+				name: 'OrinocoIO',
+				meta: 'Product · Full stack',
+				period: '2024 — 2025',
+				detail: 'Web tools and services for a product team.',
+				tags: ['Node.js', 'Vue 3', 'PostgreSQL'],
+				participation: [
+					'I developed internal tools and user flows for the team.',
+					'I modeled APIs and data to automate repetitive tasks.',
+					'I left tests and deployment documented to keep iterating.',
+				],
+				projects: [
+					{
+						name: 'Internal console',
+						detail: 'Internal tools for operations and support.',
+						participation: [
+							'I built the console and its user flows.',
+							'I modeled APIs and permissions.',
+							'I left tests and deployment documented.',
+						],
+						solutions: [
+							{
+								title: 'Internal console',
+								detail: 'Node + Vue for operations and support.',
+							},
+							{
+								title: 'Role permissions',
+								detail: 'Flows and access per team.',
+							},
+						],
+						stack: ['Vue 3', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+					},
+					{
+						name: 'Support automation',
+						detail: 'AI-assisted classification and replies.',
+						participation: [
+							'I designed the classification flow.',
+							'I integrated the model API and business rules.',
+							'I added traces and human review.',
+						],
+						solutions: [
+							{
+								title: 'Assisted triage',
+								detail: 'Request classification with rules and a model.',
+							},
+							{
+								title: 'Human review',
+								detail: 'Traces and approval before replying.',
+							},
+						],
+						stack: ['Node.js', 'LLM APIs', 'PostgreSQL', 'Webhooks'],
+					},
+				],
+			},
+		],
+	},
+	tools: {
+		eyebrow: 'Tools · Technology and AI',
+		title: 'The kit I build with.',
+		description:
+			'Technologies I use every day and AI skills I apply to development.',
+		groups: [
+			{
+				title: 'Frontend',
+				note: 'Interfaces, components and design systems.',
+				items: ['Astro', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'HTML and CSS', 'Vite'],
+			},
+			{
+				title: 'Backend',
+				note: 'APIs, server logic and integrations.',
+				items: ['Node.js', 'REST APIs', 'Webhooks', 'Authentication'],
+			},
+			{
+				title: 'Data',
+				note: 'Modeling, storage and queries.',
+				items: ['PostgreSQL', 'Prisma', 'Redis', 'SQL'],
+			},
+			{
+				title: 'AI',
+				note: 'Agents, context and assisted workflows.',
+				items: ['Agent skills', 'Context engineering', 'Firecrawl', 'Graphify', 'LLM APIs'],
+			},
+			{
+				title: 'DevOps',
+				note: 'Delivery, environments and automation.',
+				items: ['Git and GitHub', 'Docker', 'CI/CD', 'Linux', 'Vercel'],
+			},
+			{
+				title: 'Design',
+				note: 'Typography, tokens and accessibility.',
+				items: ['Figma', 'Design tokens', 'Accessibility', 'Typography'],
+			},
+		],
 	},
 };
 
