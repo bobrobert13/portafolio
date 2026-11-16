@@ -26,16 +26,19 @@
 }
 
 @theme static {
-	--color-page: #fbfaf5;
-	--color-band: #f4f4ea;
-	--color-ink: #12140e;
-	--color-muted: #5e6259;
-	--color-subtle: #666b60;
-	--color-line: #e0e1d5;
-	--color-surface: #eff0e4;
-	--color-accent: #4a6a00;
-	--color-accent-ink: #ffffff;
-	--color-plate: #b8e04a;
+	/* Palette: #CE7F20 orange · #EEDFC7 cream · #607938 olive · #533416 cocoa. */
+	--color-page: #eedfc7;
+	--color-band: #e6d3b4;
+	--color-ink: #533416;
+	--color-muted: #6e5236;
+	--color-subtle: #7a5e42;
+	--color-line: #d9c3a0;
+	--color-surface: #e3cfae;
+	--color-accent: #ce7f20;
+	/* Burnt orange for small text: the vivid accent only clears 3:1 as text. */
+	--color-accent-text: #7a4a15;
+	--color-accent-ink: #241708;
+	--color-plate: #607938;
 
 	--font-sans:
 		'DM Sans', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
@@ -59,16 +62,17 @@
  */
 :root[data-theme='dark'] {
 	color-scheme: dark;
-	--color-page: #080a07;
-	--color-band: #0d100b;
-	--color-ink: #f2f4ec;
-	--color-muted: #a7ac9f;
-	--color-subtle: #858a7e;
-	--color-line: rgb(255 255 255 / 0.08);
-	--color-surface: #11150e;
-	--color-accent: #c7f24c;
-	--color-accent-ink: #11150a;
-	--color-plate: #c7f24c;
+	--color-page: #241708;
+	--color-band: #2c1c0c;
+	--color-ink: #eedfc7;
+	--color-muted: #c9b492;
+	--color-subtle: #ad9878;
+	--color-line: rgb(238 223 199 / 0.12);
+	--color-surface: #34220e;
+	--color-accent: #ce7f20;
+	--color-accent-text: #ce7f20;
+	--color-accent-ink: #241708;
+	--color-plate: #607938;
 }
 
 :root[data-theme='light'] {
@@ -79,15 +83,16 @@
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme='light']) {
 		color-scheme: dark;
-		--color-page: #080a07;
-		--color-band: #0d100b;
-		--color-ink: #f2f4ec;
-		--color-muted: #a7ac9f;
-		--color-subtle: #858a7e;
-		--color-line: rgb(255 255 255 / 0.08);
-		--color-surface: #11150e;
-		--color-accent: #c7f24c;
-		--color-accent-ink: #11150a;
-		--color-plate: #c7f24c;
+		--color-page: #241708;
+		--color-band: #2c1c0c;
+		--color-ink: #eedfc7;
+		--color-muted: #c9b492;
+		--color-subtle: #ad9878;
+		--color-line: rgb(238 223 199 / 0.12);
+		--color-surface: #34220e;
+		--color-accent: #ce7f20;
+		--color-accent-text: #ce7f20;
+		--color-accent-ink: #241708;
+		--color-plate: #607938;
 	}
 }

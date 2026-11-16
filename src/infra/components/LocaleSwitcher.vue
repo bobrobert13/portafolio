@@ -32,7 +32,7 @@ const items = computed(() =>
 				:lang="item.locale"
 				:aria-label="item.label"
 				:aria-current="item.isCurrent ? 'page' : undefined"
-				class="text-subtle transition-colors hover:text-accent aria-[current=page]:text-ink"
+				class="text-subtle transition-colors hover:text-accent-text aria-[current=page]:text-ink"
 			>
 				{{ item.short }}
 			</a>
