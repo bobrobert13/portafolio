@@ -46,10 +46,10 @@ src/
 │   ├── composables/         # useI18n()
 │   ├── layouts/             # BaseLayout.astro (html/head/meta/hreflang/header/footer)
 │   └── styles/
-│       ├── global.css       # entry: tailwind + theme + base + rail + utilities
+│       ├── global.css       # entry: tailwind + theme + base + slides + utilities
 │       ├── theme.css        # @theme tokens (colors, fonts, radii, shadows) + light/dark overrides
 │       ├── base.css         # @layer base element defaults
-│       ├── rail.css         # horizontal rail + sand transitions
+│       ├── slides.css       # stacked full-page sticky sheets
 │       └── utilities.css    # @utility page-container, skip-link
 └── pages/
     ├── index.astro          # `/` → `/es/` (302)
@@ -144,8 +144,9 @@ the language switcher and hreflang.
 - Any change: `npm run build` must pass, then check the rendered page for **both**
   locales in the dev server (`/es/`, `/en/`), not just the source.
 - Zero-JS rule: the built HTML must contain no `client:*` hydration scripts unless
-  a component genuinely needs them. The home ships two small non-hydrating
-  scripts: theme toggle and rail anchor navigation.
+  a component genuinely needs them. The home ships small non-hydrating scripts
+  only: theme toggle, slide navigation and section-local effects (typing,
+  dialogs, kit animation).
 - No test suite exists. Add one only if the task asks for it.
 
 ## Documentation

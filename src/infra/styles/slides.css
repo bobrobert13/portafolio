@@ -1,0 +1,205 @@
+/*
+ * Stacked full-page slides.
+ *
+ * The page scrolls vertically as usual. Each home section is a `100dvh` sheet
+ * pinned with `position: sticky`, so the next sheet slides over the previous one
+ * (the CodePen "sticky full page slides" pattern). Sticky is baseline CSS: the
+ * cover transition itself needs no JavaScript and no scroll-driven animation
+ * support.
+ *
+ * The extra depth — the outgoing content drifting up while the incoming content
+ * settles — is written by the small scroll script as two custom properties per
+ * sheet. Without it the sheets still cover each other.
+ *
+ * Everything below applies only on viewports that can hold the compacted
+ * desktop layout and when motion is allowed. Otherwise the sections keep their
+ * natural vertical flow.
+ */
+
+@media (min-width: 1024px) and (min-height: 720px) and (prefers-reduced-motion: no-preference) {
+	html:has(.slide-stack) {
+		scroll-padding-top: 0;
+	}
+
+	/* The header floats over the sheets so the first one reaches the top edge. */
+	.site-header {
+		position: fixed;
+		inset-inline: 0;
+		top: 0;
+	}
+
+	.slide-stack {
+		--sheet: 100dvh;
+		position: relative;
+		background-color: var(--color-page);
+	}
+
+	.slide {
+		position: sticky;
+		top: 0;
+		height: var(--sheet);
+		/* `clip`, not `hidden`: a hidden box stays scrollable by focus and
+		   fragment navigation, which shifts the pinned sheet. */
+		overflow: clip;
+		background-color: var(--color-page);
+	}
+
+	/* Seam and depth cue for the sheet sliding over this one. */
+	.slide + .slide {
+		border-top: 1px solid var(--color-line);
+		box-shadow: inset 0 20px 30px -26px rgb(0 0 0 / 0.5);
+	}
+
+	.slide > section {
+		height: 100%;
+	}
+
+	/* Keep every desktop layout inside one sheet. */
+	.slide #manifiesto {
+		align-content: center;
+	}
+
+	.slide #inicio > .hero-copy {
+		padding-top: 4.5rem;
+		padding-bottom: 2rem;
+	}
+
+	.slide #servicios {
+		display: flex;
+		flex-direction: column;
+		justify-content: safe center;
+	}
+
+	.slide #servicios > div:last-child {
+		padding-bottom: 2.5rem;
+	}
+
+	.slide #servicios .service-card {
+		min-height: 210px;
+		padding: 1.25rem;
+	}
+
+	.slide #construccion {
+		display: flex;
+		flex-direction: column;
+		justify-content: safe center;
+	}
+
+	.slide #construccion .process-head {
+		padding-top: 4rem;
+		padding-bottom: 1.5rem;
+	}
+
+	.slide #construccion .process-body {
+		padding-bottom: 1rem;
+	}
+
+	.slide #construccion .process-row {
+		padding-block: 1rem;
+	}
+
+	.slide #construccion .process-item {
+		padding-block: 0.5rem;
+	}
+
+	.slide #contacto {
+		align-content: center;
+		padding-top: 4.5rem;
+		padding-bottom: 3rem;
+	}
+
+	.slide #perfil > div:last-child {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.slide #perfil .profile-contact {
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+	}
+
+	.slide #proyectos,
+	.slide #herramientas {
+		display: flex;
+		flex-direction: column;
+		justify-content: safe center;
+	}
+
+	.slide #proyectos > div:first-child,
+	.slide #herramientas > div:first-child {
+		padding-top: 4rem;
+		padding-bottom: 1.5rem;
+	}
+
+	.slide #proyectos > div:last-child,
+	.slide #herramientas > div:last-child {
+		padding-bottom: 1.5rem;
+	}
+
+	.slide #proyectos .company-card {
+		min-height: 9.5rem;
+		padding: 1.1rem;
+	}
+
+	/* Shorter laptops: tighten further so nothing is clipped. */
+	@media (max-height: 820px) {
+		.slide #inicio > .hero-copy {
+			padding-top: 3.5rem;
+			padding-bottom: 1.5rem;
+		}
+
+		.slide #construccion .process-head {
+			padding-top: 4rem;
+			padding-bottom: 0.75rem;
+		}
+
+		.slide #construccion .process-row {
+			padding-block: 0.5rem;
+		}
+
+		.slide #construccion .process-body {
+			padding-bottom: 1rem;
+		}
+
+		.slide #servicios .service-card {
+			min-height: 180px;
+			padding: 1rem;
+		}
+
+		.slide #servicios > div:first-child {
+			padding-bottom: 1rem;
+		}
+
+		.slide #servicios > div:last-child {
+			padding-bottom: 1rem;
+		}
+
+		.slide #perfil .profile-contact {
+			margin-top: 1.5rem;
+			padding-top: 1rem;
+		}
+
+		.slide #proyectos > div:first-child,
+		.slide #herramientas > div:first-child {
+			padding-top: 4rem;
+			padding-bottom: 0.75rem;
+		}
+
+		.slide #proyectos .company-card {
+			min-height: 8rem;
+			padding: 0.9rem;
+		}
+	}
+
+	/*
+	 * Content drift. The scroll script writes two custom properties per sheet:
+	 * `--drift` (-1 when fully covered … 1 when still entering) and `--fade`
+	 * (0 … 0.65). Defaults keep the content in place, so a CSS-only fallback
+	 * still gets the plain sticky cover.
+	 */
+	.slide-anim {
+		opacity: calc(1 - var(--fade, 0));
+		transform: translateY(calc(var(--drift, 0) * 2.5rem));
+	}
+}

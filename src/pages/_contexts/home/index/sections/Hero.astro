@@ -18,7 +18,7 @@ const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#perfil
 	class="relative grid grid-cols-1 border-b border-line lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
 >
 	<div
-		class="hero-copy rail-anim relative z-2 flex flex-col justify-center px-[1.125rem] pt-[8.75rem] pb-11 md:px-6 md:pt-18 md:pb-14 lg:pl-11 lg:pr-9 lg:pt-22 lg:pb-18 min-[1440px]:pr-11"
+		class="hero-copy slide-anim relative z-2 flex flex-col justify-center px-[1.125rem] pt-[8.75rem] pb-11 md:px-6 md:pt-18 md:pb-14 lg:pl-11 lg:pr-9 lg:pt-22 lg:pb-18 min-[1440px]:pr-11"
 	>
 		<p class="eyebrow">{copy.eyebrow}</p>
 		<h1
@@ -53,14 +53,10 @@ const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#perfil
 				))
 			}
 		</dl>
-		<p class="rail-hint" aria-hidden="true">
-			{copy.scrollHint}
-			<ArrowIcon class="size-4 shrink-0" />
-		</p>
 	</div>
 
 	<div
-		class="rail-anim rail-media relative h-[390px] overflow-hidden bg-plate [mask-image:linear-gradient(#000_82%,transparent_100%)] lg:h-auto lg:min-h-[520px] lg:[mask-image:none]"
+		class="slide-anim relative h-[390px] overflow-hidden bg-plate [mask-image:linear-gradient(#000_82%,transparent_100%)] lg:h-auto lg:min-h-[520px] lg:[mask-image:none]"
 	>
 		<img
 			src="/img/portrait-placeholder.jpg"

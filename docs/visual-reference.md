@@ -263,8 +263,9 @@ duotono; el about reutiliza la misma imagen con máscara inferior.
   sobre `<html>`, persistido en `localStorage`). El script del `<head>` aplica la
   preferencia antes de pintar para evitar el flash.
 - Sin menú móvil con JavaScript: la navegación se oculta por debajo de `md` y el
-  pie cubre los enlaces. En escritorio, el riel horizontal añade un único script
-  de navegación (~1 KB) para anclas y foco; la animación no usa JavaScript.
+  pie cubre los enlaces. En escritorio, las pantallas apiladas añaden un script
+  de navegación para anclas, foco y deriva del contenido; el cubrimiento entre
+  pantallas no usa JavaScript.
 - En móvil el retrato del hero va debajo del texto, con máscara inferior, en
   lugar de superponerse. El texto oscuro sobre una placa oscura no garantiza
   contraste en modo claro.
@@ -276,9 +277,9 @@ duotono; el about reutiliza la misma imagen con máscara inferior.
 - El stack strip lista tecnologías reales del proyecto, sin enlaces.
 - Sin marco: `.site-frame` ocupa el 100 % del viewport, sin bordes laterales ni
   tope de 1440 px. El contenido conserva el gutter de 44 px y los textos largos
-  se limitan a 46–52 rem. La cabecera es `fixed` en el riel y flota sobre el
-  panel translúcido, de modo que la primera pantalla llena el escritorio de
-  borde a borde.
+  se limitan a 46–52 rem. La cabecera es `fixed` en las pantallas apiladas y
+  flota sobre la pantalla translúcida, de modo que la primera llena el escritorio
+  de borde a borde.
 - La escala display crece con el viewport: H1 hasta 112 px, H2 hasta 56 px, lead
   hasta 28 px. Los anchos del hero son fluidos (600 → 1000 px y 510 → 680 px)
   para que 1920 y 2560 no queden con una columna de texto estrecha.
@@ -294,74 +295,52 @@ duotono; el about reutiliza la misma imagen con máscara inferior.
 | Copy del home | `src/pages/_contexts/home/index/i18n.ts` |
 | Secciones | `src/pages/_contexts/home/index/sections/*.astro` |
 | Composición | `src/pages/_contexts/home/index/Page.astro` |
-| Riel horizontal | `src/infra/styles/rail.css` |
-| Máscara de arena | `public/img/sand-mask.png` |
+| Pantallas apiladas | `src/infra/styles/slides.css` |
 | Toggle de tema | `src/infra/components/ThemeToggle.astro` |
 | Flechas | `src/infra/components/ArrowIcon.astro` |
 | Retrato provisional | `public/img/portrait-placeholder.jpg` |
 
-## 11. Riel horizontal
+## 11. Pantallas apiladas
 
-A partir de 1024 px el home deja de apilarse: el contenido viaja en horizontal
-mientras la página se desplaza en vertical.
+A partir de 1024 × 720 px el home pasa a pantallas completas: la página se
+desplaza en vertical y cada sección queda fija mientras la siguiente la cubre,
+el patrón «sticky full page slides» de la referencia de CodePen.
 
-- Estructura: `.rail` (7 × `100dvh`) → `.rail-stage` sticky de `100dvh` →
-  `.rail-track` flex con 7 `.rail-slide` de `100%`.
-- La animación es CSS puro. `.rail` declara `view-timeline: --rail block`; la
-  pista anima `translateX` de 0 a `(7 - 1) × -100%` con
-  `animation-range: cover 100dvh → cover 7 × 100dvh`. Esa ventana empieza cuando
-  el escenario queda fijo y termina cuando se libera, así que el recorrido
-  horizontal y el scroll vertical avanzan a la vez.
-- Una barra de 2 px al pie del escenario usa la misma línea de tiempo
-  (`scaleX 0 → 1`). El primer panel muestra el aviso «Desplaza →».
-- Los paneles se ajustan al alto disponible en `rail.css`: servicios y proceso
-  con `safe center`, contacto y about centrados. Por debajo de 740 px de alto el
-  proceso recorta además sus filas para no desbordar.
-- Desintegración: cada bloque `.rail-anim` lleva una máscara PNG de grano
-  (`public/img/sand-mask.png`, 2400 × 600) con centro sólido y bordes
-  granulados. La máscara mide `400% × 100%` y su `mask-position` se anima
-  `0% → 50% → 100%` dentro de `rail-flow`; el bloque se erosiona en granos al
-  entrar y al salir. El primer panel usa `rail-exit` (`50% → 100%`). Los
-  retratos usan la misma máscara con desplazamiento cero para no abrir bordes.
-- Transiciones: opacidad `0.4 → 1 → 0.4` y desplazamiento de 16 px (`0` en
-  retratos) a lo largo de `[i, i + 2] × 100dvh`; el panel queda alineado en el
-  centro. Texto y medios comparten curva y máscara.
-- Oclusión de entrada: del segundo panel en adelante, cada `.rail-anim` suma
-  `rail-focus` (`blur(5px) → 0`) y cada `.rail-slide` un `::after` con
-  `rail-veil` (`opacity 0.35 → 0`, color de página o banda). Ambos mantienen su
-  valor pleno el 18 % inicial y comparten `--rail` y
-  `[i, i + 1] × 100dvh`: la sección aparece velada y desenfocada y recupera el
-  foco al alinear el panel. El hero no la usa.
-- Sin snap: se retiró `scroll-snap` porque producía un rebote al salir del
-  primer panel. El desplazamiento queda libre y las fades marcan la transición.
-- Scroll: la barra vertical se oculta en el riel (`scrollbar-width: none` +
-  `::-webkit-scrollbar`); la rueda avanza o retrocede un panel con
-  `smoothScrollTo` (~580 ms por panel, `easeOutCubic`), acumula delta durante
-  15 ms y bloquea el siguiente paso mientras dura la animación. Los enlaces de
-  ancla usan la misma animación; en los extremos (hero y footer) vuelve el scroll
-  nativo; teclado y foco conservan su navegación.
-- Volver arriba: botón flotante abajo a la derecha; aparece al entrar en el
-  último panel o al llegar al final de la página, usa `smoothScrollTo(0)` y se
-  oculta al volver. En desktop la flecha apunta a la izquierda (el riel vuelve
-  al inicio); en móvil apunta hacia arriba. El label sale de `ui.ts`.
-- La referencia de CodePen usa `html2canvas` + GSAP + 75 canvases por captura.
-  Aquí se sustituye por una máscara de grano CSS: mismo lenguaje visual sin
-  dependencias, sin capturar el DOM y sin 75 capas por panel.
-- Navegación: un script en `Page.astro` traduce cada `#ancla` a la posición de
-  scroll del panel correspondiente (`railTop + i / 6 × (alto - viewport)`),
-  mantiene visible el elemento enfocado al tabular y sincroniza `hashchange`.
-  La animación sigue siendo 100 % CSS.
-- En producción, `animation-timeline` se declara como longhand `!important`
-  porque el minificador la pliega en el shorthand `animation`; el shorthand
-  resultante no es válido para una view timeline y el navegador lo descarta.
-- Fallback: por debajo de 1024 px, con `prefers-reduced-motion: reduce`, sin
-  `animation-timeline` o sin scripting, las secciones vuelven a la pila vertical
-  con bordes inferiores y anclas nativas. La regla del riel incluye
-  `(scripting: enabled)` para no dejar enlaces rotos cuando no hay JavaScript.
-- El escenario usa `overflow: clip`, no `hidden`: una caja `hidden` sigue siendo
-  desplazable por foco o navegación de fragmento y desalinearía todos los
-  paneles. Con la cabecera fija, `html:has(.rail)` anula el `scroll-padding-top`
-  global para que las anclas y el riel compartan el mismo origen.
+- Estructura: `.slide-stack` contiene 8 `.slide` de `100dvh`. Cada `.slide` es
+  `position: sticky; top: 0` y la siguiente se pinta encima por orden de DOM: el
+  cubrimiento no necesita JavaScript.
+- La cabecera pasa a `position: fixed` y flota sobre la pantalla; cada sección
+  conserva su padding superior para no quedar debajo.
+- Cada pantalla usa `overflow: clip`, no `hidden`: una caja `hidden` sigue siendo
+  desplazable por foco o navegación de fragmento y desalinearía las pantallas.
+  `html:has(.slide-stack)` anula el `scroll-padding-top` global para que las
+  anclas caigan en el borde superior de su pantalla.
+- Ajuste: `slides.css` comprime servicios y proceso con `safe center`, centra
+  contacto, perfil y manifiesto, y por debajo de 820 px de alto recorta filas,
+  tarjetas y paddings. El modo solo se activa desde 720 px de alto; por debajo
+  las secciones siguen su flujo natural sin recortar contenido.
+- Profundidad: un script en `Page.astro` escribe `--drift` (−1 cubierta … 1
+  entrando) y `--fade` (0 … 0.65) por pantalla; `.slide-anim` los traduce a un
+  `translateY` de 2.5 rem y una opacidad. La última pantalla no se desvanece:
+  sale con el pie. El scroll sigue siendo el nativo (sin bloquear la rueda); el
+  pintado corre en un `requestAnimationFrame` por frame.
+- Navegación: los enlaces `#ancla` se resuelven a la pantalla que contiene el
+  destino (`stackTop + índice × alto de pantalla`) y actualizan el hash con
+  `history.replaceState`; foco, `hashchange` y volver arriba usan las mismas
+  posiciones. El alto sale del propio stack porque `offsetTop` incluye el
+  desplazamiento sticky de una pantalla ya fijada. Sin JavaScript, las anclas
+  nativas caen igual en el borde de la pantalla.
+- Volver arriba: botón flotante abajo a la derecha; aparece en la última
+  pantalla o al final de la página y sube con scroll suave (instantáneo con
+  `prefers-reduced-motion`). La flecha apunta hacia arriba.
+- Compatibilidad: el cubrimiento usa solo `position: sticky` + `100dvh`. La
+  profundidad es JavaScript sobre variables CSS, así que se comporta igual en
+  Chrome, Safari y Firefox y nunca deja contenido atenuado si el navegador no
+  anima.
+- Fallback: por debajo de 1024 px de ancho o 720 px de alto, con
+  `prefers-reduced-motion: reduce` o sin JavaScript, las secciones vuelven a la
+  pila vertical con sus bordes inferiores y alturas naturales. El código de
+  scroll comprueba la misma media query para no interceptar anclas ni posiciones.
 
 ## 12. Pendientes de contenido
 

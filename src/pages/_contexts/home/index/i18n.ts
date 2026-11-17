@@ -16,7 +16,6 @@ const es = {
 		lead: 'Diseño y construyo sitios que se generan en el build y se sirven como HTML. Sin dependencias innecesarias, con el foco en la velocidad y el contenido.',
 		primaryCta: 'Hablemos',
 		secondaryCta: 'Ver proyectos',
-		scrollHint: 'Desplaza',
 		portraitAlt: 'Retrato provisional del autor',
 		stats: [
 			{ label: 'Una persona', value: '1' },
@@ -532,7 +531,6 @@ const en: HomeCopy = {
 		lead: 'I design and build sites that render at build time and ship as HTML. No unnecessary dependencies, with speed and content as the focus.',
 		primaryCta: "Let's talk",
 		secondaryCta: 'See projects',
-		scrollHint: 'Scroll',
 		portraitAlt: 'Temporary author portrait',
 		stats: [
 			{ label: 'One person', value: '1' },

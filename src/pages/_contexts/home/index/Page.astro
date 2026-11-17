@@ -19,24 +19,18 @@ interface Props {
 
 const { lang } = Astro.props;
 const copy = homeCopy[lang];
-const panels = 8;
 ---
 
 <BaseLayout locale={lang} title={`${copy.meta.title} · ${site.name}`} description={copy.meta.description}>
-	<div class="rail" style={`--rail-panels: ${panels}`}>
-		<div class="rail-stage">
-			<div class="rail-track">
-				<div class="rail-slide"><Hero lang={lang} /></div>
-				<div class="rail-slide"><Profile lang={lang} /></div>
-				<div class="rail-slide"><BuildProcess lang={lang} /></div>
-				<div class="rail-slide"><Projects lang={lang} /></div>
-				<div class="rail-slide"><Tools lang={lang} /></div>
-				<div class="rail-slide"><Manifesto lang={lang} /></div>
-				<div class="rail-slide"><Services lang={lang} /></div>
-				<div class="rail-slide"><Contact lang={lang} /></div>
-			</div>
-			<div class="rail-progress" aria-hidden="true"></div>
-		</div>
+	<div class="slide-stack">
+		<div class="slide"><Hero lang={lang} /></div>
+		<div class="slide"><Profile lang={lang} /></div>
+		<div class="slide"><BuildProcess lang={lang} /></div>
+		<div class="slide"><Projects lang={lang} /></div>
+		<div class="slide"><Tools lang={lang} /></div>
+		<div class="slide"><Manifesto lang={lang} /></div>
+		<div class="slide"><Services lang={lang} /></div>
+		<div class="slide"><Contact lang={lang} /></div>
 	</div>
 	<button
 		type="button"
@@ -46,135 +40,112 @@ const panels = 8;
 		aria-hidden="true"
 		tabindex="-1"
 	>
-		<ArrowIcon direction="right" class="size-4 -rotate-90 lg:rotate-180" />
+		<ArrowIcon direction="right" class="size-4 -rotate-90" />
 	</button>
 </BaseLayout>
 
 <script>
-	const rail = document.querySelector<HTMLElement>('.rail');
-	const wide = window.matchMedia('(min-width: 1024px) and (prefers-reduced-motion: no-preference)');
+	const stack = document.querySelector<HTMLElement>('.slide-stack');
+	const backToTop = document.querySelector<HTMLButtonElement>('.back-to-top');
+	const stacked = window.matchMedia(
+		'(min-width: 1024px) and (min-height: 720px) and (prefers-reduced-motion: no-preference)',
+	);
+	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-	if (rail) {
-		const slides = Array.from(rail.querySelectorAll<HTMLElement>('.rail-slide'));
-		const last = slides.length - 1;
-		const dialogOpen = () => Boolean(document.querySelector('dialog[open]'));
+	if (stack) {
+		const sheets = Array.from(stack.querySelectorAll<HTMLElement>('.slide'));
+		const lastSheet = sheets.at(-1);
 
-		const isRail = () => wide.matches && CSS.supports('animation-timeline: view()');
+		const sheetOf = (target: Element | null) => target?.closest<HTMLElement>('.slide') ?? null;
+		const stackTop = () => stack.getBoundingClientRect().top + window.scrollY;
+		/* Sticky offsets leak into `offsetTop` once a sheet is pinned, so derive
+		   the layout position from the stack instead. */
+		const sheetHeight = () => stack.getBoundingClientRect().height / sheets.length;
+		const sheetTop = (sheet: HTMLElement) =>
+			stackTop() + sheets.indexOf(sheet) * sheetHeight();
 
-		const indexOf = (target: Element | null) => {
-			const slide = target?.closest<HTMLElement>('.rail-slide');
-			return slide ? slides.indexOf(slide) : -1;
+		const clamp = (value: number) => Math.min(1, Math.max(0, value));
+		const applied = sheets.map(() => ({ drift: '', fade: '' }));
+
+		/* Sheet `i` enters while scrolling through `[(i - 1) × vh, i × vh]` and
+		   is covered through `[i × vh, (i + 1) × vh]`. Content drifts up while
+		   leaving and settles down while entering; the last sheet just scrolls
+		   away with the footer instead of being covered. */
+		const paint = () => {
+			if (!stacked.matches) return;
+			const start = stackTop();
+			const height = sheetHeight();
+			const y = window.scrollY;
+
+			sheets.forEach((sheet, index) => {
+				const enter =
+					index === 0 ? 1 : clamp((y - start - (index - 1) * height) / height);
+				const leave =
+					index === sheets.length - 1
+						? 0
+						: clamp((y - start - index * height) / height);
+				const drift = (1 - enter - leave).toFixed(3);
+				const fade = ((1 - enter + leave) * 0.65).toFixed(3);
+				const state = applied[index];
+
+				if (state && state.drift !== drift) {
+					sheet.style.setProperty('--drift', drift);
+					state.drift = drift;
+				}
+				if (state && state.fade !== fade) {
+					sheet.style.setProperty('--fade', fade);
+					state.fade = fade;
+				}
+			});
 		};
 
-		const scrollFor = (index: number) => {
-			const top = rail.getBoundingClientRect().top + window.scrollY;
-			const travel = rail.offsetHeight - window.innerHeight;
-			return top + (index / last) * travel;
+		let frame = 0;
+		const schedule = () => {
+			if (frame) return;
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+				paint();
+				updateBackToTop();
+			});
 		};
 
-		const currentIndex = () => {
-			const top = rail.getBoundingClientRect().top + window.scrollY;
-			const travel = rail.offsetHeight - window.innerHeight;
-			return Math.round(((window.scrollY - top) / travel) * last);
+		const goTo = (sheet: HTMLElement, behavior: ScrollBehavior) => {
+			window.scrollTo({ top: sheetTop(sheet), behavior });
 		};
 
-		let wheelLock = 0;
-		let scrollFrame = 0;
-
-		const smoothScrollTo = (target: number) => {
-			const start = window.scrollY;
-			const distance = target - start;
-			if (Math.abs(distance) < 2) return;
-			const duration = Math.min(1200, 500 + (Math.abs(distance) / window.innerHeight) * 80);
-			const started = performance.now();
-			cancelAnimationFrame(scrollFrame);
-			wheelLock = started + duration + 60;
-			const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-			const frame = (now: number) => {
-				const progress = Math.min(1, (now - started) / duration);
-				window.scrollTo({ top: start + distance * ease(progress), behavior: 'instant' });
-				if (progress < 1) scrollFrame = requestAnimationFrame(frame);
-			};
-			scrollFrame = requestAnimationFrame(frame);
-		};
-
-		const goToHash = () => {
-			if (!isRail() || last < 1) return;
-			const target = document.getElementById(window.location.hash.slice(1));
-			const index = indexOf(target);
-			if (index >= 0) {
-				cancelAnimationFrame(scrollFrame);
-				wheelLock = 0;
-				window.scrollTo({ top: scrollFor(index), behavior: 'auto' });
-			}
+		const goToHash = (behavior: ScrollBehavior) => {
+			if (!stacked.matches) return;
+			const hash = window.location.hash;
+			if (hash.length < 2) return;
+			const sheet = sheetOf(document.getElementById(hash.slice(1)));
+			if (sheet) goTo(sheet, behavior);
 		};
 
 		document.addEventListener('click', (event) => {
-			if (!isRail() || last < 1) return;
+			if (!stacked.matches) return;
 			const link = (event.target as Element | null)?.closest?.('a[href^="#"]');
 			if (!link) return;
 			const hash = link.getAttribute('href') ?? '';
-			const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
-			const index = indexOf(target);
-			if (!target || index < 0) return;
+			if (hash.length < 2) return;
+			const sheet = sheetOf(document.getElementById(hash.slice(1)));
+			if (!sheet) return;
 			event.preventDefault();
-			smoothScrollTo(scrollFor(index));
+			goTo(sheet, reduced.matches ? 'instant' : 'smooth');
 			history.replaceState(null, '', hash);
 		});
 
-		let wheelAcc = 0;
-		let wheelTimer = 0;
-
-		window.addEventListener(
-			'wheel',
-			(event) => {
-				if (!isRail() || last < 1 || dialogOpen()) return;
-				if (event.ctrlKey || event.metaKey || event.altKey || event.deltaY === 0) return;
-
-				const top = rail.getBoundingClientRect().top + window.scrollY;
-				const travel = rail.offsetHeight - window.innerHeight;
-				if (window.scrollY < top - 1 || window.scrollY > top + travel + 1) return;
-
-				if (performance.now() < wheelLock) {
-					wheelLock = Math.max(wheelLock, performance.now() + 100);
-					event.preventDefault();
-					return;
-				}
-
-				const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
-				const delta = event.deltaY * unit;
-				const direction = Math.sign(delta);
-				const current = currentIndex();
-				if ((direction > 0 && current >= last) || (direction < 0 && current <= 0)) return;
-
-				event.preventDefault();
-				wheelAcc += delta;
-				window.clearTimeout(wheelTimer);
-				wheelTimer = window.setTimeout(() => {
-					if (Math.abs(wheelAcc) <= 4) return;
-					const next = Math.max(0, Math.min(last, currentIndex() + Math.sign(wheelAcc)));
-					smoothScrollTo(scrollFor(next));
-					wheelAcc = 0;
-				}, 15);
-			},
-			{ passive: false },
-		);
-
+		/* A sheet stays pinned while it is covered, so its layout position is
+		   above the viewport: focusing content there would scroll the page away
+		   from the visible sheet. Align the sheet that owns the focused node. */
 		document.addEventListener('focusin', (event) => {
-			if (!isRail() || last < 1) return;
-			const index = indexOf(event.target as Element);
-			if (index >= 0 && index !== currentIndex()) {
-				cancelAnimationFrame(scrollFrame);
-				wheelLock = 0;
-				window.scrollTo({ top: scrollFor(index), behavior: 'instant' });
+			if (!stacked.matches) return;
+			const sheet = sheetOf(event.target as Element);
+			if (!sheet) return;
+			const top = sheetTop(sheet);
+			if (Math.abs(window.scrollY - top) > 2) {
+				window.scrollTo({ top, behavior: 'instant' });
 			}
 		});
-
-		window.addEventListener('hashchange', goToHash);
-		requestAnimationFrame(goToHash);
-
-		const backToTop = document.querySelector<HTMLButtonElement>('.back-to-top');
-		const lastSlide = slides[slides.length - 1];
 
 		const setBackToTop = (show: boolean) => {
 			if (!backToTop) return;
@@ -189,20 +160,28 @@ const panels = 8;
 		};
 
 		const updateBackToTop = () => {
-			const atBottom =
+			const atPageEnd =
 				window.scrollY + window.innerHeight >=
-				document.documentElement.scrollHeight - 80;
-			const atLast = lastSlide
-				? isRail()
-					? currentIndex() >= last
-					: lastSlide.getBoundingClientRect().top < window.innerHeight * 0.9
-				: false;
-			setBackToTop(atBottom || atLast);
+				document.documentElement.scrollHeight - 120;
+			const atLastSheet =
+				stacked.matches && lastSheet
+					? window.scrollY >= sheetTop(lastSheet) - 4
+					: false;
+			setBackToTop(atPageEnd || atLastSheet);
 		};
 
-		window.addEventListener('scroll', updateBackToTop, { passive: true });
-		window.addEventListener('resize', updateBackToTop);
+		window.addEventListener('scroll', schedule, { passive: true });
+		window.addEventListener('resize', schedule);
+		stacked.addEventListener('change', schedule);
+		window.addEventListener('hashchange', () =>
+			goToHash(reduced.matches ? 'instant' : 'smooth'),
+		);
+		backToTop?.addEventListener('click', () =>
+			window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }),
+		);
+
+		paint();
 		updateBackToTop();
-		backToTop?.addEventListener('click', () => smoothScrollTo(0));
+		requestAnimationFrame(() => goToHash('instant'));
 	}
 </script>

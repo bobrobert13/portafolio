@@ -7,5 +7,5 @@
 @import 'tailwindcss';
 @import './theme.css';
 @import './base.css';
-@import './rail.css';
+@import './slides.css';
 @import './utilities.css';
