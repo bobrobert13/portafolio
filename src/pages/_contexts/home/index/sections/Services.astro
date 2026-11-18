@@ -12,7 +12,10 @@ const { lang } = Astro.props;
 const copy = homeCopy[lang].services;
 ---
 
-<section id="servicios" class="bg-band border-b border-line">
+<section id="servicios" class="relative isolate bg-band border-b border-line">
+	<div class="ambient-field" aria-hidden="true">
+		<span class="ambient-orb orb-services"></span>
+	</div>
 	<div
 		class="slide-anim flex flex-col items-start gap-6 px-[1.125rem] pt-13 pb-[1.875rem] md:px-6 md:pt-14 lg:flex-row lg:items-end lg:justify-between lg:px-11 lg:pt-19 lg:pb-9.5"
 	>
@@ -76,3 +79,17 @@ const copy = homeCopy[lang].services;
 		</div>
 	</div>
 </section>
+
+<style>
+	/* Rise variant: the band light floats in the header corner, away from the
+	   copy and behind the card grid. */
+	.orb-services {
+		--orb-size: 0.46;
+		--orb-top: -18%;
+		--orb-left: 58%;
+		--orb-speed: 24s;
+		--orb-delay: -12s;
+		--orb-opacity: 0.46;
+		--orb-path: ambient-rise;
+	}
+</style>

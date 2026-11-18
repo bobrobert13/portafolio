@@ -33,13 +33,16 @@ const contactHref = '#perfil-contacto';
 		</BaseButton>
 	</div>
 
-	<div class="process-body slide-anim px-[1.125rem] pb-12 md:px-6 lg:px-11 lg:pb-17">
+	<div data-process class="process-body slide-anim px-[1.125rem] pb-12 md:px-6 lg:px-11 lg:pb-17">
 		{
 			copy.rows.map((row) => (
-				<div class="process-row grid gap-6 border-t border-line py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16 lg:py-8.5">
+				<div class="process-row grid gap-6 py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16 lg:py-8.5">
 					<div>
 						<p class="eyebrow flex items-center gap-2">
-							<span class="size-[5px] shrink-0 rounded-full bg-accent" aria-hidden="true" />
+							<span
+								class="process-dot size-[5px] shrink-0 rounded-full bg-accent"
+								aria-hidden="true"
+							/>
 							{row.eyebrow}
 						</p>
 						<h3 class="mt-4 text-[1.375rem] leading-[1.2] tracking-[-0.02em]">{row.title}</h3>
@@ -64,3 +67,103 @@ const contactHref = '#perfil-contacto';
 		}
 	</div>
 </section>
+
+<script>
+	const body = document.querySelector<HTMLElement>('[data-process]');
+
+	if (body && 'IntersectionObserver' in window) {
+		const rows = Array.from(body.querySelectorAll<HTMLElement>('.process-row'));
+
+		body.classList.add('is-animated');
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					entry.target.classList.add('is-drawn');
+					observer.unobserve(entry.target);
+				}
+			},
+			{ threshold: 0.35 },
+		);
+
+		for (const row of rows) observer.observe(row);
+	}
+</script>
+
+<style>
+	/*
+	 * Process rules draw in as each row enters: the structural line of the
+	 * section carries the motion, not more text. Without JS the rules stay
+	 * visible; `is-animated` is only added once the observer can run.
+	 */
+	.process-row {
+		position: relative;
+	}
+
+	.process-row::before {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		top: 0;
+		height: 1px;
+		background-color: var(--color-line);
+		transform-origin: left center;
+	}
+
+	.process-dot {
+		transform-origin: center;
+	}
+
+	.process-body.is-animated .process-row::before {
+		transform: scaleX(0);
+	}
+
+	.process-body.is-animated .process-row .process-dot {
+		opacity: 0;
+		transform: scale(0.2);
+	}
+
+	.process-body.is-animated .process-row.is-drawn::before {
+		animation: process-line 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+
+	.process-body.is-animated .process-row.is-drawn .process-dot {
+		animation: process-dot 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+
+	.process-body.is-animated .process-row:nth-child(2).is-drawn::before,
+	.process-body.is-animated .process-row:nth-child(2).is-drawn .process-dot {
+		animation-delay: 90ms;
+	}
+
+	.process-body.is-animated .process-row:nth-child(3).is-drawn::before,
+	.process-body.is-animated .process-row:nth-child(3).is-drawn .process-dot {
+		animation-delay: 180ms;
+	}
+
+	.process-body.is-animated .process-row:nth-child(4).is-drawn::before,
+	.process-body.is-animated .process-row:nth-child(4).is-drawn .process-dot {
+		animation-delay: 270ms;
+	}
+
+	@keyframes process-line {
+		from {
+			transform: scaleX(0);
+		}
+		to {
+			transform: scaleX(1);
+		}
+	}
+
+	@keyframes process-dot {
+		from {
+			opacity: 0;
+			transform: scale(0.2);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+</style>

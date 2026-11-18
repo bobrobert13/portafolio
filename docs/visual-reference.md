@@ -192,11 +192,12 @@ blanco del botón primario.
 - Perfil y proyectos llevan un lavado radial estático en una esquina inferior
   (`section-glow`). La esquina alterna (`--glow-x: 0%` / `100%`) y el tinte sale
   de `--glow-accent` (perfil, derecha) y `--glow-plate` (proyectos, izquierda).
-- Hero, herramientas y manifiesto llevan orbes difusos animados
-  (`ambient-field` + `ambient-orb`), con tres recorridos para que no se repita:
+- Hero, herramientas, manifiesto y servicios llevan orbes difusos animados
+  (`ambient-field` + `ambient-orb`), con cuatro recorridos para que no se repita:
   `ambient-orbit` en el hero (vuelta completa, adaptada del pen de walpolea),
-  `ambient-drift` en herramientas (barrido lateral) y `ambient-breathe` en el
-  manifiesto (pulso en el sitio).
+  `ambient-drift` en herramientas (barrido lateral), `ambient-breathe` en el
+  manifiesto (pulso en el sitio) y `ambient-rise` en servicios (subida lenta en
+  la esquina de la cabecera, lejos del texto y tras la rejilla).
 - El ancho es `150% × --orb-size` y los recorridos traducen en porcentaje del
   propio orbe, así que escalan con la sección. `--orb-opacity` dosifica,
   `blur(9vw)` funde. En claro el tinte son dos colores levantados en luminosidad
@@ -217,10 +218,14 @@ blanco del botón primario.
 - Manifiesto: typewriter del titular con caret, disparado por `IntersectionObserver`.
 - Herramientas: entrada escalonada de las tarjetas (`kit-enter`, 620 ms), una vez.
 - Proyectos: apertura de la carta en diálogo con giro 3D de la portada.
+- Proceso: las reglas de cada fase se dibujan de izquierda a derecha al entrar
+  la fila (`process-line`, 800 ms, con cascada de 90 ms) y el punto de acento
+  aparece con la misma secuencia. Sin JavaScript las reglas quedan visibles.
 - Perfil: reveal por texto ligado al scroll (§11).
-- Ambiente: los orbes de hero, herramientas y manifiesto animan en bucle lento
-  (36–88 s) y se pausan fuera de escena. Puro CSS; sin `prefers-reduced-motion`
-  por la decisión de mantener el movimiento siempre activo.
+- Ambiente: los orbes de hero, herramientas, manifiesto y servicios animan en
+  bucle constante (22–56 s) y se pausan fuera de escena. Puro CSS; sin
+  `prefers-reduced-motion` por la decisión de mantener el movimiento siempre
+  activo.
 - Transiciones de 150–180 ms sobre color, borde y fondo; el hover más visible es
   el teñido de la acción de tarjeta.
 - `prefers-reduced-motion`: el reveal de perfil conserva la opacidad y reduce el
@@ -368,9 +373,11 @@ el patrón «sticky full page slides» de la referencia de CodePen.
   posiciones. El alto sale del propio stack porque `offsetTop` incluye el
   desplazamiento sticky de una pantalla ya fijada. Sin JavaScript, las anclas
   nativas caen igual en el borde de la pantalla.
-- Volver arriba: botón flotante abajo a la derecha; aparece en la última
-  pantalla o al final de la página y sube con scroll suave. La flecha apunta
-  hacia arriba.
+- Navegador de secciones: píldora flotante centrada abajo con el índice actual
+  (`01 / 08`) y una flecha. Avanza una pantalla por clic con scroll suave y, en
+  la última sección, invierte la flecha y vuelve al inicio. La etiqueta alterna
+  entre «Siguiente sección» y «Volver arriba»; sin JavaScript no se muestra. El
+  pie gana espacio inferior en móvil para que la píldora no tape la última línea.
 - Compatibilidad: el cubrimiento usa solo `position: sticky` + `100dvh`. La
   profundidad es JavaScript sobre variables CSS, así que se comporta igual en
   Chrome, Safari y Firefox y nunca deja contenido atenuado si el navegador no

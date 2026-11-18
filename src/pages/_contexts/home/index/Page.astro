@@ -34,19 +34,36 @@ const copy = homeCopy[lang];
 	</div>
 	<button
 		type="button"
-		class="back-to-top fixed end-5 bottom-5 z-40 grid size-11 translate-y-2 place-items-center rounded-full border border-line bg-page/90 text-ink opacity-0 pointer-events-none backdrop-blur-sm transition-[opacity,transform] duration-300 hover:border-ink/25 hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-		aria-label={t(lang, 'a11y.backToTop')}
-		title={t(lang, 'a11y.backToTop')}
+		data-section-nav
+		data-label-next={t(lang, 'a11y.nextSection')}
+		data-label-top={t(lang, 'a11y.backToTop')}
+		aria-label={t(lang, 'a11y.nextSection')}
 		aria-hidden="true"
 		tabindex="-1"
+		title={t(lang, 'a11y.nextSection')}
+		class="section-nav group fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-line bg-page/85 py-1.5 pe-1.5 ps-3.5 text-ink opacity-0 translate-y-2 pointer-events-none backdrop-blur-md transition-[opacity,transform,border-color,background-color] duration-300 hover:border-ink/25 hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
 	>
-		<ArrowIcon direction="right" class="size-4 -rotate-90" />
+		<span
+			aria-hidden="true"
+			class="font-mono text-[10px] leading-none tracking-[0.08em] text-muted"
+		>
+			<span data-section-nav-current class="text-ink">01</span>
+			<span class="mx-1 text-subtle">/</span>
+			<span data-section-nav-total>08</span>
+		</span>
+		<span
+			class="grid size-9 place-items-center rounded-full bg-accent text-accent-ink shadow-btn transition-[filter] duration-150 group-hover:brightness-105"
+		>
+			<span class="section-nav-arrow grid size-4 place-items-center">
+				<ArrowIcon class="size-4" />
+			</span>
+		</span>
 	</button>
 </BaseLayout>
 
 <script>
 	const stack = document.querySelector<HTMLElement>('.slide-stack');
-	const backToTop = document.querySelector<HTMLButtonElement>('.back-to-top');
+	const sectionNav = document.querySelector<HTMLButtonElement>('[data-section-nav]');
 	const stacked = window.matchMedia('(min-width: 1024px) and (min-height: 720px)');
 
 	/* The sheet presentation only exists on viewports that can hold the
@@ -55,7 +72,6 @@ const copy = homeCopy[lang];
 
 	if (stack) {
 		const sheets = Array.from(stack.querySelectorAll<HTMLElement>('.slide'));
-		const lastSheet = sheets.at(-1);
 
 		const sheetOf = (target: Element | null) => target?.closest<HTMLElement>('.slide') ?? null;
 		const stackTop = () => stack.getBoundingClientRect().top + window.scrollY;
@@ -64,6 +80,32 @@ const copy = homeCopy[lang];
 		const sheetHeight = () => stack.getBoundingClientRect().height / sheets.length;
 		const sheetTop = (sheet: HTMLElement) =>
 			stackTop() + sheets.indexOf(sheet) * sheetHeight();
+
+		/* Section nav: on the sheet layout the offset comes from the stack (a
+		   pinned sheet's rect sits at the viewport top); in normal flow the
+		   rect is the document position. The sticky header is compensated by
+		   the document's scroll padding. */
+		const scrollPad = () =>
+			parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+
+		const navTop = (sheet: HTMLElement) =>
+			active()
+				? sheetTop(sheet)
+				: sheet.getBoundingClientRect().top + window.scrollY - scrollPad();
+
+		const currentIndex = () => {
+			const y = window.scrollY + scrollPad() + 1;
+			let index = 0;
+
+			sheets.forEach((sheet, i) => {
+				const top = active()
+					? sheetTop(sheet)
+					: sheet.getBoundingClientRect().top + window.scrollY;
+				if (top <= y) index = i;
+			});
+
+			return index;
+		};
 
 		const clamp = (value: number) => Math.min(1, Math.max(0, value));
 		const applied = sheets.map(() => ({ drift: '', fade: '' }));
@@ -115,7 +157,7 @@ const copy = homeCopy[lang];
 			frame = requestAnimationFrame(() => {
 				frame = 0;
 				paint();
-				updateBackToTop();
+				updateSectionNav();
 			});
 		};
 
@@ -157,37 +199,75 @@ const copy = homeCopy[lang];
 			}
 		});
 
-		const setBackToTop = (show: boolean) => {
-			if (!backToTop) return;
-			backToTop.classList.toggle('opacity-0', !show);
-			backToTop.classList.toggle('translate-y-2', !show);
-			backToTop.classList.toggle('pointer-events-none', !show);
-			backToTop.classList.toggle('opacity-100', show);
-			backToTop.classList.toggle('translate-y-0', show);
-			backToTop.classList.toggle('pointer-events-auto', show);
-			backToTop.setAttribute('aria-hidden', String(!show));
-			backToTop.tabIndex = show ? 0 : -1;
-		};
+		const updateSectionNav = () => {
+			if (!sectionNav) return;
 
-		const updateBackToTop = () => {
-			const atPageEnd =
-				window.scrollY + window.innerHeight >=
-				document.documentElement.scrollHeight - 120;
-			const atLastSheet =
-				active() && lastSheet ? window.scrollY >= sheetTop(lastSheet) - 4 : false;
-			setBackToTop(atPageEnd || atLastSheet);
+			const current = currentIndex();
+			const up = current >= sheets.length - 1;
+			const currentEl = sectionNav.querySelector<HTMLElement>('[data-section-nav-current]');
+			const totalEl = sectionNav.querySelector<HTMLElement>('[data-section-nav-total]');
+
+			sectionNav.dataset.direction = up ? 'up' : 'down';
+			if (currentEl) currentEl.textContent = String(current + 1).padStart(2, '0');
+			if (totalEl) totalEl.textContent = String(sheets.length).padStart(2, '0');
+
+			const label = up
+				? (sectionNav.dataset.labelTop ?? '')
+				: (sectionNav.dataset.labelNext ?? '');
+
+			sectionNav.setAttribute('aria-label', label);
+			sectionNav.title = label;
 		};
 
 		window.addEventListener('scroll', schedule, { passive: true });
 		window.addEventListener('resize', schedule);
 		stacked.addEventListener('change', schedule);
 		window.addEventListener('hashchange', () => goToHash('smooth'));
-		backToTop?.addEventListener('click', () =>
-			window.scrollTo({ top: 0, behavior: 'smooth' }),
-		);
+		sectionNav?.addEventListener('click', () => {
+			const current = currentIndex();
+
+			if (current >= sheets.length - 1) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+				return;
+			}
+
+			window.scrollTo({
+				top: navTop(sheets[current + 1]),
+				behavior: 'smooth',
+			});
+		});
 
 		paint();
-		updateBackToTop();
+		updateSectionNav();
+
+		if (sectionNav) {
+			sectionNav.removeAttribute('aria-hidden');
+			sectionNav.tabIndex = 0;
+			sectionNav.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+			sectionNav.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+		}
+
 		requestAnimationFrame(() => goToHash('instant'));
 	}
 </script>
+
+<style>
+	.section-nav-arrow {
+		transform: rotate(90deg);
+		transition:
+			transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+			translate 180ms ease;
+	}
+
+	.section-nav[data-direction='up'] .section-nav-arrow {
+		transform: rotate(-90deg);
+	}
+
+	.section-nav:hover .section-nav-arrow {
+		translate: 0 2px;
+	}
+
+	.section-nav[data-direction='up']:hover .section-nav-arrow {
+		translate: 0 -2px;
+	}
+</style>

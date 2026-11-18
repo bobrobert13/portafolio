@@ -183,14 +183,25 @@
 	}
 }
 
-/* Manifesto: the light breathes in place instead of travelling. */
+/* Manifesto: the light sways and breathes in place. */
 @keyframes ambient-breathe {
 	0%,
 	100% {
-		transform: translate3d(0, 2%, 0) scale(0.92) rotate(0deg);
+		transform: translate3d(-2%, 4%, 0) scale(0.9) rotate(0deg);
 	}
 	50% {
-		transform: translate3d(1.5%, -5%, 0) scale(1.12) rotate(24deg);
+		transform: translate3d(6%, -10%, 0) scale(1.18) rotate(34deg);
+	}
+}
+
+/* Services: a slow vertical rise in the header corner. */
+@keyframes ambient-rise {
+	0%,
+	100% {
+		transform: translate3d(0, 10%, 0) scale(0.94) rotate(0deg);
+	}
+	50% {
+		transform: translate3d(-6%, -18%, 0) scale(1.14) rotate(24deg);
 	}
 }
 
