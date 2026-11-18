@@ -108,7 +108,6 @@ const es = {
 		description:
 			'Cuatro fases cortas. En cada una te muestro algo concreto para revisar juntos.',
 		cta: 'Cuéntame tu proyecto',
-		linkLabel: 'Hablemos de esta fase',
 		rows: [
 			{
 				eyebrow: 'Fase 01',
@@ -622,7 +621,6 @@ const en: HomeCopy = {
 		description:
 			'Four short phases. At each one I show you something concrete to review together.',
 		cta: 'Tell me about your project',
-		linkLabel: "Let's talk about this phase",
 		rows: [
 			{
 				eyebrow: 'Phase 01',

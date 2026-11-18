@@ -90,7 +90,8 @@ Reglas:
   gutter, no con un contenedor centrado adicional.
 - Rejillas de dos columnas con proporciones declaradas:
   - hero `1.05fr / 0.95fr`
-  - manifiesto y filas de recursos `1fr / 1.15fr`, gap 64 px
+  - manifiesto `1fr / 1.15fr`, gap 64 px; grafo de proceso en 4 columnas con
+    hueco de 32 px
   - feature `1fr / 0.72fr`, gap 48 px
   - about: cabecera a ancho completo + 3 pistas (biografía, biografía, contacto)
 - Rejillas de tarjetas: 3 columnas, `gap: 1px` sobre fondo `--border-color`, con
@@ -104,7 +105,7 @@ Reglas:
 | ≥1440 | H1 a 76 px, tope de 600 px de ancho |
 | <1200 | H1 64 px, gutter 28 px, tarjetas 22/20 px |
 | <1024 | H1 56 px, hero en una columna de acciones, rejillas 2 columnas, testimonios 1 columna |
-| <768 | H1 44 px, manifiesto y filas a 1 columna, padding de sección 56/24, footer 2 columnas |
+| <768 | H1 44 px, manifiesto y grafo de proceso a 1 columna, padding de sección 56/24, footer 2 columnas |
 | <640 | marco sin bordes, hero en bloque con retrato absoluto de 390 px, H1 `clamp(43px, 10.5vw, 60px)`, tarjetas 1 columna |
 | <480 | botones del hero a ancho completo |
 
@@ -118,7 +119,7 @@ var(--border-color)` salvo el pie.
 | 1 | Hero | 2 columnas: texto + retrato | min-height 520 px; copy `88 36 72 44`; H1 76/0.96; lead 22 px; 2 CTAs; 3 stats con borde superior |
 | 2 | Manifiesto | H2 izquierda, 3 párrafos derecha | grid 1/1.15, gap 64; padding `76 44 72`; H2 40 px; cuerpo 17/1.75 |
 | 3 | Trabajo | cabecera + rejilla 3×2 | banda; cabecera `76 44 38`; tarjetas min 250 px, padding 25/24/24; tags mono 11 px |
-| 4 | Rutas | cabecera + 4 filas | padding `0 44 68`; fila `34 0`, grid 1/1.15; lista en 3 columnas `78px 1fr 15px` |
+| 4 | Proceso | cabecera + grafo de 4 niveles | padding `0 44 68`; nodo de fase (icono 32 px + eyebrow + título) sobre su tronco; 3 pasos por columna, sangría 32 px; conector discontinuo de 32 px entre fases |
 | 5 | Feature | texto + panel | padding-block 52; grid 1/0.72 gap 48; panel con degradado de acento al 6 %, borde 18 %, radio 10 |
 | 6 | Testimonios | 3 placeholders + franja de stack | padding `64 44 30`; tarjetas min 236, padding 28; franja 34/22 |
 | 7 | About | biografía + contacto | sin retrato; H2 clamp 44–88 px a 14ch; regla a ancho completo; bio en 2 pistas, contacto en la tercera con regla vertical |
@@ -143,12 +144,27 @@ var(--border-color)` salvo el pie.
 - Hover: la acción tiñe fondo y borde con el acento al 6–22 %; el icono pasa de
   gris a color.
 
-### Filas de rutas
+### Grafo de proceso
 
-- Pregunta a la izquierda con eyebrow + punto de acento de 5 px.
-- Enlace de texto con flecha; a la derecha, lista de 3 enlaces con etiqueta mono
-  de 10 px, título de 14 px y flecha de 15 px.
-- Separación por borde superior de 1 px entre filas.
+La sección deja de ser una lista de filas: es un diagrama de jerarquía leído
+como un flujo.
+
+- Cada fase es un nodo: cuadrado de icono (32 px, acento al 14 %), eyebrow y
+  título, sobre `--color-surface` con borde de 1 px y radio 10.
+- Del pie del nodo sale un tronco de 1 px en `--rail` (16 px desde el borde
+  izquierdo); tres pasos cuelgan de él con un ramal horizontal. Los pasos llevan
+  sangría de `--indent` (32 px), fondo `surface` al 45 % sobre el de la página y
+  el tipo en mono de 9 px sobre la etiqueta de 12.5 px.
+- El tronco lo dibuja cada paso (`::before`/`::after`), no el contenedor: la
+  línea sobrevive a cualquier longitud de texto. El primer segmento sube hasta
+  el nodo; el último se corta en el centro de su paso.
+- Entre fases, un conector discontinuo con punta de flecha cruza el hueco en el
+  centro del nodo (horizontal en desktop, vertical en móvil).
+- Los conectores usan `--flow-line` (`--color-subtle` al 55 %), un paso más
+  oscuro que los hairlines: son estructura, no separadores.
+- En desktop los `<li>` de la fase se disuelven (`display: contents`) y nodos y
+  ramas comparten dos filas de rejilla: todos los nodos se estiran a la misma
+  altura y los conectores quedan en el mismo eje.
 
 ### Feature y panel
 
@@ -218,9 +234,12 @@ blanco del botón primario.
 - Manifiesto: typewriter del titular con caret, disparado por `IntersectionObserver`.
 - Herramientas: entrada escalonada de las tarjetas (`kit-enter`, 620 ms), una vez.
 - Proyectos: apertura de la carta en diálogo con giro 3D de la portada.
-- Proceso: las reglas de cada fase se dibujan de izquierda a derecha al entrar
-  la fila (`process-line`, 800 ms, con cascada de 90 ms) y el punto de acento
-  aparece con la misma secuencia. Sin JavaScript las reglas quedan visibles.
+- Proceso: cascada jerárquica. Nodos y pasos entran en orden de lectura con un
+  compás de 90 ms (fase, sus tres pasos, la siguiente fase) y los conectores
+  aparecen tras ellos. Dos pulsos por fase recorren el grafo en bucle de 2.4 s:
+  un punto de acento baja por el tronco y otro cruza el conector hacia la fase
+  siguiente, con 420 ms de desfase por nivel. Sin JavaScript el grafo queda
+  visible; fuera de escena los pulsos se pausan.
 - Perfil: reveal por texto ligado al scroll (§11).
 - Ambiente: los orbes de hero, herramientas, manifiesto y servicios animan en
   bucle constante (22–56 s) y se pausan fuera de escena. Puro CSS; sin
@@ -229,7 +248,8 @@ blanco del botón primario.
 - Transiciones de 150–180 ms sobre color, borde y fondo; el hover más visible es
   el teñido de la acción de tarjeta.
 - `prefers-reduced-motion`: el reveal de perfil conserva la opacidad y reduce el
-  desplazamiento; el resto de animaciones se mantiene.
+  desplazamiento; el grafo de proceso pierde el desplazamiento y conserva el
+  fundido y los pulsos; el resto de animaciones se mantiene.
 
 ## 9. Contenido
 
@@ -353,7 +373,7 @@ el patrón «sticky full page slides» de la referencia de CodePen.
   anclas caigan en el borde superior de su pantalla.
 - Ajuste: `slides.css` comprime servicios y proceso con `safe center` y centra
   contacto y manifiesto; perfil se centra desde su propio componente. Por debajo
-  de 820 px de alto recorta filas, tarjetas y paddings. El modo solo se activa
+  de 820 px de alto recorta pasos, tarjetas y paddings. El modo solo se activa
   desde 720 px de alto; por debajo las secciones siguen su flujo natural sin
   recortar contenido.
 - Profundidad: un script en `Page.astro` escribe `--drift` (−1 cubierta … 1

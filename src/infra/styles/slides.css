@@ -94,11 +94,7 @@
 		padding-bottom: 1rem;
 	}
 
-	.slide #construccion .process-row {
-		padding-block: 1rem;
-	}
-
-	.slide #construccion .process-item {
+	.slide #construccion .flow-step {
 		padding-block: 0.5rem;
 	}
 
@@ -154,8 +150,12 @@
 			padding-bottom: 0.75rem;
 		}
 
-		.slide #construccion .process-row {
-			padding-block: 0.5rem;
+		.slide #construccion .flow {
+			--flow-stem: 1.25rem;
+		}
+
+		.slide #construccion .flow-step {
+			padding-block: 0.3125rem;
 		}
 
 		.slide #construccion .process-body {
