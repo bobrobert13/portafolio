@@ -22,69 +22,198 @@ const socials = [
 
 <section
 	id="perfil"
-	class="grid border-b border-line lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]"
+	class="section-glow flex flex-col justify-center border-b border-line px-[1.125rem] py-14 md:px-6 lg:px-11 lg:py-[4.875rem]"
 >
-	<div class="slide-anim relative min-h-[360px] overflow-hidden lg:min-h-[465px]">
-		<div
-			class="absolute inset-0 bg-[radial-gradient(at_35%_80%,color-mix(in_oklab,var(--color-accent)_28%,transparent),transparent_70%)]"
-			aria-hidden="true"
-		>
-		</div>
-		<img
-			src="/img/portrait-placeholder.jpg"
-			alt=""
-			width="1200"
-			height="1800"
-			loading="lazy"
-			decoding="async"
-			class="absolute inset-0 h-full w-full object-cover object-[center_25%] grayscale [mask-image:linear-gradient(#000_78%,transparent_100%)]"
-		/>
-	</div>
-
-	<div
-		class="slide-anim px-[1.125rem] py-14 md:px-9 lg:max-w-[52rem] lg:py-[4.875rem] lg:pl-[2.625rem] lg:pr-[3.75rem]"
-	>
-		<p class="eyebrow">{profile.eyebrow}</p>
+	<div class="mx-auto w-full max-w-[88rem]">
 		<h2
-			class="mt-5 text-[1.875rem] leading-[1.1] tracking-[-0.03em] md:text-[2.25rem] lg:text-[clamp(2.25rem,2.3vw,2.75rem)]"
+			class="profile-reveal profile-head max-w-[14ch] text-[clamp(2.75rem,5.2vw,5.5rem)] leading-[0.95] tracking-[-0.035em]"
 		>
 			{about.greeting} {site.name}.
 		</h2>
-		<div class="mt-6 space-y-[22px] text-[17px] leading-[1.75] text-muted">
-			{about.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-		</div>
 
-		<div id="perfil-contacto" class="profile-contact mt-8 border-t border-line pt-6">
-			<p class="eyebrow">{profile.contactEyebrow}</p>
-			<p class="mt-3 max-w-[34rem] text-[15px] leading-[1.7] text-muted">
-				{profile.contactLead}
-			</p>
-			<div class="mt-4 flex flex-wrap gap-2">
-				{
-					site.contactEmail && (
-						<a
-							class="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3.5 py-2 text-[12px] font-medium text-accent-text transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10"
-							href={contactHref}
-						>
-							{profile.emailLabel}
-							<ArrowIcon class="size-3.5 shrink-0" />
-						</a>
-					)
-				}
-				{
-					socials.map((social) => (
-						<a
-							class="inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-[12px] font-medium text-ink/80 transition-colors duration-150 hover:border-accent/30 hover:bg-accent/5 hover:text-accent-text"
-							href={social.href}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{social.label}
-							<ArrowIcon direction="up-right" class="size-3.5 shrink-0" />
-						</a>
-					))
-				}
+		<div
+			class="mt-10 grid gap-9 border-t border-line pt-9 md:mt-12 md:grid-cols-2 md:pt-11 lg:mt-16 lg:grid-cols-3 lg:gap-12 lg:pt-14"
+		>
+			{
+				about.paragraphs.map((paragraph) => (
+					<p
+						class="profile-reveal profile-body max-w-[52ch] text-[17px] leading-[1.78] text-muted"
+					>
+						{paragraph}
+					</p>
+				))
+			}
+
+			<div
+				id="perfil-contacto"
+				class="profile-reveal profile-contact flex flex-col items-start md:col-span-2 lg:col-span-1 lg:border-s lg:border-line lg:ps-10"
+			>
+				<p class="eyebrow">{profile.contactEyebrow}</p>
+				<p class="mt-3 max-w-[28rem] text-[15px] leading-[1.7] text-muted">
+					{profile.contactLead}
+				</p>
+				<div class="mt-5 flex flex-wrap gap-2">
+					{
+						site.contactEmail && (
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3.5 py-2 text-[12px] font-medium text-accent-text transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10"
+								href={contactHref}
+							>
+								{profile.emailLabel}
+								<ArrowIcon class="size-3.5 shrink-0" />
+							</a>
+						)
+					}
+					{
+						socials.map((social) => (
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-[12px] font-medium text-ink/80 transition-colors duration-150 hover:border-accent/30 hover:bg-accent/5 hover:text-accent-text"
+								href={social.href}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{social.label}
+								<ArrowIcon direction="up-right" class="size-3.5 shrink-0" />
+							</a>
+						))
+					}
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	/*
+	 * Scroll-linked text reveal, one authored moment for this section.
+	 *
+	 * Desktop: the sheet script writes `--drift` (-1 covered … 1 entering) on
+	 * every `.slide`; each block reads it with its own lag and travel so the
+	 * heading leads, the prose follows and the contact lingers on the way out.
+	 * Narrow viewports have no sheets, so the same blocks run on a native
+	 * `view()` timeline instead, entering and leaving with the scroll.
+	 * Both paths default to a visible element when the feature is absent.
+	 */
+	.profile-reveal {
+		--rise: 1.5rem;
+		--lag: 0;
+		--span: calc(1 - var(--lag));
+		--enter: clamp(
+			0,
+			calc((1 - var(--drift, 0) - var(--lag)) / var(--span)),
+			1
+		);
+		--exit: clamp(
+			0,
+			calc((-1 * var(--drift, 0) - var(--lag)) / var(--span)),
+			1
+		);
+		opacity: calc(var(--enter) * (1 - var(--exit)));
+		transform: translateY(
+			calc((1 - var(--enter)) * var(--rise) - var(--exit) * var(--rise) * 0.6)
+		);
+	}
+
+	.profile-head {
+		--rise: 2.25rem;
+	}
+
+	.profile-body:nth-child(1) {
+		--lag: 0.1;
+		--rise: 1.75rem;
+	}
+
+	.profile-body:nth-child(2) {
+		--lag: 0.18;
+		--rise: 1.75rem;
+	}
+
+	.profile-contact {
+		--lag: 0.26;
+		--rise: 1.5rem;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.profile-reveal {
+			--rise: 0.4rem;
+		}
+	}
+
+	@supports (animation-timeline: view()) {
+		@media (max-width: 1023px) {
+			.profile-reveal {
+				animation:
+					profile-in linear both,
+					profile-out linear forwards;
+				animation-timeline: view(), view();
+				animation-range:
+					entry 10% entry 90%,
+					exit 10% exit 90%;
+			}
+
+			.profile-body:nth-child(1) {
+				animation-range:
+					entry 16% entry 96%,
+					exit 16% exit 96%;
+			}
+
+			.profile-body:nth-child(2) {
+				animation-range:
+					entry 22% entry 100%,
+					exit 22% exit 98%;
+			}
+
+			.profile-contact {
+				animation-range:
+					entry 28% entry 100%,
+					exit 28% exit 100%;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.profile-reveal {
+					animation-name: profile-in-fade, profile-out-fade;
+				}
+			}
+		}
+	}
+
+	@keyframes profile-in {
+		from {
+			opacity: 0;
+			transform: translateY(1.75rem);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@keyframes profile-out {
+		from {
+			opacity: 1;
+			transform: none;
+		}
+		to {
+			opacity: 0;
+			transform: translateY(-1rem);
+		}
+	}
+
+	@keyframes profile-in-fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes profile-out-fade {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+</style>

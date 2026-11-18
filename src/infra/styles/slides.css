@@ -12,11 +12,11 @@
  * sheet. Without it the sheets still cover each other.
  *
  * Everything below applies only on viewports that can hold the compacted
- * desktop layout and when motion is allowed. Otherwise the sections keep their
- * natural vertical flow.
+ * desktop layout. Smaller viewports keep the natural vertical flow, where the
+ * mobile layout would not fit inside one screen.
  */
 
-@media (min-width: 1024px) and (min-height: 720px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (min-height: 720px) {
 	html:has(.slide-stack) {
 		scroll-padding-top: 0;
 	}
@@ -108,17 +108,6 @@
 		padding-bottom: 3rem;
 	}
 
-	.slide #perfil > div:last-child {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-
-	.slide #perfil .profile-contact {
-		margin-top: 2rem;
-		padding-top: 1.5rem;
-	}
-
 	.slide #proyectos,
 	.slide #herramientas {
 		display: flex;
@@ -140,6 +129,17 @@
 	.slide #proyectos .company-card {
 		min-height: 9.5rem;
 		padding: 1.1rem;
+	}
+
+	/*
+	 * Content drift. The scroll script writes two custom properties per sheet:
+	 * `--drift` (-1 when fully covered … 1 when still entering) and `--fade`
+	 * (0 … 0.65). Defaults keep the content in place, so a CSS-only fallback
+	 * still gets the plain sticky cover.
+	 */
+	.slide-anim {
+		opacity: calc(1 - var(--fade, 0));
+		transform: translateY(calc(var(--drift, 0) * 2.5rem));
 	}
 
 	/* Shorter laptops: tighten further so nothing is clipped. */
@@ -175,11 +175,6 @@
 			padding-bottom: 1rem;
 		}
 
-		.slide #perfil .profile-contact {
-			margin-top: 1.5rem;
-			padding-top: 1rem;
-		}
-
 		.slide #proyectos > div:first-child,
 		.slide #herramientas > div:first-child {
 			padding-top: 4rem;
@@ -190,16 +185,5 @@
 			min-height: 8rem;
 			padding: 0.9rem;
 		}
-	}
-
-	/*
-	 * Content drift. The scroll script writes two custom properties per sheet:
-	 * `--drift` (-1 when fully covered … 1 when still entering) and `--fade`
-	 * (0 … 0.65). Defaults keep the content in place, so a CSS-only fallback
-	 * still gets the plain sticky cover.
-	 */
-	.slide-anim {
-		opacity: calc(1 - var(--fade, 0));
-		transform: translateY(calc(var(--drift, 0) * 2.5rem));
 	}
 }

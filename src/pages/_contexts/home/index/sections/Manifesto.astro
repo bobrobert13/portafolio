@@ -12,8 +12,12 @@ const copy = homeCopy[lang].manifesto;
 
 <section
 	id="manifiesto"
-	class="flex flex-col items-center justify-center border-b border-line px-[1.125rem] py-13 md:px-6 md:py-14 lg:px-11 lg:py-19"
+	class="relative isolate flex flex-col items-center justify-center border-b border-line px-[1.125rem] py-13 md:px-6 md:py-14 lg:px-11 lg:py-19"
 >
+	<div class="ambient-field" aria-hidden="true">
+		<span class="ambient-orb orb-manifesto-a"></span>
+		<span class="ambient-orb orb-manifesto-b"></span>
+	</div>
 	<div class="slide-anim w-full max-w-[64rem] text-center">
 		<h2
 			data-typing
@@ -60,43 +64,39 @@ const copy = homeCopy[lang].manifesto;
 
 	if (heading && textNode) {
 		const text = textNode.textContent ?? '';
-		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const caret = document.createElement('span');
+		caret.className =
+			'ml-1 inline-block h-[0.9em] w-[0.08em] translate-y-[0.12em] bg-accent align-baseline animate-pulse';
+		caret.setAttribute('aria-hidden', 'true');
 
-		if (!reduce) {
-			const caret = document.createElement('span');
-			caret.className =
-				'ml-1 inline-block h-[0.9em] w-[0.08em] translate-y-[0.12em] bg-accent align-baseline motion-safe:animate-pulse';
-			caret.setAttribute('aria-hidden', 'true');
+		heading.classList.add('min-h-[2.2em]');
+		textNode.textContent = '';
+		textNode.after(caret);
 
-			heading.classList.add('min-h-[2.2em]');
-			textNode.textContent = '';
-			textNode.after(caret);
-
-			const type = () => {
-				let index = 0;
-				const step = () => {
-					textNode.textContent = text.slice(0, index);
-					index += 1;
-					if (index <= text.length) {
-						window.setTimeout(step, 38);
-					} else {
-						window.setTimeout(() => caret.remove(), 1200);
-					}
-				};
-				step();
+		const type = () => {
+			let index = 0;
+			const step = () => {
+				textNode.textContent = text.slice(0, index);
+				index += 1;
+				if (index <= text.length) {
+					window.setTimeout(step, 38);
+				} else {
+					window.setTimeout(() => caret.remove(), 1200);
+				}
 			};
+			step();
+		};
 
-			const observer = new IntersectionObserver(
-				(entries) => {
-					if (!entries.some((entry) => entry.isIntersecting)) return;
-					observer.disconnect();
-					type();
-				},
-				{ threshold: 0.45 },
-			);
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (!entries.some((entry) => entry.isIntersecting)) return;
+				observer.disconnect();
+				type();
+			},
+			{ threshold: 0.45 },
+		);
 
-			observer.observe(heading);
-		}
+		observer.observe(heading);
 	}
 
 	const fan = document.querySelector<HTMLElement>('.manifesto-fan');
@@ -280,9 +280,26 @@ const copy = homeCopy[lang].manifesto;
 		}
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.manifesto-card {
-			transition: none;
-		}
+	/* Breathe variant: the fog swells in place behind the card fan. */
+	.orb-manifesto-a {
+		--orb-size: 0.44;
+		--orb-top: 26%;
+		--orb-left: 60%;
+		--orb-speed: 36s;
+		--orb-delay: -10s;
+		--orb-opacity: 0.44;
+		--orb-path: ambient-breathe;
+	}
+
+	.orb-manifesto-b {
+		--orb-size: 0.3;
+		--orb-top: 52%;
+		--orb-left: -8%;
+		--orb-speed: 48s;
+		--orb-delay: -20s;
+		--orb-opacity: 0.35;
+		--orb-a: var(--orb-plate);
+		--orb-b: var(--orb-accent);
+		--orb-path: ambient-breathe;
 	}
 </style>

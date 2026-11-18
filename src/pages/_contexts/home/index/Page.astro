@@ -47,10 +47,11 @@ const copy = homeCopy[lang];
 <script>
 	const stack = document.querySelector<HTMLElement>('.slide-stack');
 	const backToTop = document.querySelector<HTMLButtonElement>('.back-to-top');
-	const stacked = window.matchMedia(
-		'(min-width: 1024px) and (min-height: 720px) and (prefers-reduced-motion: no-preference)',
-	);
-	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const stacked = window.matchMedia('(min-width: 1024px) and (min-height: 720px)');
+
+	/* The sheet presentation only exists on viewports that can hold the
+	   compacted desktop layout; everywhere else the page flows normally. */
+	const active = () => stacked.matches;
 
 	if (stack) {
 		const sheets = Array.from(stack.querySelectorAll<HTMLElement>('.slide'));
@@ -72,7 +73,10 @@ const copy = homeCopy[lang];
 		   leaving and settles down while entering; the last sheet just scrolls
 		   away with the footer instead of being covered. */
 		const paint = () => {
-			if (!stacked.matches) return;
+			if (!active()) {
+				for (const sheet of sheets) sheet.classList.remove('is-offstage');
+				return;
+			}
 			const start = stackTop();
 			const height = sheetHeight();
 			const y = window.scrollY;
@@ -87,6 +91,12 @@ const copy = homeCopy[lang];
 				const drift = (1 - enter - leave).toFixed(3);
 				const fade = ((1 - enter + leave) * 0.65).toFixed(3);
 				const state = applied[index];
+
+				/* Ambient loops only run while their sheet is on stage. */
+				sheet.classList.toggle(
+					'is-offstage',
+					enter === 0 || leave >= 0.999,
+				);
 
 				if (state && state.drift !== drift) {
 					sheet.style.setProperty('--drift', drift);
@@ -114,7 +124,7 @@ const copy = homeCopy[lang];
 		};
 
 		const goToHash = (behavior: ScrollBehavior) => {
-			if (!stacked.matches) return;
+			if (!active()) return;
 			const hash = window.location.hash;
 			if (hash.length < 2) return;
 			const sheet = sheetOf(document.getElementById(hash.slice(1)));
@@ -122,7 +132,7 @@ const copy = homeCopy[lang];
 		};
 
 		document.addEventListener('click', (event) => {
-			if (!stacked.matches) return;
+			if (!active()) return;
 			const link = (event.target as Element | null)?.closest?.('a[href^="#"]');
 			if (!link) return;
 			const hash = link.getAttribute('href') ?? '';
@@ -130,7 +140,7 @@ const copy = homeCopy[lang];
 			const sheet = sheetOf(document.getElementById(hash.slice(1)));
 			if (!sheet) return;
 			event.preventDefault();
-			goTo(sheet, reduced.matches ? 'instant' : 'smooth');
+			goTo(sheet, 'smooth');
 			history.replaceState(null, '', hash);
 		});
 
@@ -138,7 +148,7 @@ const copy = homeCopy[lang];
 		   above the viewport: focusing content there would scroll the page away
 		   from the visible sheet. Align the sheet that owns the focused node. */
 		document.addEventListener('focusin', (event) => {
-			if (!stacked.matches) return;
+			if (!active()) return;
 			const sheet = sheetOf(event.target as Element);
 			if (!sheet) return;
 			const top = sheetTop(sheet);
@@ -164,20 +174,16 @@ const copy = homeCopy[lang];
 				window.scrollY + window.innerHeight >=
 				document.documentElement.scrollHeight - 120;
 			const atLastSheet =
-				stacked.matches && lastSheet
-					? window.scrollY >= sheetTop(lastSheet) - 4
-					: false;
+				active() && lastSheet ? window.scrollY >= sheetTop(lastSheet) - 4 : false;
 			setBackToTop(atPageEnd || atLastSheet);
 		};
 
 		window.addEventListener('scroll', schedule, { passive: true });
 		window.addEventListener('resize', schedule);
 		stacked.addEventListener('change', schedule);
-		window.addEventListener('hashchange', () =>
-			goToHash(reduced.matches ? 'instant' : 'smooth'),
-		);
+		window.addEventListener('hashchange', () => goToHash('smooth'));
 		backToTop?.addEventListener('click', () =>
-			window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }),
+			window.scrollTo({ top: 0, behavior: 'smooth' }),
 		);
 
 		paint();

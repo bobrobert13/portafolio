@@ -56,3 +56,145 @@
 		transform: translateY(0);
 	}
 }
+
+/*
+ * Ambient corner wash: one soft circle in a lower corner of a full-page
+ * section. The tint is a theme token (`--glow-accent` by default, or
+ * `--glow-color: var(--glow-plate)`), the corner is `--glow-x`, so sections
+ * alternate sides without duplicating a gradient. Sits behind the content and
+ * fades before it reaches the text.
+ */
+@utility section-glow {
+	background-image: radial-gradient(
+		circle var(--glow-radius, 34vmax) at var(--glow-x, 100%) var(--glow-y, 100%),
+		var(--glow-color, var(--glow-accent)) 0%,
+		transparent 70%
+	);
+	background-repeat: no-repeat;
+}
+
+/*
+ * Ambient light field: a few blurred orbs drifting behind a section's content.
+ * The section needs `relative isolate`; the orbs sit at z-index -1, so the
+ * section background stays below them and the copy above. Sizing follows the
+ * pen's model: width = 150% × `--orb-size` of the section, and the paths
+ * translate in percentages of the orb, so one set works at every viewport.
+ */
+@utility ambient-field {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	overflow: clip;
+	pointer-events: none;
+}
+
+@utility ambient-orb {
+	position: absolute;
+	top: var(--orb-top, 0);
+	left: var(--orb-left, 0);
+	width: calc(150% * var(--orb-size, 0.4));
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background-image: linear-gradient(
+		140deg,
+		var(--orb-a, var(--orb-accent)),
+		var(--orb-b, var(--orb-plate))
+	);
+	opacity: var(--orb-opacity, 0.6);
+	filter: blur(var(--orb-blur, 9vw));
+	transform-origin: 50% 50%;
+	will-change: transform;
+	animation: var(--orb-path, ambient-orbit) var(--orb-speed, 60s) infinite linear;
+	animation-delay: var(--orb-delay, 0s);
+}
+
+/* Orb path from the referenced CodePen: a slow loop across the section. */
+@keyframes ambient-orbit {
+	0% {
+		transform: translate3d(0%, 51%, 0) rotate(0deg);
+	}
+	5% {
+		transform: translate3d(8%, 31%, 0) rotate(18deg);
+	}
+	10% {
+		transform: translate3d(22%, 13%, 0) rotate(36deg);
+	}
+	15% {
+		transform: translate3d(40%, 2%, 0) rotate(54deg);
+	}
+	20% {
+		transform: translate3d(46%, 21%, 0) rotate(72deg);
+	}
+	25% {
+		transform: translate3d(50%, 47%, 0) rotate(90deg);
+	}
+	30% {
+		transform: translate3d(53%, 80%, 0) rotate(108deg);
+	}
+	35% {
+		transform: translate3d(59%, 98%, 0) rotate(125deg);
+	}
+	40% {
+		transform: translate3d(84%, 89%, 0) rotate(144deg);
+	}
+	45% {
+		transform: translate3d(92%, 68%, 0) rotate(162deg);
+	}
+	50% {
+		transform: translate3d(99%, 47%, 0) rotate(180deg);
+	}
+	55% {
+		transform: translate3d(97%, 21%, 0) rotate(198deg);
+	}
+	60% {
+		transform: translate3d(80%, 7%, 0) rotate(216deg);
+	}
+	65% {
+		transform: translate3d(68%, 25%, 0) rotate(234deg);
+	}
+	70% {
+		transform: translate3d(59%, 41%, 0) rotate(251deg);
+	}
+	75% {
+		transform: translate3d(50%, 63%, 0) rotate(270deg);
+	}
+	80% {
+		transform: translate3d(38%, 78%, 0) rotate(288deg);
+	}
+	85% {
+		transform: translate3d(21%, 92%, 0) rotate(306deg);
+	}
+	90% {
+		transform: translate3d(3%, 79%, 0) rotate(324deg);
+	}
+	100% {
+		transform: translate3d(0%, 51%, 0) rotate(360deg);
+	}
+}
+
+/* Tools: a lateral sweep, calmer than the hero loop. */
+@keyframes ambient-drift {
+	0%,
+	100% {
+		transform: translate3d(-8%, 6%, 0) rotate(0deg) scale(1);
+	}
+	50% {
+		transform: translate3d(72%, -10%, 0) rotate(120deg) scale(1.12);
+	}
+}
+
+/* Manifesto: the light breathes in place instead of travelling. */
+@keyframes ambient-breathe {
+	0%,
+	100% {
+		transform: translate3d(0, 2%, 0) scale(0.92) rotate(0deg);
+	}
+	50% {
+		transform: translate3d(1.5%, -5%, 0) scale(1.12) rotate(24deg);
+	}
+}
+
+/* Offstage sheets (not yet entered or already covered) park their loops. */
+.slide.is-offstage .ambient-orb {
+	animation-play-state: paused;
+}

@@ -57,6 +57,20 @@
 }
 
 /*
+ * Ambient corner wash for full-page sections. The hue comes from the existing
+ * accent/plate roles; only the dose changes per surface, so light and dark stay
+ * composed instead of inverted.
+ */
+:root {
+	--glow-accent: color-mix(in oklab, var(--color-accent) 15%, transparent);
+	--glow-plate: color-mix(in oklab, var(--color-plate) 15%, transparent);
+	/* Orb glow: the accent and plate lifted in lightness and chroma so the
+	   moving wash reads on cream without darkening the text beneath it. */
+	--orb-accent: oklch(0.78 0.19 55 / 0.72);
+	--orb-plate: oklch(0.74 0.15 130 / 0.62);
+}
+
+/*
  * Explicit theme (set by the header toggle). Unlayered on purpose: these
  * blocks must win over the generated `@layer theme` defaults.
  */
@@ -73,6 +87,10 @@
 	--color-accent-text: #ce7f20;
 	--color-accent-ink: #241708;
 	--color-plate: #607938;
+	--glow-accent: color-mix(in oklab, var(--color-accent) 25%, transparent);
+	--glow-plate: color-mix(in oklab, var(--color-plate) 18%, transparent);
+	--orb-accent: color-mix(in oklab, var(--color-accent) 40%, transparent);
+	--orb-plate: color-mix(in oklab, var(--color-plate) 32%, transparent);
 }
 
 :root[data-theme='light'] {
@@ -94,5 +112,9 @@
 		--color-accent-text: #ce7f20;
 		--color-accent-ink: #241708;
 		--color-plate: #607938;
+		--glow-accent: color-mix(in oklab, var(--color-accent) 25%, transparent);
+		--glow-plate: color-mix(in oklab, var(--color-plate) 18%, transparent);
+		--orb-accent: color-mix(in oklab, var(--color-accent) 40%, transparent);
+		--orb-plate: color-mix(in oklab, var(--color-plate) 32%, transparent);
 	}
 }

@@ -61,7 +61,7 @@ Familias: `DM Sans` (texto y titulares, pesos 300–800) y `JetBrains Mono`
 | H1 hero | 76 px | 0.96 | −0.042em | 700 |
 | H2 sección | 44 px | 1.04 | −0.032em | 700 |
 | H2 manifiesto | 40 px | 1.08 | −0.030em | 700 |
-| H2 about | 36 px | 1.10 | −0.030em | 700 |
+| H2 about | `clamp(44px, 5.2vw, 88px)` | 0.95 | −0.035em | 400 |
 | H3 tarjeta | 20 px | 1.20 | −0.020em | 700 |
 | Lead hero | 22 px | 1.45 | 0 | 400 |
 | Cuerpo | 17 px | 1.75 | 0 | 400 |
@@ -92,7 +92,7 @@ Reglas:
   - hero `1.05fr / 0.95fr`
   - manifiesto y filas de recursos `1fr / 1.15fr`, gap 64 px
   - feature `1fr / 0.72fr`, gap 48 px
-  - about `0.85fr / 1.15fr`
+  - about: cabecera a ancho completo + 3 pistas (biografía, biografía, contacto)
 - Rejillas de tarjetas: 3 columnas, `gap: 1px` sobre fondo `--border-color`, con
   borde exterior y `border-radius: 10px`. El hueco es la línea.
 - Bandas alternas con `--editorial-band` para separar bloques sin sombras.
@@ -121,7 +121,7 @@ var(--border-color)` salvo el pie.
 | 4 | Rutas | cabecera + 4 filas | padding `0 44 68`; fila `34 0`, grid 1/1.15; lista en 3 columnas `78px 1fr 15px` |
 | 5 | Feature | texto + panel | padding-block 52; grid 1/0.72 gap 48; panel con degradado de acento al 6 %, borde 18 %, radio 10 |
 | 6 | Testimonios | 3 placeholders + franja de stack | padding `64 44 30`; tarjetas min 236, padding 28; franja 34/22 |
-| 7 | About | retrato + biografía | grid 0.85/1.15; retrato min 465 px; copy padding `78 60 78 42`; máscara inferior |
+| 7 | About | biografía + contacto | sin retrato; H2 clamp 44–88 px a 14ch; regla a ancho completo; bio en 2 pistas, contacto en la tercera con regla vertical |
 | 8 | Footer | 4 columnas + barra inferior | padding `60 44 0`; columnas 1.15/1/1/1 gap 32; barra 11 px |
 
 ### Hero
@@ -182,18 +182,49 @@ blanco del botón primario.
 ## 7. Imagen y textura
 
 - Retratos en `filter: grayscale()`; el color lo aporta el panel de acento.
-- Máscara inferior en about (`linear-gradient(#000 80%, transparent 100%)`).
 - En móvil el retrato del hero pasa a fondo absoluto de 390 px con máscara
   `linear-gradient(#000 25%, transparent 90%)`.
 - Ruido fractal SVG al 4.5 % sobre el degradado; evita el aspecto plano.
 - Sin ilustraciones decorativas ni iconos fuera de flechas y redes.
 
+### Atmósfera
+
+- Perfil y proyectos llevan un lavado radial estático en una esquina inferior
+  (`section-glow`). La esquina alterna (`--glow-x: 0%` / `100%`) y el tinte sale
+  de `--glow-accent` (perfil, derecha) y `--glow-plate` (proyectos, izquierda).
+- Hero, herramientas y manifiesto llevan orbes difusos animados
+  (`ambient-field` + `ambient-orb`), con tres recorridos para que no se repita:
+  `ambient-orbit` en el hero (vuelta completa, adaptada del pen de walpolea),
+  `ambient-drift` en herramientas (barrido lateral) y `ambient-breathe` en el
+  manifiesto (pulso en el sitio).
+- El ancho es `150% × --orb-size` y los recorridos traducen en porcentaje del
+  propio orbe, así que escalan con la sección. `--orb-opacity` dosifica,
+  `blur(9vw)` funde. En claro el tinte son dos colores levantados en luminosidad
+  y croma a partir de acento y oliva —ámbar `oklch(.78 .19 55 / .72)` y oliva
+  `oklch(.74 .15 130 / .62)`— para que se lea sobre crema sin oscurecer el texto;
+  en oscuro sigue el acento/oliva a 40 % / 32 %. Los lavados estáticos conservan
+  su propia dosis, más suave (`--glow-accent` / `--glow-plate`: 15 % / 15 % en
+  claro; 25 % / 18 % en oscuro).
+- La sección necesita `relative isolate`: el campo va a `z-index: -1`, sobre el
+  fondo de la sección y bajo la copia. Las pantallas que aún no entraron o ya
+  fueron cubiertas pausan sus orbes (`is-offstage`, escrito por `Page.astro`).
+- La dosis depende del tema (`theme.css`) y no se coloca bajo texto pequeño:
+  el círculo estático vive en la banda inferior vacía y los orbes pasan por
+  zonas amplias, no sobre metadatos.
+
 ## 8. Movimiento
 
-- Transiciones de 150–180 ms sobre color, borde y fondo.
-- Sin animaciones de entrada, parallax ni scroll effects.
-- `prefers-reduced-motion` desactiva las animaciones declaradas.
-- El hover más visible es el teñido de la acción de tarjeta.
+- Manifiesto: typewriter del titular con caret, disparado por `IntersectionObserver`.
+- Herramientas: entrada escalonada de las tarjetas (`kit-enter`, 620 ms), una vez.
+- Proyectos: apertura de la carta en diálogo con giro 3D de la portada.
+- Perfil: reveal por texto ligado al scroll (§11).
+- Ambiente: los orbes de hero, herramientas y manifiesto animan en bucle lento
+  (36–88 s) y se pausan fuera de escena. Puro CSS; sin `prefers-reduced-motion`
+  por la decisión de mantener el movimiento siempre activo.
+- Transiciones de 150–180 ms sobre color, borde y fondo; el hover más visible es
+  el teñido de la acción de tarjeta.
+- `prefers-reduced-motion`: el reveal de perfil conserva la opacidad y reduce el
+  desplazamiento; el resto de animaciones se mantiene.
 
 ## 9. Contenido
 
@@ -254,7 +285,7 @@ peticiones a Google en runtime.
 `public/img/portrait-placeholder.jpg` es una foto de Unsplash usada como
 marcador. Se reemplaza por el retrato definitivo sin tocar el layout. El panel
 del hero aplica `grayscale` + `mix-blend-multiply` sobre el acento para el
-duotono; el about reutiliza la misma imagen con máscara inferior.
+duotono; el about ya no usa imagen: su composición es tipográfica.
 
 ### Diferencias intencionales
 
@@ -315,15 +346,22 @@ el patrón «sticky full page slides» de la referencia de CodePen.
   desplazable por foco o navegación de fragmento y desalinearía las pantallas.
   `html:has(.slide-stack)` anula el `scroll-padding-top` global para que las
   anclas caigan en el borde superior de su pantalla.
-- Ajuste: `slides.css` comprime servicios y proceso con `safe center`, centra
-  contacto, perfil y manifiesto, y por debajo de 820 px de alto recorta filas,
-  tarjetas y paddings. El modo solo se activa desde 720 px de alto; por debajo
-  las secciones siguen su flujo natural sin recortar contenido.
+- Ajuste: `slides.css` comprime servicios y proceso con `safe center` y centra
+  contacto y manifiesto; perfil se centra desde su propio componente. Por debajo
+  de 820 px de alto recorta filas, tarjetas y paddings. El modo solo se activa
+  desde 720 px de alto; por debajo las secciones siguen su flujo natural sin
+  recortar contenido.
 - Profundidad: un script en `Page.astro` escribe `--drift` (−1 cubierta … 1
   entrando) y `--fade` (0 … 0.65) por pantalla; `.slide-anim` los traduce a un
   `translateY` de 2.5 rem y una opacidad. La última pantalla no se desvanece:
   sale con el pie. El scroll sigue siendo el nativo (sin bloquear la rueda); el
   pintado corre en un `requestAnimationFrame` por frame.
+- Perfil: único momento coreografiado a nivel de texto. Cada bloque
+  (`.profile-reveal`) lee `--drift` con su propio retardo y recorrido: el H2
+  entra primero y sale primero, los párrafos le siguen y el contacto es el
+  último en aparecer y en irse. Sin pantallas apiladas usa una línea de tiempo
+  nativa `view()` (entrada y salida), y con `prefers-reduced-motion` conserva la
+  opacidad y reduce el desplazamiento. Sin soporte, el texto queda visible.
 - Navegación: los enlaces `#ancla` se resuelven a la pantalla que contiene el
   destino (`stackTop + índice × alto de pantalla`) y actualizan el hash con
   `history.replaceState`; foco, `hashchange` y volver arriba usan las mismas
@@ -331,16 +369,16 @@ el patrón «sticky full page slides» de la referencia de CodePen.
   desplazamiento sticky de una pantalla ya fijada. Sin JavaScript, las anclas
   nativas caen igual en el borde de la pantalla.
 - Volver arriba: botón flotante abajo a la derecha; aparece en la última
-  pantalla o al final de la página y sube con scroll suave (instantáneo con
-  `prefers-reduced-motion`). La flecha apunta hacia arriba.
+  pantalla o al final de la página y sube con scroll suave. La flecha apunta
+  hacia arriba.
 - Compatibilidad: el cubrimiento usa solo `position: sticky` + `100dvh`. La
   profundidad es JavaScript sobre variables CSS, así que se comporta igual en
   Chrome, Safari y Firefox y nunca deja contenido atenuado si el navegador no
   anima.
-- Fallback: por debajo de 1024 px de ancho o 720 px de alto, con
-  `prefers-reduced-motion: reduce` o sin JavaScript, las secciones vuelven a la
-  pila vertical con sus bordes inferiores y alturas naturales. El código de
-  scroll comprueba la misma media query para no interceptar anclas ni posiciones.
+- Fallback: por debajo de 1024 px de ancho o 720 px de alto, o sin JavaScript,
+  las secciones vuelven a la pila vertical con sus bordes inferiores y alturas
+  naturales. El código de scroll comprueba la misma media query para no
+  interceptar anclas ni posiciones.
 
 ## 12. Pendientes de contenido
 

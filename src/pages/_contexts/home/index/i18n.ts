@@ -178,7 +178,6 @@ const es = {
 		cta: 'Escríbeme',
 	},
 	profile: {
-		eyebrow: 'Sobre mí · Contacto',
 		contactEyebrow: 'Contacto',
 		contactLead: '¿Tienes un proyecto en mente? Hablemos por las redes.',
 		emailLabel: 'Escríbeme',
@@ -693,7 +692,6 @@ const en: HomeCopy = {
 		cta: 'Email me',
 	},
 	profile: {
-		eyebrow: 'About · Contact',
 		contactEyebrow: 'Contact',
 		contactLead: "Have a project in mind? Let's talk on the networks.",
 		emailLabel: 'Email me',

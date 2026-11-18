@@ -15,8 +15,13 @@ const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#perfil
 
 <section
 	id="inicio"
-	class="relative grid grid-cols-1 border-b border-line lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+	class="relative isolate grid grid-cols-1 border-b border-line lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
 >
+	<div class="ambient-field" aria-hidden="true">
+		<span class="ambient-orb orb-hero-a"></span>
+		<span class="ambient-orb orb-hero-b"></span>
+		<span class="ambient-orb orb-hero-c"></span>
+	</div>
 	<div
 		class="hero-copy slide-anim relative z-2 flex flex-col justify-center px-[1.125rem] pt-[8.75rem] pb-11 md:px-6 md:pt-18 md:pb-14 lg:pl-11 lg:pr-9 lg:pt-22 lg:pb-18 min-[1440px]:pr-11"
 	>
@@ -76,3 +81,29 @@ const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#perfil
 		<div class="noise absolute inset-0" aria-hidden="true"></div>
 	</div>
 </section>
+
+<style>
+	/* Signature loop: the hero's light travels the whole sheet, slowest of all. */
+	.orb-hero-a {
+		--orb-size: 0.44;
+		--orb-speed: 52s;
+		--orb-delay: -6s;
+		--orb-opacity: 0.46;
+	}
+
+	.orb-hero-b {
+		--orb-size: 0.3;
+		--orb-speed: 72s;
+		--orb-delay: -26s;
+		--orb-opacity: 0.36;
+		--orb-a: var(--orb-plate);
+		--orb-b: var(--orb-accent);
+	}
+
+	.orb-hero-c {
+		--orb-size: 0.36;
+		--orb-speed: 88s;
+		--orb-delay: -44s;
+		--orb-opacity: 0.38;
+	}
+</style>

@@ -16,12 +16,7 @@
 	html {
 		-webkit-text-size-adjust: 100%;
 		scroll-padding-top: 5.5rem;
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		html {
-			scroll-behavior: smooth;
-		}
+		scroll-behavior: smooth;
 	}
 
 	body {
