@@ -379,8 +379,16 @@ el patrón «sticky full page slides» de la referencia de CodePen.
 - Profundidad: un script en `Page.astro` escribe `--drift` (−1 cubierta … 1
   entrando) y `--fade` (0 … 0.65) por pantalla; `.slide-anim` los traduce a un
   `translateY` de 2.5 rem y una opacidad. La última pantalla no se desvanece:
-  sale con el pie. El scroll sigue siendo el nativo (sin bloquear la rueda); el
-  pintado corre en un `requestAnimationFrame` por frame.
+  sale con el pie. El pintado corre en un `requestAnimationFrame` por frame.
+- Rueda: `src/infra/scripts/smooth-scroll.ts` lleva la posición real de la
+  página hacia un objetivo con amortiguación exponencial (k = 8/s) en vez de
+  saltar con cada evento. No hay scroll virtual: `scrollY` sigue siendo la
+  verdad, así que las pantallas, `--drift`/`--fade` y las anclas funcionan
+  igual. Solo se activa con puntero fino y sin `prefers-reduced-motion`; el
+  tacto conserva la inercia del sistema. Un desplazamiento externo (barra,
+  buscar en la página, foco) se adopta y detiene el suavizado; sobre un diálogo
+  abierto o un panel con scroll propio la rueda no se intercepta. La píldora de
+  secciones y los enlaces `#ancla` pasan por `scrollToY`.
 - Perfil: único momento coreografiado a nivel de texto. Cada bloque
   (`.profile-reveal`) lee `--drift` con su propio retardo y recorrido: el H2
   entra primero y sale primero, los párrafos le siguen y el contacto es el

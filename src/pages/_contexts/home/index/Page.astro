@@ -62,9 +62,15 @@ const copy = homeCopy[lang];
 </BaseLayout>
 
 <script>
+	import { initSmoothScroll, scrollToY } from '@/infra/scripts/smooth-scroll';
+
 	const stack = document.querySelector<HTMLElement>('.slide-stack');
 	const sectionNav = document.querySelector<HTMLButtonElement>('[data-section-nav]');
 	const stacked = window.matchMedia('(min-width: 1024px) and (min-height: 720px)');
+
+	/* Wheel easing wraps the whole page; the sheet navigation below goes
+	   through it so anchors and the counter never fight the glide. */
+	initSmoothScroll();
 
 	/* The sheet presentation only exists on viewports that can hold the
 	   compacted desktop layout; everywhere else the page flows normally. */
@@ -162,7 +168,7 @@ const copy = homeCopy[lang];
 		};
 
 		const goTo = (sheet: HTMLElement, behavior: ScrollBehavior) => {
-			window.scrollTo({ top: sheetTop(sheet), behavior });
+			scrollToY(sheetTop(sheet), behavior !== 'smooth');
 		};
 
 		const goToHash = (behavior: ScrollBehavior) => {
@@ -195,7 +201,7 @@ const copy = homeCopy[lang];
 			if (!sheet) return;
 			const top = sheetTop(sheet);
 			if (Math.abs(window.scrollY - top) > 2) {
-				window.scrollTo({ top, behavior: 'instant' });
+				scrollToY(top, true);
 			}
 		});
 
@@ -227,14 +233,11 @@ const copy = homeCopy[lang];
 			const current = currentIndex();
 
 			if (current >= sheets.length - 1) {
-				window.scrollTo({ top: 0, behavior: 'smooth' });
+				scrollToY(0);
 				return;
 			}
 
-			window.scrollTo({
-				top: navTop(sheets[current + 1]),
-				behavior: 'smooth',
-			});
+			scrollToY(navTop(sheets[current + 1]));
 		});
 
 		paint();
