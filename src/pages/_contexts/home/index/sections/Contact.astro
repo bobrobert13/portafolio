@@ -71,8 +71,16 @@ const contactEmail = site.contactEmail;
 					name="name"
 					autocomplete="name"
 					placeholder={copy.form.namePlaceholder}
+					aria-describedby="contact-name-error"
 					required
 				/>
+				<p
+					class="contact-error"
+					id="contact-name-error"
+					data-error-for="name"
+					data-message={copy.form.errors.name}
+					aria-live="polite"
+				></p>
 			</div>
 			<div class="contact-field">
 				<label for="contact-email">{copy.form.emailLabel}</label>
@@ -83,8 +91,17 @@ const contactEmail = site.contactEmail;
 					type="email"
 					autocomplete="email"
 					placeholder={copy.form.emailPlaceholder}
+					aria-describedby="contact-email-error"
+					spellcheck="false"
 					required
 				/>
+				<p
+					class="contact-error"
+					id="contact-email-error"
+					data-error-for="email"
+					data-message={copy.form.errors.email}
+					aria-live="polite"
+				></p>
 			</div>
 			<div class="contact-field">
 				<label for="contact-message">{copy.form.messageLabel}</label>
@@ -93,7 +110,15 @@ const contactEmail = site.contactEmail;
 					id="contact-message"
 					name="message"
 					placeholder={copy.form.messagePlaceholder}
+					aria-describedby="contact-message-error"
 					required></textarea>
+				<p
+					class="contact-error"
+					id="contact-message-error"
+					data-error-for="message"
+					data-message={copy.form.errors.message}
+					aria-live="polite"
+				></p>
 			</div>
 			<button class="contact-submit" type="submit">{copy.form.submit}</button>
 			<p class="contact-status" data-contact-status aria-live="polite"></p>
@@ -119,10 +144,44 @@ const contactEmail = site.contactEmail;
 		const email = form.dataset.email ?? '';
 		const statusMessage = form.dataset.status ?? '';
 		const unconfigured = form.dataset.unconfigured ?? '';
+		const fields = Array.from(
+			form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea'),
+		);
+
+		const errorFor = (field: HTMLInputElement | HTMLTextAreaElement) =>
+			form.querySelector<HTMLElement>(`[data-error-for="${field.name}"]`);
+
+		const validateField = (field: HTMLInputElement | HTMLTextAreaElement) => {
+			const valid = field.checkValidity();
+			field.setAttribute('aria-invalid', String(!valid));
+			const error = errorFor(field);
+			if (error) error.textContent = valid ? '' : (error.dataset.message ?? '');
+			return valid;
+		};
+
+		const validateForm = () => {
+			let firstInvalid: HTMLInputElement | HTMLTextAreaElement | null = null;
+
+			for (const field of fields) {
+				if (!validateField(field) && !firstInvalid) firstInvalid = field;
+			}
+
+			firstInvalid?.focus();
+			return !firstInvalid;
+		};
+
+		form.noValidate = true;
+
+		for (const field of fields) {
+			field.addEventListener('blur', () => validateField(field));
+			field.addEventListener('input', () => {
+				if (field.getAttribute('aria-invalid') === 'true') validateField(field);
+			});
+		}
 
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
-			if (!form.reportValidity()) return;
+			if (!validateForm()) return;
 
 			if (!email) {
 				if (status) status.textContent = unconfigured;
@@ -186,6 +245,17 @@ const contactEmail = site.contactEmail;
 
 	.contact-input::placeholder {
 		color: color-mix(in oklab, var(--color-muted) 70%, transparent);
+	}
+
+	.contact-error {
+		margin: 0;
+		font-size: 0.6875rem;
+		line-height: 1.4;
+		color: var(--color-accent-text);
+	}
+
+	.contact-error:empty {
+		display: none;
 	}
 
 	.contact-input:focus-visible {

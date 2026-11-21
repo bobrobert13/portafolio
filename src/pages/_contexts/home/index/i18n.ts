@@ -243,6 +243,11 @@ const es = {
 			messageLabel: 'Mensaje',
 			messagePlaceholder: 'Qué necesitas y para cuándo',
 			submit: 'Enviar mensaje',
+			errors: {
+				name: 'Escribe tu nombre.',
+				email: 'Escribe un correo válido.',
+				message: 'Escribe un mensaje.',
+			},
 			status:
 				'Se abrió tu cliente de correo con el mensaje. Si no, usa el enlace de abajo.',
 			unconfigured: 'El envío no está configurado todavía.',
@@ -865,6 +870,11 @@ const en: HomeCopy = {
 			messageLabel: 'Message',
 			messagePlaceholder: 'What you need and for when',
 			submit: 'Send message',
+			errors: {
+				name: 'Enter your name.',
+				email: 'Enter a valid email address.',
+				message: 'Write a message.',
+			},
 			status:
 				'Your email client opened with the message. If it didn’t, use the link below.',
 			unconfigured: 'Sending is not configured yet.',
