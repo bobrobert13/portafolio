@@ -12,275 +12,328 @@ const copy = homeCopy[lang].manifesto;
 
 <section
 	id="manifiesto"
-	class="relative isolate flex flex-col items-center justify-center border-b border-line px-[1.125rem] py-13 md:px-6 md:py-14 lg:px-11 lg:py-19"
+	class="relative isolate flex flex-col justify-center border-b border-line px-[1.125rem] py-13 md:px-6 md:py-14 lg:px-11 lg:py-19"
 >
 	<div class="ambient-field" aria-hidden="true">
 		<span class="ambient-orb orb-manifesto-a"></span>
 		<span class="ambient-orb orb-manifesto-b"></span>
 	</div>
-	<div class="slide-anim w-full max-w-[64rem] text-center">
-		<h2
-			data-typing
-			aria-label={copy.title}
-			class="text-[1.75rem] leading-[1.08] tracking-[-0.03em] md:text-[2.0625rem] lg:text-[clamp(2.5rem,2.6vw,3rem)]"
-		>
-			<span data-typing-text aria-hidden="true">{copy.title}</span>
-		</h2>
-		<p class="mx-auto mt-5 max-w-[48rem] text-[1.0625rem] leading-[1.75] text-muted">
-			{copy.lead}
-		</p>
-	</div>
 
-	<div class="manifesto-fan mt-[clamp(2rem,5vh,4rem)] w-full">
-		{
-			copy.cards.map((card, index) => (
-				<article class="manifesto-card" tabindex="0">
-					<div class="flex h-full flex-col p-5">
-						<div class="flex items-start justify-between gap-3">
-							<span class="font-mono text-[10px] text-subtle">
-								{String(index + 1).padStart(2, '0')}
-							</span>
-							<span class="size-[5px] rounded-full bg-accent" aria-hidden="true" />
-						</div>
-						<p class="mt-4 font-mono text-[clamp(2.5rem,4vw,4rem)] leading-none text-accent/20">
-							{String(index + 1).padStart(2, '0')}
-						</p>
-						<div class="mt-auto">
-							<h3 class="text-[1.125rem] leading-[1.2] tracking-[-0.02em]">
-								{card.title}
-							</h3>
-							<p class="mt-2 text-[11px] leading-[1.5] text-muted">{card.detail}</p>
-						</div>
-					</div>
-				</article>
-			))
-		}
+	<div class="slide-anim manifesto mx-auto w-full max-w-[80rem]" data-manifesto>
+		<header class="manifesto-head">
+			<div>
+				<p class="eyebrow">{copy.eyebrow}</p>
+				<h2 class="manifesto-title">{copy.title}</h2>
+			</div>
+			<p class="manifesto-lead">{copy.lead}</p>
+		</header>
+
+		<div class="manifesto-spine">
+			<span class="manifesto-axis" aria-hidden="true"></span>
+			<span class="manifesto-pulse" aria-hidden="true"></span>
+
+			<ul class="manifesto-list">
+				{
+					copy.cards.map((card, index) => (
+						<li class="manifesto-station" style={`--i:${index}`}>
+							{index % 2 === 0 && (
+								<div class="manifesto-copy left">
+									<span class="manifesto-word">{card.title}</span>
+									<p class="manifesto-detail">{card.detail}</p>
+								</div>
+							)}
+							<span class="manifesto-branch" aria-hidden="true" />
+							<span class="manifesto-dot" aria-hidden="true" />
+							{index % 2 === 1 && (
+								<div class="manifesto-copy right">
+									<span class="manifesto-word">{card.title}</span>
+									<p class="manifesto-detail">{card.detail}</p>
+								</div>
+							)}
+						</li>
+					))
+				}
+			</ul>
+		</div>
 	</div>
 </section>
 
 <script>
-	const heading = document.querySelector<HTMLElement>('[data-typing]');
-	const textNode = heading?.querySelector<HTMLElement>('[data-typing-text]');
+	const manifesto = document.querySelector<HTMLElement>('[data-manifesto]');
 
-	if (heading && textNode) {
-		const text = textNode.textContent ?? '';
-		const caret = document.createElement('span');
-		caret.className =
-			'ml-1 inline-block h-[0.9em] w-[0.08em] translate-y-[0.12em] bg-accent align-baseline animate-pulse';
-		caret.setAttribute('aria-hidden', 'true');
-
-		heading.classList.add('min-h-[2.2em]');
-		textNode.textContent = '';
-		textNode.after(caret);
-
-		const type = () => {
-			let index = 0;
-			const step = () => {
-				textNode.textContent = text.slice(0, index);
-				index += 1;
-				if (index <= text.length) {
-					window.setTimeout(step, 38);
-				} else {
-					window.setTimeout(() => caret.remove(), 1200);
-				}
-			};
-			step();
-		};
+	if (manifesto && 'IntersectionObserver' in window) {
+		/* `is-animated` hides the pieces; `is-visible` releases the cascade.
+		   Without the observer the manifesto is simply there. */
+		manifesto.classList.add('is-animated');
 
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (!entries.some((entry) => entry.isIntersecting)) return;
-				observer.disconnect();
-				type();
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					entry.target.classList.add('is-visible');
+					observer.unobserve(entry.target);
+				}
 			},
-			{ threshold: 0.45 },
+			{ threshold: 0.25 },
 		);
 
-		observer.observe(heading);
-	}
-
-	const fan = document.querySelector<HTMLElement>('.manifesto-fan');
-
-	if (fan) {
-		const cards = Array.from(fan.querySelectorAll<HTMLElement>('.manifesto-card'));
-
-		const setActive = (active: HTMLElement) => {
-			for (const card of cards) {
-				card.classList.toggle('active', card === active);
-				card.classList.toggle('not-active', card !== active);
-			}
-		};
-
-		const clear = () => {
-			for (const card of cards) card.classList.remove('active', 'not-active');
-		};
-
-		for (const card of cards) {
-			card.addEventListener('mouseenter', () => setActive(card));
-			card.addEventListener('mouseleave', clear);
-			card.addEventListener('focus', () => setActive(card));
-			card.addEventListener('blur', clear);
-		}
+		observer.observe(manifesto);
 	}
 </script>
 
 <style>
-	.manifesto-fan {
+	.manifesto {
+		/* The spine reads a step darker than a hairline: it is structure. */
+		--manifesto-line: color-mix(in oklab, var(--color-subtle) 55%, transparent);
+	}
+
+	.manifesto-head {
 		display: grid;
-		grid-template-columns: repeat(6, minmax(0, 1fr));
-		align-items: start;
-		justify-items: center;
-		width: 100%;
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+		align-items: end;
+		gap: clamp(1.5rem, 3vw, 3rem);
 	}
 
-	.manifesto-card {
+	.manifesto-title {
+		margin: 0.9rem 0 0;
+		max-width: 16ch;
+		font-size: clamp(1.875rem, 3.1vw, 3.5rem);
+		font-weight: 400;
+		line-height: 1;
+		letter-spacing: -0.038em;
+		text-wrap: balance;
+	}
+
+	.manifesto-lead {
+		margin: 0;
+		max-width: 40ch;
+		font-size: 0.9375rem;
+		line-height: 1.7;
+		color: var(--color-muted);
+	}
+
+	/* The axis is the line that draws; every station hangs off it. */
+	.manifesto-spine {
 		position: relative;
-		width: 100%;
-		max-width: 14rem;
-		height: 18rem;
-		overflow: hidden;
-		border: 1px solid var(--color-line);
-		border-radius: var(--radius-card, 10px);
-		background: var(--color-page);
-		cursor: default;
-		transform-origin: center;
-		transform: scale(var(--s, 1)) rotate(var(--r, 0deg)) translateX(var(--x, 0))
-			translateY(var(--y, 0));
-		transition:
-			transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
-			border-color 200ms ease,
-			background-color 200ms ease;
-		z-index: var(--z, 1);
+		margin-top: clamp(1.75rem, 4vw, 2.75rem);
 	}
 
-	.manifesto-card::after {
-		content: '';
+	.manifesto-axis {
 		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		background: var(--color-page);
+		top: 0;
+		bottom: 0;
+		left: 50%;
+		width: 1px;
+		background-color: var(--manifesto-line);
+		transform-origin: top;
+	}
+
+	.manifesto-pulse {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background-color: var(--color-accent);
+		translate: -50% 0;
+		animation: manifesto-pulse 3.2s linear infinite;
+	}
+
+	.manifesto-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.manifesto-station {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 1.75rem minmax(0, 1fr);
+		align-items: start;
+		padding-block: 0.7rem;
+	}
+
+	.manifesto-copy.left {
+		grid-column: 1;
+		grid-row: 1;
+		padding-right: 1.25rem;
+		text-align: right;
+	}
+
+	.manifesto-copy.right {
+		grid-column: 3;
+		grid-row: 1;
+		padding-left: 1.25rem;
+	}
+
+	.manifesto-branch {
+		grid-column: 2;
+		grid-row: 1;
+		width: 100%;
+		height: 1px;
+		margin-top: 0.6rem;
+		background-image: repeating-linear-gradient(
+			to right,
+			var(--manifesto-line) 0 4px,
+			transparent 4px 7px
+		);
+	}
+
+	.manifesto-dot {
+		grid-column: 2;
+		grid-row: 1;
+		justify-self: center;
+		width: 6px;
+		height: 6px;
+		margin-top: 0.4rem;
+		border-radius: 50%;
+		background-color: var(--color-accent);
+		z-index: 1;
+	}
+
+	.manifesto-word {
+		display: block;
+		font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+		line-height: 1.1;
+		letter-spacing: -0.025em;
+	}
+
+	.manifesto-detail {
+		margin: 0.2rem 0 0;
+		font-size: 0.6875rem;
+		line-height: 1.5;
+		color: var(--color-muted);
+	}
+
+	@keyframes manifesto-pulse {
+		0% {
+			top: 0;
+			opacity: 0;
+		}
+		12% {
+			opacity: 1;
+		}
+		88% {
+			opacity: 1;
+		}
+		100% {
+			top: 100%;
+			opacity: 0;
+		}
+	}
+
+	/*
+	 * Entry cascade. `is-animated` is only added once the observer exists, so
+	 * without JavaScript the manifesto is visible. Each station keeps its own
+	 * `--i`, so lines, dots and text arrive one after another.
+	 */
+	.manifesto.is-animated .manifesto-copy {
 		opacity: 0;
-		transition: opacity 300ms ease;
+		translate: 0 0.75rem;
 	}
 
-	.manifesto-card:nth-child(1) {
-		--s: 0.8;
-		--r: -28deg;
-		--x: 4rem;
-		--y: 7rem;
-		--z: 1;
+	.manifesto.is-animated .manifesto-dot {
+		opacity: 0;
+		scale: 0.4;
 	}
 
-	.manifesto-card:nth-child(2) {
-		--s: 0.92;
-		--r: -16deg;
-		--x: 2rem;
-		--y: 3rem;
-		--z: 3;
+	.manifesto.is-animated .manifesto-branch {
+		opacity: 0;
 	}
 
-	.manifesto-card:nth-child(3) {
-		--s: 1.04;
-		--r: -6deg;
-		--x: 0.5rem;
-		--y: 0;
-		--z: 5;
+	.manifesto.is-animated .manifesto-axis {
+		transform: scaleY(0);
 	}
 
-	.manifesto-card:nth-child(4) {
-		--s: 1.04;
-		--r: 6deg;
-		--x: -0.5rem;
-		--y: 0;
-		--z: 5;
+	.manifesto.is-animated.is-visible .manifesto-copy {
+		opacity: 1;
+		translate: 0 0;
+		transition:
+			opacity 620ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 90ms),
+			translate 620ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 90ms);
 	}
 
-	.manifesto-card:nth-child(5) {
-		--s: 0.92;
-		--r: 16deg;
-		--x: -2rem;
-		--y: 3rem;
-		--z: 3;
+	.manifesto.is-animated.is-visible .manifesto-dot {
+		opacity: 1;
+		scale: 1;
+		transition:
+			opacity 320ms ease calc(120ms + var(--i, 0) * 90ms),
+			scale 320ms cubic-bezier(0.16, 1, 0.3, 1) calc(120ms + var(--i, 0) * 90ms);
 	}
 
-	.manifesto-card:nth-child(6) {
-		--s: 0.8;
-		--r: 28deg;
-		--x: -4rem;
-		--y: 7rem;
-		--z: 1;
+	.manifesto.is-animated.is-visible .manifesto-branch {
+		opacity: 1;
+		transition: opacity 420ms ease calc(180ms + var(--i, 0) * 90ms);
 	}
 
-	.manifesto-card.active {
-		z-index: 20;
-		transform-origin: center top;
-		border-color: color-mix(in oklab, var(--color-accent) 38%, transparent);
-		background: var(--color-surface);
-		transform: scale(1.22) rotate(0deg) translateX(var(--x)) translateY(-0.25rem);
+	.manifesto.is-animated.is-visible .manifesto-axis {
+		transform: scaleY(1);
+		transition: transform 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) 60ms;
 	}
 
-	.manifesto-card.not-active {
-		transform: scale(calc(var(--s) - 0.08)) rotate(var(--r)) translateX(var(--x))
-			translateY(var(--y));
+	/* The sheet pauses its ambient loops while offstage; the pulse follows. */
+	:global(.slide.is-offstage) .manifesto-pulse {
+		animation-play-state: paused;
 	}
 
-	.manifesto-card.not-active::after {
-		opacity: 0.55;
-	}
-
-	.manifesto-card:focus-visible {
-		outline: 2px solid var(--color-accent);
-		outline-offset: 3px;
-	}
-
-	@media (min-width: 1024px) {
-		.manifesto-fan {
-			padding-bottom: 8rem;
-		}
-	}
-
-	@media (min-width: 1024px) and (max-height: 820px) {
-		#manifiesto {
-			padding-top: 3.5rem;
-			padding-bottom: 2.5rem;
-		}
-
-		#manifiesto .manifesto-fan {
-			margin-top: 3rem;
-			padding-bottom: 6rem;
-		}
-	}
-
-	@media (max-width: 1023px) {
-		.manifesto-fan {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 0.75rem;
-			margin-top: 2rem;
-		}
-
-		.manifesto-card {
-			max-width: none;
-			height: auto;
-			min-height: 14rem;
-			transform: none;
-		}
-
-		.manifesto-card.active {
-			transform: translateY(-0.25rem);
-		}
-
-		.manifesto-card.not-active {
-			transform: none;
-		}
-	}
-
-	@media (max-width: 639px) {
-		.manifesto-fan {
+	@media (max-width: 899px) {
+		.manifesto-head {
 			grid-template-columns: minmax(0, 1fr);
+			align-items: start;
+		}
+
+		.manifesto-axis {
+			left: 0.3rem;
+		}
+
+		.manifesto-station {
+			grid-template-columns: 1.1rem minmax(0, 1fr);
+		}
+
+		.manifesto-copy.left,
+		.manifesto-copy.right {
+			grid-column: 2;
+			grid-row: 1;
+			padding: 0;
+			text-align: left;
+		}
+
+		.manifesto-branch {
+			display: none;
+		}
+
+		.manifesto-dot {
+			grid-column: 1;
+			grid-row: 1;
+			justify-self: start;
+			margin-top: 0.45rem;
 		}
 	}
 
-	/* Breathe variant: the fog swells in place behind the card fan. */
+	/* Shorter laptops: tighten the stations so six fit on one screen. */
+	@media (min-width: 1024px) and (max-height: 820px) {
+		.manifesto-spine {
+			margin-top: 1.5rem;
+		}
+
+		.manifesto-station {
+			padding-block: 0.45rem;
+		}
+	}
+
+	/* The site keeps its motion here; reduced motion removes displacement
+	   and scale, the manifesto still fades in on the same cascade. */
+	@media (prefers-reduced-motion: reduce) {
+		.manifesto.is-animated .manifesto-copy {
+			translate: none;
+		}
+
+		.manifesto.is-animated .manifesto-dot {
+			scale: 1;
+		}
+	}
+
+	/* Breathe variant: the fog swells in place behind the spine. */
 	.orb-manifesto-a {
 		--orb-size: 0.44;
 		--orb-top: 26%;

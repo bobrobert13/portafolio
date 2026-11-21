@@ -9,8 +9,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const copy = homeCopy[lang];
-const projects = copy.projects;
+const copy = homeCopy[lang].projects;
 const contactHref = '#perfil-contacto';
 ---
 
@@ -22,401 +21,452 @@ const contactHref = '#perfil-contacto';
 		class="slide-anim flex flex-col items-start gap-6 px-[1.125rem] pt-13 pb-[1.875rem] md:px-6 md:pt-14 lg:flex-row lg:items-end lg:justify-between lg:px-11 lg:pt-19 lg:pb-9.5"
 	>
 		<div class="max-w-[672px]">
-			<p class="eyebrow">{projects.eyebrow}</p>
+			<p class="eyebrow">{copy.eyebrow}</p>
 			<h2
 				class="mt-4 text-[clamp(1.875rem,3.1vw,3.5rem)] leading-[1.08] tracking-[-0.028em] lg:leading-[1.04] lg:tracking-[-0.032em]"
 			>
-				{projects.title}
+				{copy.title}
 			</h2>
 			<p class="mt-4 max-w-[600px] text-base leading-[1.7] text-muted md:mt-5 md:text-[17px]">
-				{projects.description}
+				{copy.description}
 			</p>
 		</div>
 		<BaseButton href={contactHref} variant="ghost">
-			{projects.cta}
+			{copy.cta}
 			<ArrowIcon slot="trailing" class="size-4 shrink-0" />
 		</BaseButton>
 	</div>
 
 	<div class="slide-anim px-[1.125rem] pb-12 md:px-6 lg:px-11 lg:pb-17">
-		<p class="eyebrow">{projects.experienceLabel}</p>
-		<div class="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-			{
-				projects.items.map((company, index) => (
-					<button
-						type="button"
-						class="company-card group flex min-h-[10rem] flex-col border border-line bg-page p-5 text-left transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-accent/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-						data-company-dialog={`company-${company.slug}`}
-						aria-haspopup="dialog"
-						aria-controls={`company-${company.slug}`}
-					>
-						<span class="flex items-start justify-between gap-3">
-							<span class="eyebrow">
-								{String(index + 1).padStart(2, '0')} · {company.meta}
-							</span>
-							<ArrowIcon
-								direction="up-right"
-								class="size-4 shrink-0 text-muted transition-colors group-hover:text-accent-text"
-							/>
-						</span>
-						<span class="mt-4 block text-[1.25rem] leading-[1.15] tracking-[-0.02em]">
-							{company.name}
-						</span>
-						<span class="mt-2 block max-w-[30rem] text-[12px] leading-[1.55] text-muted">
-							{company.detail}
-						</span>
-						<span class="mt-auto flex items-center justify-between gap-4 pt-5 text-[11px]">
-							<span class="font-mono text-subtle">
-								{company.projects.length} {projects.projectsLabel}
-							</span>
-							<span class="inline-flex items-center gap-1.5 font-medium text-ink/80 transition-colors group-hover:text-accent-text">
-								{projects.openLabel}
-								<ArrowIcon class="size-3.5 shrink-0" />
-							</span>
-						</span>
-					</button>
-				))
-			}
-		</div>
-	</div>
-
-	{
-		projects.items.map((company, index) => (
-			<dialog
-				id={`company-${company.slug}`}
-				class="company-dialog"
-				aria-labelledby={`company-title-${company.slug}`}
+		<div class="flex items-baseline justify-between gap-4">
+			<p class="eyebrow">{copy.experienceLabel}</p>
+			<p
+				class="hidden font-mono text-[0.625rem] leading-none text-subtle lg:block"
+				aria-hidden="true"
 			>
-				<form method="dialog" class="company-dialog-close">
-					<button
-						type="submit"
-						class="grid size-8 place-items-center rounded-full border border-line bg-page/85 text-lg leading-none text-muted backdrop-blur-sm transition-colors hover:border-ink/25 hover:text-ink"
-						aria-label={projects.closeLabel}
-					>
-						×
-					</button>
-				</form>
+				{copy.keyboardHint}
+			</p>
+		</div>
 
-				<div class="company-book">
-					<div class="company-book-left" aria-hidden="true">
-						<div class="flex h-full flex-col justify-between p-6 md:p-8">
-							<div class="flex items-center justify-between gap-4">
-								<p class="eyebrow">{projects.cardEyebrow}</p>
-								<span class="font-mono text-[10px] text-subtle">{company.period}</span>
-							</div>
-							<p class="font-mono text-[clamp(4rem,7vw,7rem)] leading-none text-accent/25">
-								{String(index + 1).padStart(2, '0')}
-							</p>
-							<div>
-								<p class="text-[1.25rem] leading-[1.15] tracking-[-0.02em]">
-									{company.name}
-								</p>
-								<p class="mt-1 font-mono text-[10px] text-subtle">{company.meta}</p>
-							</div>
-						</div>
-					</div>
+		<div class="projects-md mt-4">
+			<div class="company-index" role="radiogroup" aria-label={copy.groupLabel}>
+				{
+					copy.items.map((company, index) => (
+						<>
+							<input
+								class="company-radio"
+								type="radio"
+								name="company"
+								id={`company-${company.slug}`}
+								checked={index === 0}
+							/>
+							<label class="company-row" for={`company-${company.slug}`}>
+								<span class="company-number">{String(index + 1).padStart(2, '0')}</span>
+								<span class="company-mark" aria-hidden="true">
+									{company.logo ? (
+										<img
+											src={company.logo}
+											alt=""
+											width="28"
+											height="28"
+											loading="lazy"
+											decoding="async"
+										/>
+									) : (
+										company.mark
+									)}
+								</span>
+								<span class="min-w-0">
+									<span class="company-name block text-[0.9375rem] font-medium leading-[1.25] tracking-[-0.015em]">
+										{company.name}
+									</span>
+									<span class="company-meta">
+										{company.meta} · {company.period}
+									</span>
+								</span>
+								<span class="company-count">
+									{String(company.projects.length).padStart(2, '0')}
+								</span>
+							</label>
+						</>
+					))
+				}
+			</div>
 
-					<div class="company-book-right">
-						<div class="company-page flex max-h-[85dvh] flex-col">
-							<header class="border-b border-line px-5 py-5 md:px-7 md:py-6">
-								<p class="eyebrow">
-									{projects.cardEyebrow} · {String(index + 1).padStart(2, '0')}
+			<div class="company-detail">
+				{
+					copy.items.map((company) => (
+						<article
+							class="company-panel"
+							id={`panel-${company.slug}`}
+							aria-labelledby={`company-title-${company.slug}`}
+						>
+							<header class="company-head">
+								<div class="flex items-center gap-3">
+									<span class="company-mark company-mark-lg" aria-hidden="true">
+										{company.logo ? (
+											<img
+												src={company.logo}
+												alt=""
+												width="48"
+												height="48"
+												loading="lazy"
+												decoding="async"
+											/>
+										) : (
+											company.mark
+										)}
+									</span>
+									<div class="min-w-0">
+										<h3
+											id={`company-title-${company.slug}`}
+											class="text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.028em] md:text-[1.75rem]"
+										>
+											{company.name}
+										</h3>
+										<p class="mt-0.5 font-mono text-[0.625rem] leading-none tracking-[0.03em] text-subtle">
+											{company.meta}
+										</p>
+									</div>
+									<span class="ms-auto shrink-0 font-mono text-[0.625rem] leading-none text-subtle">
+										{company.period}
+									</span>
+								</div>
+
+								<p class="mt-2 max-w-[54rem] text-[0.8125rem] leading-[1.6] text-muted">
+									{company.context}
 								</p>
-								<h3
-									id={`company-title-${company.slug}`}
-									class="mt-2 text-[1.5rem] leading-[1.1] tracking-[-0.025em] md:text-[2rem]"
-								>
-									{company.name}
-								</h3>
-								<p class="mt-1.5 font-mono text-[10px] text-subtle">
-									{company.meta} · {company.period}
-								</p>
+
+								<ul class="mt-2 flex flex-wrap gap-1.5">
+									{company.tags.map((tag) => (
+										<li class="rounded-xs border border-line bg-ink/[0.03] px-2 py-0.5 font-mono text-[0.625rem] leading-normal text-muted">
+											{tag}
+										</li>
+									))}
+								</ul>
 							</header>
 
-							<div class="overflow-y-auto px-5 py-5 md:px-7 md:py-6">
-								<section>
-									<p class="eyebrow">{projects.participationLabel}</p>
-									<ul class="mt-3 grid gap-2 text-[13px] leading-[1.55] text-muted md:grid-cols-2">
-										{company.participation.map((line) => (
-											<li class="flex gap-2">
-												<span
-													class="mt-[0.45em] size-1 shrink-0 rounded-full bg-accent"
-													aria-hidden="true"
-												/>
-												<span>{line}</span>
-											</li>
-										))}
-									</ul>
-								</section>
+							<div class="company-body">
+								{company.projects.map((project, projectIndex) => (
+									<article class="company-project">
+										<div class="flex items-baseline justify-between gap-4">
+											<h4 class="text-[0.9375rem] font-semibold leading-[1.25] tracking-[-0.015em]">
+												{project.name}
+											</h4>
+											<span class="font-mono text-[0.5625rem] leading-none text-subtle">
+												{String(projectIndex + 1).padStart(2, '0')}
+											</span>
+										</div>
+										<p class="mt-1 text-[0.75rem] leading-[1.5] text-muted">
+											{project.detail}
+										</p>
 
-								<section class="mt-7">
-									<p class="eyebrow">{projects.projectsLabel}</p>
-									<div class="mt-3 grid gap-4">
-										{company.projects.map((project, projectIndex) => (
-											<article class="border border-line bg-page p-4 md:p-5">
-												<div class="flex items-baseline justify-between gap-4">
-													<h4 class="text-[1.0625rem] font-medium leading-[1.2] tracking-[-0.015em]">
-														{project.name}
-													</h4>
-													<span class="font-mono text-[10px] text-subtle">
-														{String(projectIndex + 1).padStart(2, '0')}
-													</span>
-												</div>
-												<p class="mt-1.5 text-[13px] leading-[1.6] text-muted">
-													{project.detail}
-												</p>
-												<div class="mt-4 grid gap-5 md:grid-cols-2">
-													<div>
-														<p class="eyebrow">{projects.participationLabel}</p>
-														<ul class="mt-2 space-y-1.5 text-[12px] leading-[1.55] text-muted">
-															{project.participation.map((line) => (
-																<li class="flex gap-2">
-																	<span
-																		class="mt-[0.45em] size-1 shrink-0 rounded-full bg-accent"
-																		aria-hidden="true"
-																	/>
-																	<span>{line}</span>
-																</li>
-															))}
-														</ul>
-													</div>
-													<div>
-														<p class="eyebrow">{projects.solutionsLabel}</p>
-														<ul class="mt-2 space-y-2">
-															{project.solutions.map((solution) => (
-																<li>
-																	<p class="text-[12px] font-medium leading-[1.35] text-ink/85">
-																		{solution.title}
-																	</p>
-																	<p class="mt-0.5 text-[11px] leading-[1.5] text-muted">
-																		{solution.detail}
-																	</p>
-																</li>
-															))}
-														</ul>
-													</div>
-												</div>
-												<div class="mt-4">
-													<p class="eyebrow">{projects.stackLabel}</p>
-													<ul class="mt-2 flex flex-wrap gap-1.5">
-														{project.stack.map((item) => (
-															<li class="rounded-xs border border-line bg-ink/[0.03] px-2 py-0.5 font-mono text-[10px] leading-normal text-muted">
-																{item}
-															</li>
-														))}
-													</ul>
-												</div>
-											</article>
-										))}
-									</div>
-								</section>
-							</div>
-						</div>
+										<div class="company-project-grid">
+											<div>
+												<p class="eyebrow">{copy.participationLabel}</p>
+												<ul class="mt-1.5 grid gap-1 text-[0.75rem] leading-[1.55] text-muted">
+													{project.participation.map((line) => (
+														<li class="flex gap-2">
+															<span
+																class="mt-[0.5em] size-1 shrink-0 rounded-full bg-accent"
+																aria-hidden="true"
+															/>
+															<span>{line}</span>
+														</li>
+													))}
+												</ul>
+											</div>
+											<div>
+												<p class="eyebrow">{copy.solutionsLabel}</p>
+												<ul class="mt-1.5 grid gap-1.5">
+													{project.solutions.map((solution) => (
+														<li class="border-s-2 border-accent/55 ps-2.5">
+															<p class="text-[0.75rem] font-medium leading-[1.35] text-ink/85">
+																{solution.title}
+															</p>
+															<p class="mt-0.5 text-[0.6875rem] leading-[1.45] text-muted">
+																{solution.detail}
+															</p>
+														</li>
+													))}
+												</ul>
+											</div>
+										</div>
 
-						<div class="company-cover" aria-hidden="true">
-							<div class="company-cover-front">
-								<div class="flex h-full flex-col p-6 md:p-8">
-									<div class="flex items-start justify-between gap-4">
-										<p class="eyebrow">
-											{projects.cardEyebrow} · {String(index + 1).padStart(2, '0')}
-										</p>
-										<span class="font-mono text-[10px] text-subtle">{company.period}</span>
-									</div>
-									<div class="mt-auto">
-										<p class="eyebrow">{company.meta}</p>
-										<p class="mt-2 text-[clamp(2rem,3.4vw,3.5rem)] leading-[1.02] tracking-[-0.03em]">
-											{company.name}
-										</p>
-										<p class="mt-3 max-w-[32rem] text-[14px] leading-[1.65] text-muted">
-											{company.detail}
-										</p>
-										<ul class="mt-4 flex flex-wrap gap-1.5">
-											{company.tags.map((tag) => (
-												<li class="rounded-xs border border-line bg-ink/[0.03] px-2 py-0.5 font-mono text-[10px] leading-normal text-muted">
-													{tag}
-												</li>
-											))}
-										</ul>
-									</div>
-								</div>
+										<div class="mt-3">
+											<p class="eyebrow">{copy.stackLabel}</p>
+											<ul class="mt-1.5 flex flex-wrap gap-1.5">
+												{project.stack.map((item) => (
+													<li class="rounded-xs border border-line bg-ink/[0.03] px-2 py-0.5 font-mono text-[0.625rem] leading-normal text-muted">
+														{item}
+													</li>
+												))}
+											</ul>
+										</div>
+									</article>
+								))}
 							</div>
-							<div class="company-cover-back">
-								<div class="flex h-full flex-col justify-between p-6 md:p-8">
-									<p class="eyebrow text-accent-text">{projects.cardEyebrow}</p>
-									<p class="font-mono text-[clamp(5rem,10vw,9rem)] leading-none text-accent/25">
-										{String(index + 1).padStart(2, '0')}
-									</p>
-									<div>
-										<p class="text-[1.5rem] leading-[1.1] tracking-[-0.025em]">
-											{company.name}
-										</p>
-										<p class="mt-1 font-mono text-[10px] text-subtle">{company.meta}</p>
-										<p class="mt-4 font-mono text-[10px] text-subtle">
-											{company.projects.length} {projects.projectsLabel} · {company.period}
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</dialog>
-		))
-	}
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</div>
 </section>
 
-<script>
-	const triggers = document.querySelectorAll<HTMLElement>('[data-company-dialog]');
-
-	for (const trigger of triggers) {
-		trigger.addEventListener('click', () => {
-			const id = trigger.dataset.companyDialog;
-			const dialog = id ? document.getElementById(id) : null;
-			if (!(dialog instanceof HTMLDialogElement)) return;
-
-			dialog.classList.remove('is-open');
-			dialog.showModal();
-
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => dialog.classList.add('is-open'));
-			});
-		});
-	}
-
-	for (const dialog of document.querySelectorAll<HTMLDialogElement>('.company-dialog')) {
-		dialog.addEventListener('click', (event) => {
-			if (event.target === dialog) dialog.close();
-		});
-		dialog.addEventListener('close', () => dialog.classList.remove('is-open'));
-	}
-</script>
-
 <style>
-	.company-dialog {
-		width: min(80rem, calc(100vw - 2rem));
-		max-height: min(85dvh, 54rem);
-		margin: auto;
-		padding: 0;
-		border: 1px solid var(--color-line);
-		border-radius: var(--radius-card, 10px);
-		background: var(--color-page);
-		color: var(--color-ink);
-		text-align: start;
-		overflow: hidden;
-		box-shadow: 0 30px 80px -24px rgb(0 0 0 / 0.55);
-		opacity: 0;
-		transform: translateY(10px) scale(0.985);
-		transition:
-			opacity 220ms ease-out,
-			transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
-			overlay 420ms allow-discrete,
-			display 420ms allow-discrete;
-	}
-
-	.company-dialog[open] {
-		opacity: 1;
-		transform: none;
-	}
-
-	@starting-style {
-		.company-dialog[open] {
-			opacity: 0;
-			transform: translateY(10px) scale(0.985);
-		}
-	}
-
-	.company-dialog::backdrop {
-		background: rgb(0 0 0 / 0);
-		transition:
-			background 300ms ease-out,
-			overlay 420ms allow-discrete,
-			display 420ms allow-discrete;
-	}
-
-	.company-dialog[open]::backdrop {
-		background: rgb(0 0 0 / 0.62);
-	}
-
-	@starting-style {
-		.company-dialog[open]::backdrop {
-			background: rgb(0 0 0 / 0);
-		}
-	}
-
-	.company-dialog-close {
-		position: absolute;
-		z-index: 5;
-		top: 0.85rem;
-		right: 0.85rem;
-	}
-
-	.company-book {
+	/* Master–detail on radios: the switch is CSS only, so the panel does not
+	   depend on JavaScript to exist. */
+	.projects-md {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-		min-height: 32rem;
-		max-height: 85dvh;
-		perspective: 1800px;
+		gap: 0.75rem;
 	}
 
-	.company-book-left {
-		background: var(--color-surface);
-		border-inline-end: 1px solid var(--color-line);
-	}
-
-	.company-book-right {
+	.company-index {
 		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.company-radio {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		margin: 0;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.company-row {
+		display: grid;
+		grid-template-columns: 1.4rem 1.75rem minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 0.55rem;
+		padding: 0.55rem 0.55rem 0.55rem 0.6rem;
+		border-left: 2px solid transparent;
+		border-radius: 0 6px 6px 0;
+		cursor: pointer;
+		transition:
+			background 160ms ease,
+			border-color 160ms ease;
+	}
+
+	.company-row:hover {
+		background: color-mix(in oklab, var(--color-surface) 55%, transparent);
+	}
+
+	.company-number,
+	.company-count {
+		font-family: var(--font-mono);
+		font-size: 0.625rem;
+		line-height: 1;
+		color: var(--color-subtle);
+	}
+
+	.company-meta {
+		display: block;
+		margin-top: 0.125rem;
+		font-family: var(--font-mono);
+		font-size: 0.5625rem;
+		line-height: 1.4;
+		letter-spacing: 0.02em;
+		color: var(--color-muted);
+	}
+
+	.company-mark {
+		display: grid;
+		place-items: center;
+		flex: none;
+		width: 1.75rem;
+		height: 1.75rem;
+		overflow: hidden;
+		border: 1px solid var(--color-line);
+		border-radius: 6px;
+		background: var(--logo-plate);
+		font-family: var(--font-mono);
+		font-size: 0.5625rem;
+		letter-spacing: 0.02em;
+		color: var(--color-muted);
+	}
+
+	.company-mark img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		padding: 4px;
+	}
+
+	.company-mark-lg {
+		width: 3rem;
+		height: 3rem;
+		border-radius: 8px;
+		font-size: 0.75rem;
+	}
+
+	.company-mark-lg img {
+		padding: 6px;
+	}
+
+	.company-radio:checked + .company-row {
+		border-left-color: var(--color-accent);
+		background: var(--color-surface);
+	}
+
+	.company-radio:checked + .company-row .company-name {
+		font-weight: 600;
+	}
+
+	.company-radio:focus-visible + .company-row {
+		outline: 2px solid var(--color-accent);
+		outline-offset: -2px;
+	}
+
+	.company-detail {
+		position: relative;
+		display: grid;
+		min-height: 0;
+	}
+
+	.company-panel {
+		display: none;
+		grid-template-rows: auto minmax(0, 1fr);
+		overflow: hidden;
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-card);
 		background: var(--color-page);
 	}
 
-	.company-page {
-		max-height: 85dvh;
+	/* One rule per company: adding a company means adding its slug here. */
+	.projects-md:has(#company-cuantia:checked) #panel-cuantia,
+	.projects-md:has(#company-orinocodev:checked) #panel-orinocodev,
+	.projects-md:has(#company-glgfreight:checked) #panel-glgfreight,
+	.projects-md:has(#company-colegio-simon-bolivar:checked) #panel-colegio-simon-bolivar,
+	.projects-md:has(#company-orinocoio:checked) #panel-orinocoio {
+		display: grid;
 	}
 
-	.company-cover {
-		position: absolute;
-		inset: 0;
-		z-index: 3;
-		transform-style: preserve-3d;
-		transform-origin: left center;
-		transition: transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1) 250ms;
+	.company-head {
+		padding: 0.95rem 1.3rem 0.75rem;
+		border-bottom: 1px solid var(--color-line);
 	}
 
-	.company-dialog.is-open .company-cover {
-		transform: rotateY(-180deg);
+	.company-body {
+		min-height: 0;
+		overflow-y: auto;
+		padding: 0.75rem 1.3rem 1rem;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		scrollbar-color: color-mix(in oklab, var(--color-ink) 22%, transparent) transparent;
 	}
 
-	.company-cover-front,
-	.company-cover-back {
-		position: absolute;
-		inset: 0;
-		overflow: hidden;
-		backface-visibility: hidden;
-		-webkit-backface-visibility: hidden;
+	.company-project + .company-project {
+		margin-top: 0.7rem;
+		padding-top: 0.65rem;
+		border-top: 1px solid var(--color-line);
 	}
 
-	.company-cover-front {
-		background: var(--color-surface);
-		border-inline-start: 1px solid var(--color-line);
+	.company-project-grid {
+		display: grid;
+		grid-template-columns: 1.05fr 0.95fr;
+		gap: 1.5rem;
+		margin-top: 0.4rem;
 	}
 
-	.company-cover-back {
-		background: var(--color-band);
-		transform: rotateY(180deg);
+	@media (min-width: 900px) {
+		.projects-md {
+			grid-template-columns: minmax(14.5rem, 18rem) minmax(0, 1fr);
+			gap: clamp(1.5rem, 3vw, 3rem);
+		}
 	}
 
-	:global(html:has(dialog[open])) {
-		overflow: hidden;
-	}
-
-	@media (max-width: 767px) {
-		.company-book {
-			grid-template-columns: minmax(0, 1fr);
-			min-height: 0;
+	@media (max-width: 899px) {
+		.company-index {
+			flex-direction: row;
+			overflow-x: auto;
+			gap: 0.375rem;
+			padding-bottom: 0.5rem;
+			scrollbar-width: none;
 		}
 
-		.company-book-left {
+		.company-index::-webkit-scrollbar {
 			display: none;
 		}
+
+		.company-row {
+			flex: none;
+			grid-template-columns: auto auto;
+			padding: 0.45rem 0.55rem;
+			border-left: 0;
+			border-bottom: 2px solid transparent;
+			border-radius: 6px 6px 0 0;
+			background: color-mix(in oklab, var(--color-surface) 45%, transparent);
+		}
+
+		.company-radio:checked + .company-row {
+			border-left-color: transparent;
+			border-bottom-color: var(--color-accent);
+		}
+
+		.company-number,
+		.company-meta,
+		.company-count {
+			display: none;
+		}
+
+		.company-row .company-name {
+			font-size: 0.8125rem;
+			white-space: nowrap;
+		}
+
+		.company-mark {
+			width: 1.5rem;
+			height: 1.5rem;
+			font-size: 0.5rem;
+		}
+
+		.company-mark-lg {
+			width: 2.5rem;
+			height: 2.5rem;
+			font-size: 0.6875rem;
+		}
+
+		.company-head {
+			padding: 0.95rem 1rem 0.85rem;
+		}
+
+		.company-body {
+			padding: 0.9rem 1rem 1rem;
+		}
+
+		.company-project-grid {
+			grid-template-columns: 1fr;
+			gap: 0.85rem;
+		}
 	}
 
+	/* Shorter laptops: tighten the panel before it needs its own scrollbar. */
+	@media (min-width: 1024px) and (max-height: 820px) {
+		.company-row {
+			padding-block: 0.5rem;
+		}
+
+		.company-head {
+			padding: 0.7rem 1.2rem 0.65rem;
+		}
+
+		.company-body {
+			padding: 0.6rem 1.2rem 0.5rem;
+		}
+
+		.company-project + .company-project {
+			margin-top: 0.55rem;
+			padding-top: 0.5rem;
+		}
+
+		.company-project-grid {
+			gap: 1.25rem;
+		}
+	}
 </style>

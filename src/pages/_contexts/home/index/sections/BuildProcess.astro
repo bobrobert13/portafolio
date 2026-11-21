@@ -11,22 +11,6 @@ interface Props {
 const { lang } = Astro.props;
 const copy = homeCopy[lang].process;
 const contactHref = '#perfil-contacto';
-
-/* One glyph per phase. Decorative: the phase label and title carry the meaning. */
-const glyphs = [
-	'M4 7h16M4 12h11M4 17h14',
-	'M4 4h16v16H4zM4 10h16M10 10v10',
-	'm9 8-4 4 4 4M15 8l4 4-4 4',
-	'M7 17 17 7M9 7h8v8',
-];
-
-/*
- * Cascade clock: every node enters and every pulse starts on the same beat,
- * four beats per phase (the node plus its three steps), so the light crosses
- * the graph level by level instead of everywhere at once.
- */
-const beat = (phase: number, step = 0) => `${(phase * 4 + step) * 90}ms`;
-const pulseDelay = (phase: number) => `${phase * 420}ms`;
 ---
 
 <section id="construccion" class="border-b border-line">
@@ -50,69 +34,45 @@ const pulseDelay = (phase: number) => `${phase * 420}ms`;
 	</div>
 
 	<div class="process-body slide-anim px-[1.125rem] pb-12 md:px-6 lg:px-11 lg:pb-17">
-		<ol data-flow class="flow">
-			{
-				copy.rows.map((row, phase) => (
-					<li class="flow-phase" style={`--enter:${beat(phase)}`}>
-						<div class="flow-node">
-							<span class="flow-glyph" aria-hidden="true">
-								<svg
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.5"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									class="size-4"
-								>
-									<path d={glyphs[phase]} />
-								</svg>
-							</span>
-							<span class="flow-node-text">
-								<span class="eyebrow block">{row.eyebrow}</span>
-								<span class="flow-node-title">{row.title}</span>
-							</span>
-							{phase > 0 && (
-								<span
-									class="flow-link"
-									aria-hidden="true"
-									style={`--pulse-delay:${pulseDelay(phase)}`}
-								>
-									<span class="flow-pulse" />
-								</span>
-							)}
-						</div>
-						<div class="flow-branch">
-							<span
-								class="flow-trunk"
-								aria-hidden="true"
-								style={`--pulse-delay:${pulseDelay(phase)}`}
-							>
-								<span class="flow-pulse flow-pulse-down" />
-							</span>
-							<ul class="flow-steps">
-								{row.items.map((item, step) => (
-									<li class="flow-step" style={`--enter:${beat(phase, step + 1)}`}>
-										<span class="flow-step-kind">{item.kind}</span>
-										<span class="flow-step-label">{item.label}</span>
-									</li>
-								))}
-							</ul>
-						</div>
-					</li>
-				))
-			}
-		</ol>
+		<div class="process-conv" data-process>
+			<ol class="conv-list">
+				{
+					copy.rows.map((row, index) => (
+						<li class="conv-row" style={`--i:${index}`}>
+							<div class="conv-top">
+								<h3 class="conv-verb">{row.title}</h3>
+								<span class="conv-give">{row.give}</span>
+							</div>
+							<div class="conv-sides">
+								<div class="conv-side">
+									<p class="eyebrow">{copy.youLabel}</p>
+									<p>{row.you}</p>
+								</div>
+								<div class="conv-side">
+									<p class="eyebrow">{copy.meLabel}</p>
+									<p>{row.me}</p>
+								</div>
+							</div>
+						</li>
+					))
+				}
+			</ol>
+
+			<p class="conv-closing">
+				<strong>{copy.closing.lead}</strong>
+				{copy.closing.tail}
+			</p>
+		</div>
 	</div>
 </section>
 
 <script>
-	const flow = document.querySelector<HTMLElement>('[data-flow]');
+	const process = document.querySelector<HTMLElement>('[data-process]');
 
-	if (flow && 'IntersectionObserver' in window) {
-		/* `is-animated` hides the graph; `is-visible` releases it. Two frames
-		   apart, or the transition starts from the hidden state and is skipped. */
-		flow.classList.add('is-animated');
+	if (process && 'IntersectionObserver' in window) {
+		/* `is-animated` hides the rows; `is-visible` releases the cascade.
+		   Without the observer the four conversations are simply there. */
+		process.classList.add('is-animated');
 
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -122,366 +82,180 @@ const pulseDelay = (phase: number) => `${phase * 420}ms`;
 					observer.unobserve(entry.target);
 				}
 			},
-			{ threshold: 0.3 },
+			{ threshold: 0.25 },
 		);
 
-		observer.observe(flow);
+		observer.observe(process);
 	}
 </script>
 
 <style>
-	/*
-	 * The process is a hierarchy, not a list: each phase is a node, its three
-	 * steps branch off a trunk, and the phases connect left to right on desktop
-	 * or top to bottom on narrow screens. `--indent` and `--rail` keep the trunk,
-	 * its branches and the pulse on the same vertical axis.
-	 */
-	.flow {
-		--flow-gap: 2rem;
-		--flow-stem: 1.5rem;
-		--step-gap: 0.375rem;
-		--indent: 2rem;
-		--rail: 1rem;
-		/* Connectors read a step darker than the hairline borders: they are the
-		   structure of the diagram, not a divider. */
-		--flow-line: color-mix(in oklab, var(--color-subtle) 55%, transparent);
+	.conv-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
 		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		row-gap: var(--flow-stem);
 	}
 
-	.flow-node {
+	.conv-row {
 		position: relative;
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.75rem 0.875rem;
-		border: 1px solid var(--color-line);
-		border-radius: var(--radius-card);
-		background-color: var(--color-surface);
+		padding-block: 0.85rem;
 	}
 
-	.flow-glyph {
-		display: grid;
+	/* The rule is the phase divider and the line that draws on entry. */
+	.conv-row::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		background-color: var(--color-line);
+		transform-origin: left;
+	}
+
+	.conv-top {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.conv-verb {
+		margin: 0;
+		font-size: 1.25rem;
+		font-weight: 500;
+		line-height: 1.15;
+		letter-spacing: -0.02em;
+	}
+
+	.conv-give {
 		flex: none;
-		place-items: center;
-		width: 2rem;
-		height: 2rem;
-		border-radius: var(--radius-sm);
-		background-color: color-mix(in oklab, var(--color-accent) 14%, transparent);
+		font-family: var(--font-mono);
+		font-size: 0.5625rem;
+		line-height: 1.4;
+		letter-spacing: 0.04em;
+		color: var(--color-accent-text);
+		white-space: nowrap;
+	}
+
+	.conv-sides {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		margin-top: 0.5rem;
+	}
+
+	.conv-side {
+		padding-block: 0.15rem;
+	}
+
+	.conv-side:first-child {
+		padding-inline-end: 1.25rem;
+	}
+
+	.conv-side + .conv-side {
+		padding-inline-start: 1.25rem;
+		border-inline-start: 1px solid var(--color-line);
+	}
+
+	.conv-side p:last-child {
+		margin: 0.25rem 0 0;
+		font-size: 0.75rem;
+		line-height: 1.5;
+		color: var(--color-muted);
+	}
+
+	.conv-closing {
+		margin: 1.5rem 0 0;
+		padding-top: 1.25rem;
+		max-width: 44rem;
+		border-top: 1px solid var(--color-line);
+		font-size: 1.25rem;
+		line-height: 1.3;
+		letter-spacing: -0.02em;
+	}
+
+	.conv-closing strong {
+		font-weight: 500;
 		color: var(--color-accent-text);
 	}
 
-	.flow-node-text {
-		display: flex;
-		flex-direction: column;
-		gap: 0.125rem;
-		min-width: 0;
-	}
-
-	.flow-node-title {
-		font-size: 0.9375rem;
-		line-height: 1.25;
-		letter-spacing: -0.02em;
-		color: var(--color-ink);
-	}
-
-	/* The mark on the node's bottom edge is where the trunk leaves. */
-	.flow-node::after {
-		content: '';
-		position: absolute;
-		bottom: -2.5px;
-		inset-inline-start: calc(var(--rail) - 2.5px);
-		width: 5px;
-		height: 5px;
-		border-radius: 9999px;
-		background-color: var(--flow-line);
-	}
-
-	.flow-branch {
-		position: relative;
-		margin-top: var(--flow-stem);
-	}
-
-	.flow-steps {
-		display: grid;
-		gap: var(--step-gap);
-		margin-inline-start: var(--indent);
-	}
-
-	.flow-step {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		gap: 0.125rem;
-		padding: 0.5rem 0.75rem;
-		border: 1px solid var(--color-line);
-		border-radius: var(--radius-sm);
-		background-color: color-mix(in oklab, var(--color-surface) 45%, var(--color-page));
-	}
-
-	/* Trunk: every step carries its own segment, so the branch survives any
-	   copy length. The first segment reaches the node; the last one stops at
-	   the centre of its own step. */
-	.flow-step::before {
-		content: '';
-		position: absolute;
-		top: calc(-1 * var(--step-gap));
-		inset-inline-start: calc(var(--rail) - var(--indent));
-		width: 1px;
-		height: calc(100% + var(--step-gap));
-		background-color: var(--flow-line);
-	}
-
-	.flow-step:first-child::before {
-		top: calc(-1 * var(--flow-stem));
-		height: calc(100% + var(--flow-stem));
-	}
-
-	.flow-step:last-child::before {
-		height: 50%;
-	}
-
-	.flow-step::after {
-		content: '';
-		position: absolute;
-		top: 50%;
-		inset-inline-start: calc(var(--rail) - var(--indent));
-		width: calc(var(--indent) - var(--rail));
-		height: 1px;
-		background-color: var(--flow-line);
-	}
-
-	.flow-step-kind {
-		font-family: var(--font-mono);
-		font-size: 0.625rem;
-		line-height: 1.5;
-		letter-spacing: 0.09em;
-		text-transform: uppercase;
-		color: var(--color-subtle);
-	}
-
-	.flow-step-label {
-		font-size: 0.8125rem;
-		line-height: 1.35;
-		color: color-mix(in oklab, var(--color-ink) 88%, transparent);
-	}
-
-	/* Desktop: four levels in a row, connected left to right at node height.
-	   The phase list item dissolves so every node and every branch share one
-	   grid row: nodes stretch to the tallest title and all connectors sit on
-	   the same axis. */
-	@media (min-width: 1024px) {
-		.flow {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-			grid-template-rows: auto auto;
-			column-gap: var(--flow-gap);
-			row-gap: var(--flow-stem);
-		}
-
-		.flow-phase {
-			display: contents;
-		}
-
-		.flow-node {
-			grid-row: 1;
-		}
-
-		.flow-branch {
-			grid-row: 2;
-			margin-top: 0;
-		}
-
-		.flow-phase:nth-child(1) > .flow-node,
-		.flow-phase:nth-child(1) > .flow-branch {
-			grid-column: 1;
-		}
-
-		.flow-phase:nth-child(2) > .flow-node,
-		.flow-phase:nth-child(2) > .flow-branch {
-			grid-column: 2;
-		}
-
-		.flow-phase:nth-child(3) > .flow-node,
-		.flow-phase:nth-child(3) > .flow-branch {
-			grid-column: 3;
-		}
-
-		.flow-phase:nth-child(4) > .flow-node,
-		.flow-phase:nth-child(4) > .flow-branch {
-			grid-column: 4;
-		}
-
-		.flow-link {
-			position: absolute;
-			top: 50%;
-			left: calc(-1 * var(--flow-gap));
-			width: var(--flow-gap);
-			height: 1px;
-			background-image: repeating-linear-gradient(
-				to right,
-				var(--flow-line) 0 5px,
-				transparent 5px 9px
-			);
-		}
-
-		/* Direction cue: the dashed run ends in the next node's border. */
-		.flow-link::after {
-			content: '';
-			position: absolute;
-			top: 50%;
-			right: -1px;
-			width: 0;
-			height: 0;
-			border-block: 3px solid transparent;
-			border-inline-start: 4px solid var(--flow-line);
-			translate: 0 -50%;
-		}
-	}
-
-	/* Narrow screens: the connector turns vertical and spans the row gap. */
-	@media (max-width: 1023px) {
-		.flow-link {
-			position: absolute;
-			top: calc(-1 * var(--flow-gap));
-			left: var(--rail);
-			width: 1px;
-			height: var(--flow-gap);
-			background-image: repeating-linear-gradient(
-				to bottom,
-				var(--flow-line) 0 5px,
-				transparent 5px 9px
-			);
-		}
-
-		.flow-link::after {
-			content: '';
-			position: absolute;
-			bottom: -1px;
-			left: 50%;
-			width: 0;
-			height: 0;
-			border-inline: 3px solid transparent;
-			border-top: 4px solid var(--flow-line);
-			translate: -50% 0;
-		}
-	}
-
-	.flow-trunk {
-		position: absolute;
-		top: calc(-1 * var(--flow-stem));
-		bottom: 0;
-		left: var(--rail);
-		width: 1px;
-	}
-
-	.flow-pulse {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		width: 5px;
-		height: 5px;
-		border-radius: 9999px;
-		background-color: var(--color-accent);
-		translate: 0 -50%;
-		animation: flow-right 2.4s linear var(--pulse-delay, 0ms) infinite;
-	}
-
-	.flow-pulse-down {
-		top: 0;
-		left: 50%;
-		translate: -50% 0;
-		animation-name: flow-down;
-	}
-
-	@keyframes flow-right {
-		0% {
-			left: 0;
-			opacity: 0;
-		}
-		14% {
-			opacity: 1;
-		}
-		86% {
-			opacity: 1;
-		}
-		100% {
-			left: 100%;
-			opacity: 0;
-		}
-	}
-
-	@keyframes flow-down {
-		0% {
-			top: 0;
-			opacity: 0;
-		}
-		14% {
-			opacity: 1;
-		}
-		86% {
-			opacity: 1;
-		}
-		100% {
-			top: 100%;
-			opacity: 0;
-		}
-	}
-
-	@media (max-width: 1023px) {
-		.flow-pulse {
-			animation-name: flow-down;
-			top: 0;
-			left: 50%;
-			translate: -50% 0;
-		}
-
-		.flow-pulse-down {
-			animation-name: flow-down;
-		}
-	}
-
-	/*
-	 * Entry cascade. `is-animated` is only added once the observer exists, so
-	 * without JavaScript the graph is simply there.
-	 */
-	.flow.is-animated .flow-node,
-	.flow.is-animated .flow-step {
+	/* Entry cascade: the rule draws, then the row arrives. */
+	.process-conv.is-animated .conv-row,
+	.process-conv.is-animated .conv-closing {
 		opacity: 0;
 		translate: 0 0.75rem;
 	}
 
-	.flow.is-animated .flow-link,
-	.flow.is-animated .flow-trunk {
-		opacity: 0;
+	.process-conv.is-animated .conv-row::before {
+		transform: scaleX(0);
 	}
 
-	.flow.is-animated.is-visible .flow-node,
-	.flow.is-animated.is-visible .flow-step {
+	.process-conv.is-animated.is-visible .conv-row {
 		opacity: 1;
 		translate: 0 0;
 		transition:
-			opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) var(--enter, 0ms),
-			translate 600ms cubic-bezier(0.16, 1, 0.3, 1) var(--enter, 0ms);
+			opacity 620ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 90ms),
+			translate 620ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 90ms);
 	}
 
-	.flow.is-animated.is-visible .flow-link,
-	.flow.is-animated.is-visible .flow-trunk {
+	.process-conv.is-animated.is-visible .conv-row::before {
+		transform: scaleX(1);
+		transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1)
+			calc(var(--i, 0) * 90ms);
+	}
+
+	.process-conv.is-animated.is-visible .conv-closing {
 		opacity: 1;
-		transition: opacity 500ms ease 260ms;
+		translate: 0 0;
+		transition:
+			opacity 620ms cubic-bezier(0.16, 1, 0.3, 1) 420ms,
+			translate 620ms cubic-bezier(0.16, 1, 0.3, 1) 420ms;
 	}
 
-	/* The sheets pause their ambient loops while offstage; the pulses follow. */
-	:global(.slide.is-offstage) .flow-pulse {
-		animation-play-state: paused;
+	@media (max-width: 899px) {
+		.conv-sides {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.conv-side:first-child {
+			padding-inline-end: 0;
+		}
+
+		.conv-side + .conv-side {
+			margin-top: 0.5rem;
+			padding-inline-start: 0;
+			padding-top: 0.5rem;
+			border-inline-start: 0;
+			border-top: 1px solid var(--color-line);
+		}
+
+		.conv-top {
+			flex-wrap: wrap;
+			gap: 0.35rem 1rem;
+		}
 	}
 
-	/* The site keeps its motion under `prefers-reduced-motion`; here only the
-	   displacement goes, the graph still fades in on the same cascade. */
+	@media (min-width: 1024px) and (max-height: 820px) {
+		.conv-row {
+			padding-block: 0.6rem;
+		}
+
+		.conv-closing {
+			margin-top: 1rem;
+			padding-top: 1rem;
+		}
+	}
+
+	/* Reduced motion: no displacement; the rules still arrive. */
 	@media (prefers-reduced-motion: reduce) {
-		.flow.is-animated .flow-node,
-		.flow.is-animated .flow-step {
+		.process-conv.is-animated .conv-row,
+		.process-conv.is-animated .conv-closing {
 			translate: none;
+		}
+
+		.process-conv.is-animated.is-visible .conv-row::before {
+			transition: none;
 		}
 	}
 </style>

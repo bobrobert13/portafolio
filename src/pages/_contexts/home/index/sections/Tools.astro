@@ -15,10 +15,11 @@ const copy = homeCopy[lang].tools;
 		<span class="ambient-orb orb-tools-a"></span>
 		<span class="ambient-orb orb-tools-b"></span>
 	</div>
+
 	<div
-		class="slide-anim grid items-center gap-9 px-[1.125rem] py-13 md:px-6 md:py-14 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-12 lg:px-11 lg:py-19"
+		class="tools-shell slide-anim flex flex-col gap-6 px-[1.125rem] py-13 md:px-6 md:py-14 lg:gap-7 lg:px-11 lg:py-19"
 	>
-		<div class="max-w-[36rem]">
+		<div class="max-w-[672px]">
 			<p class="eyebrow">{copy.eyebrow}</p>
 			<h2
 				class="mt-4 text-[clamp(1.875rem,3.1vw,3.5rem)] leading-[1.08] tracking-[-0.028em] lg:leading-[1.04] lg:tracking-[-0.032em]"
@@ -30,32 +31,69 @@ const copy = homeCopy[lang].tools;
 			</p>
 		</div>
 
-		<div class="kit-grid" data-kit-grid>
+		<div class="shelf kit-grid" data-kit-grid role="radiogroup" aria-label={copy.tabsLabel}>
 			{
 				copy.groups.map((group, index) => (
-					<article
-						class:list={['kit-tile', index === 3 && 'is-featured']}
-						style={`--tile-index: ${index}`}
-					>
-						<div class="kit-tile-inner flex h-full flex-col border border-line bg-page p-4">
-							<div class="flex items-start justify-between gap-3">
-								<span class="font-mono text-[10px] text-subtle">
-									{String(index + 1).padStart(2, '0')}
+					<>
+						<input
+							class="shelf-radio"
+							type="radio"
+							name="tool-group"
+							id={`tool-${group.slug}`}
+							aria-label={group.title}
+							checked={index === 0}
+						/>
+						<label class="shelf-cell" for={`tool-${group.slug}`} style={`--tile-index: ${index}`}>
+							<span class="flex items-baseline justify-between gap-3 font-mono text-[0.5625rem] leading-none text-subtle">
+								<span>{String(index + 1).padStart(2, '0')}</span>
+								<span>
+									{group.items.length} {copy.countLabel}
 								</span>
-								<span class="mt-1 size-[5px] rounded-full bg-accent" aria-hidden="true" />
-							</div>
-							<p class="mt-2 text-[1.25rem] leading-[1.15] tracking-[-0.02em]">
+							</span>
+							<span
+								class="shelf-title mt-2 block text-[1.25rem] font-medium leading-[1.15] tracking-[-0.02em]"
+								role="heading"
+								aria-level="3"
+							>
 								{group.title}
-							</p>
-							<p class="mt-1.5 text-[11px] leading-[1.5] text-muted">{group.note}</p>
-							<ul class="mt-auto flex flex-wrap gap-1.5 pt-3">
-								{group.items.map((item) => (
-									<li class="rounded-xs border border-line bg-ink/[0.03] px-1.5 py-0.5 font-mono text-[9px] leading-normal text-muted">
-										{item}
-									</li>
-								))}
-							</ul>
+							</span>
+							<span class="mt-1.5 block text-[0.75rem] leading-[1.5] text-muted">
+								{group.note}
+							</span>
+							<span class="mt-auto block pt-3 font-mono text-[0.6875rem] leading-[1.7] text-muted">
+								{group.items.map((item) => item.name).join(' · ')}
+							</span>
+						</label>
+					</>
+				))
+			}
+		</div>
+
+		<div class="tool-detail">
+			{
+				copy.groups.map((group) => (
+					<article
+						class="tool-panel"
+						id={`tool-panel-${group.slug}`}
+						aria-labelledby={`tool-panel-title-${group.slug}`}
+					>
+						<div class="tool-panel-head">
+							<p class="eyebrow">{copy.detailLabel}</p>
+							<h3
+								id={`tool-panel-title-${group.slug}`}
+								class="text-[0.9375rem] font-semibold leading-[1.2] tracking-[-0.015em]"
+							>
+								{group.title}
+							</h3>
 						</div>
+						<dl class="tool-list">
+							{group.items.map((item) => (
+								<div class="tool-row">
+									<dt>{item.name}</dt>
+									<dd>{item.use}</dd>
+								</div>
+							))}
+						</dl>
 					</article>
 				))
 			}
@@ -76,48 +114,71 @@ const copy = homeCopy[lang].tools;
 		{ threshold: 0.15 },
 	);
 
-	/* `is-ready` hides the tiles so the staggered entrance has somewhere to come
-	   from; the observer swaps it for `is-playing` once the grid is on screen. */
+	/* `is-ready` hides the cells so the staggered entrance has somewhere to come
+	   from; the observer swaps it for `is-playing` once the shelf is on screen.
+	   With reduced motion there is no entrance to hide for, so the shelf stays
+	   visible from the first paint. */
+	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
 	for (const grid of grids) {
+		if (reduced.matches) continue;
 		grid.classList.add('is-ready');
 		observer.observe(grid);
 	}
 </script>
 
 <style>
-	.kit-grid {
+	/* The shelf is the selector: six cells share one hairline grid and the
+	   active one opens a detail band below. Radios, so no script is needed. */
+	.shelf {
+		position: relative;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 0.65rem;
+		gap: 1px;
+		overflow: hidden;
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-card);
+		background: var(--color-line);
 	}
 
-	.kit-tile {
-		min-height: 12rem;
+	.shelf-radio {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		margin: 0;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
-	.kit-tile-inner {
-		height: 100%;
-		transition:
-			border-color 180ms ease,
-			background-color 180ms ease;
+	.shelf-cell {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem 1.1rem;
+		background: var(--color-page);
+		cursor: pointer;
+		transition: background-color 160ms ease;
 	}
 
-	.kit-tile.is-featured .kit-tile-inner {
-		border-color: color-mix(in oklab, var(--color-accent) 34%, transparent);
-		background:
-			linear-gradient(
-				150deg,
-				color-mix(in oklab, var(--color-accent) 8%, transparent),
-				transparent 62%
-			),
-			var(--color-page);
+	.shelf-cell:hover {
+		background: color-mix(in oklab, var(--color-surface) 45%, var(--color-page));
 	}
 
-	.kit-grid.is-ready .kit-tile-inner {
+	.shelf-radio:checked + .shelf-cell {
+		background: var(--color-surface);
+		box-shadow: inset 2px 0 0 var(--color-accent);
+	}
+
+	.shelf-radio:focus-visible + .shelf-cell {
+		outline: 2px solid var(--color-accent);
+		outline-offset: -2px;
+	}
+
+	.kit-grid.is-ready .shelf-cell {
 		opacity: 0;
 	}
 
-	.kit-grid.is-playing .kit-tile-inner {
+	.kit-grid.is-playing .shelf-cell {
 		animation: kit-enter 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 		animation-delay: calc(var(--tile-index, 0) * 80ms);
 	}
@@ -133,59 +194,138 @@ const copy = homeCopy[lang].tools;
 		}
 	}
 
-	@media (min-width: 640px) and (max-width: 1023px) {
-		.kit-grid {
+	.tool-detail {
+		overflow: hidden;
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-card);
+		background: var(--color-page);
+	}
+
+	.tool-panel {
+		display: none;
+	}
+
+	/* One rule per group: adding a group means adding its slug here. */
+	#herramientas:has(#tool-frontend:checked) #tool-panel-frontend,
+	#herramientas:has(#tool-backend:checked) #tool-panel-backend,
+	#herramientas:has(#tool-data:checked) #tool-panel-data,
+	#herramientas:has(#tool-ai:checked) #tool-panel-ai,
+	#herramientas:has(#tool-devops:checked) #tool-panel-devops,
+	#herramientas:has(#tool-design:checked) #tool-panel-design {
+		display: block;
+		animation: tool-in 180ms ease;
+	}
+
+	@keyframes tool-in {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.tool-panel-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.75rem 1.15rem;
+		border-bottom: 1px solid var(--color-line);
+	}
+
+	.tool-list {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+		margin: 0;
+		padding: 0.35rem 1.15rem 0.6rem;
+	}
+
+	.tool-row {
+		display: grid;
+		grid-template-columns: 8.5rem minmax(0, 1fr);
+		gap: 0.75rem;
+		padding-block: 0.35rem;
+		border-bottom: 1px solid color-mix(in oklab, var(--color-line) 60%, transparent);
+	}
+
+	.tool-row:last-child {
+		border-bottom: 0;
+	}
+
+	.tool-row dt {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		line-height: 1.5;
+		color: var(--color-ink);
+	}
+
+	.tool-row dd {
+		margin: 0;
+		font-size: 0.6875rem;
+		line-height: 1.5;
+		color: var(--color-muted);
+	}
+
+	@media (min-width: 640px) {
+		.shelf {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 
 	@media (min-width: 1024px) {
-		.kit-grid {
-			display: block;
-			position: relative;
-			min-height: 27rem;
-		}
-		.kit-tile {
-			position: absolute;
-			width: 31%;
-			height: 12.5rem;
-			min-height: 0;
+		.shelf {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 
-		.kit-tile:nth-child(1) {
-			left: 0;
-			top: 2.75rem;
-		}
-
-		.kit-tile:nth-child(2) {
-			left: 0;
-			bottom: -1.5rem;
-		}
-
-		.kit-tile:nth-child(3) {
-			left: 50%;
-			transform: translateX(-50%);
-			top: 0;
-		}
-
-		.kit-tile:nth-child(4) {
-			left: 50%;
-			transform: translateX(-50%);
-			bottom: 1.5rem;
-		}
-
-		.kit-tile:nth-child(5) {
-			right: 0;
-			top: 1.5rem;
-		}
-
-		.kit-tile:nth-child(6) {
-			right: 0;
-			bottom: 0;
+		.tool-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			column-gap: 2rem;
 		}
 	}
 
-	/* Sweep variant: the band light travels sideways under the kit grid. */
+	/* Shorter laptops: tighten the shelf and the band before they overflow. */
+	@media (min-width: 1024px) and (max-height: 820px) {
+		.tools-shell {
+			gap: 0.75rem;
+		}
+
+		.shelf-cell {
+			padding: 0.75rem 0.9rem;
+		}
+
+		.tool-panel-head {
+			padding: 0.45rem 0.9rem;
+		}
+
+		.tool-list {
+			padding: 0.25rem 0.9rem 0.4rem;
+		}
+
+		.tool-row {
+			padding-block: 0.2rem;
+		}
+
+		.tool-list {
+			padding-bottom: 0.35rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.kit-grid.is-ready .shelf-cell {
+			opacity: 1;
+		}
+
+		.kit-grid.is-playing .shelf-cell,
+		#herramientas:has(.shelf-radio:checked) .tool-panel {
+			animation: none;
+		}
+	}
+
+	/* Sweep variant: the band light travels sideways under the shelf. */
 	.orb-tools-a {
 		--orb-size: 0.5;
 		--orb-top: 52%;

@@ -24,6 +24,7 @@ const es = {
 		],
 	},
 	manifesto: {
+		eyebrow: 'Manifiesto',
 		title: 'La velocidad empieza en el diseño.',
 		lead: 'Arquitectura, tolerancia, trazabilidad, servidores, sostenibilidad y costo. Decisiones que se toman antes de la primera línea y se notan en el coste de cada cambio.',
 		cards: [
@@ -58,9 +59,75 @@ const es = {
 		description:
 			'Servicios de desarrollo web para proyectos que necesitan una base ligera, bilingüe y fácil de mantener.',
 		cta: 'Ver proceso',
+		tabsLabel: 'Servicios',
+		specimens: {
+			build: {
+				label: 'Salida del build',
+				lines: [
+					'$ npm run build',
+					'├─ /en/index.html',
+					'├─ /es/index.html',
+					'└─ /index.html',
+					'',
+					'3 páginas · 0 scripts de hidratación',
+				],
+				note: 'El artefacto es dist/. No hay proceso en ejecución.',
+			},
+			scale: {
+				label: 'Escala real del sitio',
+				rows: [
+					{ meta: 'Display · 112 / 1.00 / −0.04', sample: 'Sitios rápidos.' },
+					{ meta: 'Headline · 56 / 1.05 / −0.032', sample: 'Experiencia y soluciones.' },
+					{ meta: 'Label · 11 / 0.10 em', sample: 'Proyectos · Soluciones' },
+				],
+				note: 'Muestras reducidas; los valores son los reales.',
+			},
+			focus: {
+				label: 'Pruébalo: pulsa Tab',
+				action: 'Hablemos',
+				hint: 'El anillo es el foco real del sistema.',
+				swatches: [
+					{ tone: 'accent', label: 'acento vivo · solo relleno' },
+					{ tone: 'accent-text', label: 'acento profundo · texto pequeño' },
+				],
+			},
+			payload: {
+				label: 'Lo que envía esta página',
+				stats: [
+					{ value: '03', label: 'rutas de HTML escritas en el build' },
+					{ value: '01', label: 'script de página: scroll y pantallas' },
+					{ value: '00', label: 'fuentes o peticiones a terceros' },
+				],
+				note: 'Sin imágenes en esta sección. El CSS es una sola hoja.',
+			},
+			seo: {
+				label: 'Cabecera real, sin resumir',
+				lines: [
+					'<link rel="canonical"',
+					'      href="https://trebor.dev/es/">',
+					'<link rel="alternate" hreflang="en"',
+					'      href="https://trebor.dev/en/">',
+					'<link rel="alternate" hreflang="es"',
+					'      href="https://trebor.dev/es/">',
+					'<link rel="alternate" hreflang="x-default"',
+					'      href="https://trebor.dev/es/">',
+				],
+			},
+			docs: {
+				label: 'Lo que queda al entregar',
+				files: [
+					{ name: 'AGENTS.md', role: 'reglas y límites' },
+					{ name: 'DESIGN.md', role: 'tokens y componentes' },
+					{ name: 'docs/system-design.md', role: 'cómo está construido' },
+					{ name: 'docs/decisions/', role: 'por qué se decidió así' },
+				],
+			},
+		},
 		items: [
 			{
 				number: '01',
+				slug: 'static',
+				specimen: 'build',
 				title: 'Sitios estáticos',
 				description:
 					'Astro genera el HTML en el build. El despliegue es un directorio de archivos, sin servidor.',
@@ -68,6 +135,8 @@ const es = {
 			},
 			{
 				number: '02',
+				slug: 'interface',
+				specimen: 'scale',
 				title: 'Diseño de interfaz',
 				description:
 					'Jerarquía, tipografía y tokens antes de escribir componentes.',
@@ -75,6 +144,8 @@ const es = {
 			},
 			{
 				number: '03',
+				slug: 'a11y',
+				specimen: 'focus',
 				title: 'Accesibilidad',
 				description:
 					'HTML semántico, navegación por teclado y contraste comprobado.',
@@ -82,6 +153,8 @@ const es = {
 			},
 			{
 				number: '04',
+				slug: 'performance',
+				specimen: 'payload',
 				title: 'Rendimiento',
 				description:
 					'Presupuesto de carga, imágenes dimensionadas y cero JavaScript por defecto.',
@@ -89,6 +162,8 @@ const es = {
 			},
 			{
 				number: '05',
+				slug: 'seo',
+				specimen: 'seo',
 				title: 'SEO técnico',
 				description:
 					'Canonical, hreflang y metadatos por idioma en cada ruta.',
@@ -96,6 +171,8 @@ const es = {
 			},
 			{
 				number: '06',
+				slug: 'maintenance',
+				specimen: 'docs',
 				title: 'Mantenimiento',
 				description:
 					'Dependencias mínimas y documentación para que el sitio siga en pie.',
@@ -103,50 +180,46 @@ const es = {
 			},
 		],
 	},
+
 	process: {
 		title: '¿Cómo trabajo?',
 		description:
-			'Cuatro fases cortas. En cada una te muestro algo concreto para revisar juntos.',
+			'Cuatro conversaciones, no cuatro entregas. En cada una revisamos algo concreto: tú decides lo que te toca y yo te devuelvo una pieza para mirar juntos.',
 		cta: 'Cuéntame tu proyecto',
+		youLabel: 'Tú',
+		meLabel: 'Yo',
+		closing: {
+			lead: 'Escucho antes de proponer.',
+			tail: 'Todo lo demás sale de ahí.',
+		},
 		rows: [
 			{
-				eyebrow: 'Fase 01',
 				title: 'Escucho y ordeno',
-				items: [
-					{ kind: 'Objetivo', label: 'Qué necesitas y qué no' },
-					{ kind: 'Contenido', label: 'Textos, idiomas y referencias' },
-					{ kind: 'Alcance', label: 'Qué entra en la primera versión' },
-				],
+				give: 'Te llevas: un alcance claro',
+				you: 'Me cuentas qué necesitas, qué no y con qué cuentas.',
+				me: 'Te devuelvo qué entra en la primera versión y qué espera.',
 			},
 			{
-				eyebrow: 'Fase 02',
 				title: 'Diseño contigo',
-				items: [
-					{ kind: 'Jerarquía', label: 'Navegación y secciones' },
-					{ kind: 'Tipografía', label: 'Escala, ritmo y tono' },
-					{ kind: 'Sistema', label: 'Tokens, color y componentes' },
-				],
+				give: 'Te llevas: una primera versión',
+				you: 'Decides jerarquía, tono y referencias.',
+				me: 'Pongo la estructura, la tipografía y el sistema en una versión navegable.',
 			},
 			{
-				eyebrow: 'Fase 03',
 				title: 'Construyo y reviso',
-				items: [
-					{ kind: 'Astro', label: 'Rutas estáticas y contenido' },
-					{ kind: 'Vue', label: 'Interacción sin ruido' },
-					{ kind: 'i18n', label: 'ES y EN desde el inicio' },
-				],
+				give: 'Te llevas: el sitio funcionando',
+				you: 'Revisas lo que ves y lo que falta.',
+				me: 'Construyo, corrijo y dejo el sitio en los dos idiomas.',
 			},
 			{
-				eyebrow: 'Fase 04',
 				title: 'Entrego y te dejo listo',
-				items: [
-					{ kind: 'Build', label: 'Salida estática verificada' },
-					{ kind: 'Despliegue', label: 'Dominio, CDN y analítica' },
-					{ kind: 'Traspaso', label: 'Documentación y cómo editar' },
-				],
+				give: 'Te llevas: el traspaso',
+				you: 'Recibes el sitio y sabes cómo editarlo.',
+				me: 'Despliego, reviso y te dejo la documentación.',
 			},
 		],
 	},
+
 	contact: {
 		eyebrow: 'Trabajemos juntos',
 		title: 'Tu próximo sitio empieza con una conversación.',
@@ -187,15 +260,14 @@ const es = {
 		eyebrow: 'Proyectos · Soluciones',
 		title: 'Experiencia y soluciones.',
 		description:
-			'Una selección de empresas en las que trabajé, con sus proyectos, mi participación y las soluciones que apliqué en cada uno.',
+			'Cinco empresas y diez proyectos. Qué construí en cada uno y qué soluciones quedaron.',
 		experienceLabel: 'Empresas',
 		projectsLabel: 'Proyectos',
 		participationLabel: 'Mi participación',
-		solutionsLabel: 'Soluciones estrella',
+		solutionsLabel: 'Soluciones',
 		stackLabel: 'Tecnologías',
-		openLabel: 'Abrir carta',
-		closeLabel: 'Cerrar carta',
-		cardEyebrow: 'Carta de experiencia',
+		keyboardHint: '← → para cambiar',
+		groupLabel: 'Empresas',
 		cta: 'Hablemos',
 		items: [
 			{
@@ -203,13 +275,11 @@ const es = {
 				name: 'Cuantia',
 				meta: 'Fintech · Frontend',
 				period: '2024 — 2025',
-				detail: 'Interfaces y componentes para una plataforma financiera.',
+				mark: 'CU',
+				logo: '',
+				context:
+					'Plataforma financiera donde el equipo gestiona cuentas, movimientos y conciliación, y los clientes consultan saldos y documentos desde su propio acceso.',
 				tags: ['Vue 3', 'TypeScript', 'Vite'],
-				participation: [
-					'Construí la interfaz del panel financiero y sus estados de carga, error y vacío.',
-					'Definí componentes reutilizables y el flujo de datos entre filtros y tablas.',
-					'Revisé teclado, foco y contraste con el equipo de producto.',
-				],
 				projects: [
 					{
 						name: 'Panel de tesorería',
@@ -225,7 +295,7 @@ const es = {
 								detail: 'Filtros, paginación y estados sin recargas.',
 							},
 							{
-								title: 'Sistema de componentes',
+								title: 'Componentes de tabla',
 								detail: 'Vue + TypeScript para vistas densas.',
 							},
 						],
@@ -241,8 +311,8 @@ const es = {
 						],
 						solutions: [
 							{
-								title: 'Acceso seguro',
-								detail: 'Sesiones y recuperación con mensajes claros.',
+								title: 'Acceso y recuperación',
+								detail: 'Sesiones, recuperación y mensajes de error claros.',
 							},
 							{
 								title: 'Documentos',
@@ -258,13 +328,11 @@ const es = {
 				name: 'OrinocoDev',
 				meta: 'Estudio digital · Full stack',
 				period: '2023 — 2024',
-				detail: 'Sitios y productos para un estudio de desarrollo.',
+				mark: 'OD',
+				logo: '',
+				context:
+					'Estudio de desarrollo que construye sitios y productos para sus clientes; el trabajo iba desde la web pública hasta los bloques de interfaz reutilizados en proyectos nuevos.',
 				tags: ['Astro', 'Vue 3', 'Node.js'],
-				participation: [
-					'Diseñé la arquitectura de sitios y rutas estáticas del estudio.',
-					'Construí secciones y componentes reutilizables en Vue.',
-					'Dejé el despliegue y la documentación para editar sin depender de mí.',
-				],
 				projects: [
 					{
 						name: 'Sitio del estudio',
@@ -296,12 +364,12 @@ const es = {
 						],
 						solutions: [
 							{
-								title: 'Design system',
+								title: 'Sistema de componentes',
 								detail: 'Componentes y tokens para productos nuevos.',
 							},
 							{
-								title: 'Documentación viva',
-								detail: 'Ejemplos y reglas de uso junto al código.',
+								title: 'Reglas de uso',
+								detail: 'Ejemplos y reglas junto al componente.',
 							},
 						],
 						stack: ['Vue 3', 'TypeScript', 'Tailwind CSS', 'Vite'],
@@ -313,13 +381,11 @@ const es = {
 				name: 'glgfreight',
 				meta: 'Logística · Web app',
 				period: '2023 — 2024',
-				detail: 'Panel operativo para una empresa de transporte y carga.',
+				mark: 'GL',
+				logo: '',
+				context:
+					'Empresa de transporte y carga que coordina viajes y transportistas; operaciones necesitaba seguir la carga, validar evidencias y actuar sobre las incidencias del día.',
 				tags: ['Vue 3', 'Node.js', 'PostgreSQL'],
-				participation: [
-					'Desarrollé el panel operativo para seguimiento de carga y transportistas.',
-					'Integré APIs internas y normalicé filtros, tablas y estados.',
-					'Añadí alertas y vistas de detalle para el equipo de operaciones.',
-				],
 				projects: [
 					{
 						name: 'Torre de control',
@@ -331,8 +397,8 @@ const es = {
 						],
 						solutions: [
 							{
-								title: 'Panel operativo',
-								detail: 'Vue + APIs para seguimiento y gestión diaria.',
+								title: 'Seguimiento en vivo',
+								detail: 'Vue + APIs para carga y transportistas.',
 							},
 							{
 								title: 'Alertas de incidencias',
@@ -351,7 +417,7 @@ const es = {
 						],
 						solutions: [
 							{
-								title: 'Portal de viajes',
+								title: 'Viajes y evidencias',
 								detail: 'Vista de viajes, documentos y evidencias.',
 							},
 							{
@@ -368,13 +434,11 @@ const es = {
 				name: 'Colegio Simón Bolívar',
 				meta: 'Educación · Sitio institucional',
 				period: '2023',
-				detail: 'Sitio y flujo de admisiones para una institución educativa.',
+				mark: 'CS',
+				logo: '',
+				context:
+					'Institución educativa que presenta su propuesta y vida escolar, y abre cada año un proceso de admisiones en línea para nuevas familias.',
 				tags: ['Astro', 'i18n'],
-				participation: [
-					'Construí el sitio institucional y el flujo de admisiones.',
-					'Organicé el contenido bilingüe y los formularios de contacto.',
-					'Revisé accesibilidad, SEO local y metadatos por idioma.',
-				],
 				projects: [
 					{
 						name: 'Sitio institucional',
@@ -386,8 +450,8 @@ const es = {
 						],
 						solutions: [
 							{
-								title: 'Sitio bilingüe',
-								detail: 'Astro + i18n con rutas y canonical por idioma.',
+								title: 'Rutas y metadatos',
+								detail: 'Canonical, hreflang y contenido por idioma.',
 							},
 							{
 								title: 'Contenido institucional',
@@ -423,13 +487,11 @@ const es = {
 				name: 'OrinocoIO',
 				meta: 'Producto · Full stack',
 				period: '2024 — 2025',
-				detail: 'Herramientas y servicios web para un equipo de producto.',
+				mark: 'OI',
+				logo: '',
+				context:
+					'Equipo de producto que trabaja con herramientas internas; el objetivo era automatizar la clasificación de solicitudes y ordenar los accesos por rol.',
 				tags: ['Node.js', 'Vue 3', 'PostgreSQL'],
-				participation: [
-					'Desarrollé herramientas internas y flujos de usuario para el equipo.',
-					'Modelé APIs y datos para automatizar tareas repetitivas.',
-					'Dejé pruebas y despliegue documentados para seguir iterando.',
-				],
 				projects: [
 					{
 						name: 'Consola interna',
@@ -441,7 +503,7 @@ const es = {
 						],
 						solutions: [
 							{
-								title: 'Consola interna',
+								title: 'Vista de operaciones',
 								detail: 'Node + Vue para operaciones y soporte.',
 							},
 							{
@@ -461,8 +523,8 @@ const es = {
 						],
 						solutions: [
 							{
-								title: 'Triage asistido',
-								detail: 'Clasificación de solicitudes con reglas y modelo.',
+								title: 'Clasificación asistida',
+								detail: 'Solicitudes clasificadas con reglas y modelo.',
 							},
 							{
 								title: 'Revisión humana',
@@ -475,41 +537,85 @@ const es = {
 			},
 		],
 	},
+
 	tools: {
 		eyebrow: 'Herramientas · Tecnología e IA',
 		title: 'El kit con el que construyo.',
 		description:
 			'Tecnologías que uso a diario y habilidades de IA que aplico al desarrollo.',
+		countLabel: 'herramientas',
+		detailLabel: 'Para qué la uso',
+		tabsLabel: 'Grupos de herramientas',
 		groups: [
 			{
+				slug: 'frontend',
 				title: 'Frontend',
 				note: 'Interfaces, componentes y sistemas de diseño.',
-				items: ['Astro', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'HTML y CSS', 'Vite'],
+				items: [
+					{ name: 'Astro', use: 'Rutas, layout y contenido generados en el build.' },
+					{ name: 'Vue 3', use: 'Componentes con estado; aquí se renderizan en el servidor.' },
+					{ name: 'TypeScript', use: 'Tipos estrictos en componentes, copy y configuración.' },
+					{ name: 'Tailwind CSS', use: 'Utilidades en el markup; los tokens viven en CSS.' },
+					{ name: 'HTML y CSS', use: 'La base: semántica, capas y estilos sin framework.' },
+					{ name: 'Vite', use: 'Build y recarga del proyecto mientras se edita.' },
+				],
 			},
 			{
+				slug: 'backend',
 				title: 'Backend',
 				note: 'APIs, lógica de servidor e integraciones.',
-				items: ['Node.js', 'APIs REST', 'Webhooks', 'Autenticación'],
+				items: [
+					{ name: 'Node.js', use: 'Scripts de build y utilidades del proyecto.' },
+					{ name: 'APIs REST', use: 'Integración con servicios en los proyectos que las pedían.' },
+					{ name: 'Webhooks', use: 'Avisos entre servicios para estados y alertas.' },
+					{ name: 'Autenticación', use: 'Acceso, sesiones y recuperación en portales de cliente.' },
+				],
 			},
 			{
+				slug: 'data',
 				title: 'Datos',
 				note: 'Modelado, almacenamiento y consultas.',
-				items: ['PostgreSQL', 'Prisma', 'Redis', 'SQL'],
+				items: [
+					{ name: 'PostgreSQL', use: 'Datos relacionales en los proyectos con backend.' },
+					{ name: 'Prisma', use: 'Modelo y consultas tipadas sobre la base de datos.' },
+					{ name: 'Redis', use: 'Caché y datos efímeros cuando el proyecto lo necesita.' },
+					{ name: 'SQL', use: 'Consultas directas para leer y ajustar datos.' },
+				],
 			},
 			{
+				slug: 'ai',
 				title: 'IA',
 				note: 'Agentes, contexto y flujos asistidos.',
-				items: ['Agent skills', 'Context engineering', 'Firecrawl', 'Graphify', 'LLM APIs'],
+				items: [
+					{ name: 'Agent skills', use: 'Instrucciones reutilizables para tareas del proyecto.' },
+					{ name: 'Context engineering', use: 'Preparar el contexto que el modelo necesita para acertar.' },
+					{ name: 'Firecrawl', use: 'Extraer contenido de la web para investigación y referencias.' },
+					{ name: 'Graphify', use: 'Convertir código y documentación en grafos consultables.' },
+					{ name: 'LLM APIs', use: 'Clasificación y respuestas asistidas con reglas de negocio.' },
+				],
 			},
 			{
+				slug: 'devops',
 				title: 'DevOps',
 				note: 'Entrega, entornos y automatización.',
-				items: ['Git y GitHub', 'Docker', 'CI/CD', 'Linux', 'Vercel'],
+				items: [
+					{ name: 'Git y GitHub', use: 'Historial, ramas y revisión de cambios.' },
+					{ name: 'Docker', use: 'Entornos reproducibles para probar y desplegar.' },
+					{ name: 'CI/CD', use: 'Build y verificación automáticos antes de publicar.' },
+					{ name: 'Linux', use: 'Servidores y terminal donde corren los despliegues.' },
+					{ name: 'Vercel', use: 'Publicación del build estático con dominio y CDN.' },
+				],
 			},
 			{
+				slug: 'design',
 				title: 'Diseño',
 				note: 'Tipografía, tokens y accesibilidad.',
-				items: ['Figma', 'Design tokens', 'Accesibilidad', 'Tipografía'],
+				items: [
+					{ name: 'Figma', use: 'Composición y revisión visual antes del código.' },
+					{ name: 'Design tokens', use: 'Color, tipografía y radios en un solo lugar.' },
+					{ name: 'Accesibilidad', use: 'Teclado, foco, contraste y HTML semántico.' },
+					{ name: 'Tipografía', use: 'Escala, ritmo y tracking del sistema.' },
+				],
 			},
 		],
 	},
@@ -537,6 +643,7 @@ const en: HomeCopy = {
 		],
 	},
 	manifesto: {
+		eyebrow: 'Manifesto',
 		title: 'Speed starts in the design.',
 		lead: 'Architecture, tolerance, traceability, servers, sustainability and cost. Decisions made before the first line and felt in the cost of every change.',
 		cards: [
@@ -571,9 +678,75 @@ const en: HomeCopy = {
 		description:
 			'Web development services for projects that need a light, bilingual and maintainable foundation.',
 		cta: 'See process',
+		tabsLabel: 'Services',
+		specimens: {
+			build: {
+				label: 'Build output',
+				lines: [
+					'$ npm run build',
+					'├─ /en/index.html',
+					'├─ /es/index.html',
+					'└─ /index.html',
+					'',
+					'3 pages · 0 hydration scripts',
+				],
+				note: 'The artifact is dist/. No process keeps running.',
+			},
+			scale: {
+				label: 'The site’s real scale',
+				rows: [
+					{ meta: 'Display · 112 / 1.00 / −0.04', sample: 'Fast sites.' },
+					{ meta: 'Headline · 56 / 1.05 / −0.032', sample: 'Experience and solutions.' },
+					{ meta: 'Label · 11 / 0.10 em', sample: 'Projects · Solutions' },
+				],
+				note: 'Reduced samples; the values are the real ones.',
+			},
+			focus: {
+				label: 'Try it: press Tab',
+				action: "Let's talk",
+				hint: 'The ring is the system’s real focus state.',
+				swatches: [
+					{ tone: 'accent', label: 'live accent · fill only' },
+					{ tone: 'accent-text', label: 'deep accent · small text' },
+				],
+			},
+			payload: {
+				label: 'What this page ships',
+				stats: [
+					{ value: '03', label: 'routes of HTML written at build' },
+					{ value: '01', label: 'page script: scroll and sheets' },
+					{ value: '00', label: 'remote fonts or third-party requests' },
+				],
+				note: 'No images in this section. The CSS is a single sheet.',
+			},
+			seo: {
+				label: 'The real head, not a summary',
+				lines: [
+					'<link rel="canonical"',
+					'      href="https://trebor.dev/en/">',
+					'<link rel="alternate" hreflang="en"',
+					'      href="https://trebor.dev/en/">',
+					'<link rel="alternate" hreflang="es"',
+					'      href="https://trebor.dev/es/">',
+					'<link rel="alternate" hreflang="x-default"',
+					'      href="https://trebor.dev/es/">',
+				],
+			},
+			docs: {
+				label: 'What you get at handover',
+				files: [
+					{ name: 'AGENTS.md', role: 'rules and limits' },
+					{ name: 'DESIGN.md', role: 'tokens and components' },
+					{ name: 'docs/system-design.md', role: 'how it is built' },
+					{ name: 'docs/decisions/', role: 'why it was decided that way' },
+				],
+			},
+		},
 		items: [
 			{
 				number: '01',
+				slug: 'static',
+				specimen: 'build',
 				title: 'Static sites',
 				description:
 					'Astro generates the HTML at build time. Deployment is a directory of files, no server.',
@@ -581,85 +754,86 @@ const en: HomeCopy = {
 			},
 			{
 				number: '02',
+				slug: 'interface',
+				specimen: 'scale',
 				title: 'Interface design',
-				description:
-					'Hierarchy, typography and tokens before writing components.',
+				description: 'Hierarchy, typography and tokens before writing components.',
 				tags: ['Visual system', 'Tokens'],
 			},
 			{
 				number: '03',
+				slug: 'a11y',
+				specimen: 'focus',
 				title: 'Accessibility',
-				description:
-					'Semantic HTML, keyboard navigation and checked contrast.',
+				description: 'Semantic HTML, keyboard navigation and checked contrast.',
 				tags: ['WCAG', 'Keyboard'],
 			},
 			{
 				number: '04',
+				slug: 'performance',
+				specimen: 'payload',
 				title: 'Performance',
-				description:
-					'Load budget, sized images and zero JavaScript by default.',
+				description: 'Load budget, sized images and zero JavaScript by default.',
 				tags: ['Core Web Vitals', 'Images'],
 			},
 			{
 				number: '05',
+				slug: 'seo',
+				specimen: 'seo',
 				title: 'Technical SEO',
-				description:
-					'Canonical, hreflang and per-language metadata on every route.',
+				description: 'Canonical, hreflang and per-language metadata on every route.',
 				tags: ['i18n', 'Metadata'],
 			},
 			{
 				number: '06',
+				slug: 'maintenance',
+				specimen: 'docs',
 				title: 'Maintenance',
-				description:
-					'Minimal dependencies and documentation so the site keeps standing.',
+				description: 'Minimal dependencies and documentation so the site keeps standing.',
 				tags: ['Docs', 'Refactor'],
 			},
 		],
 	},
+
 	process: {
 		title: 'How do I work?',
 		description:
-			'Four short phases. At each one I show you something concrete to review together.',
+			'Four conversations, not four handovers. In each one we review something concrete: you decide your part and I hand back a piece to look at together.',
 		cta: 'Tell me about your project',
+		youLabel: 'You',
+		meLabel: 'Me',
+		closing: {
+			lead: 'I listen before I propose.',
+			tail: 'Everything else follows from there.',
+		},
 		rows: [
 			{
-				eyebrow: 'Phase 01',
 				title: 'I listen and organize',
-				items: [
-					{ kind: 'Goal', label: "What you need and what you don't" },
-					{ kind: 'Content', label: 'Copy, languages and references' },
-					{ kind: 'Scope', label: 'What ships in the first version' },
-				],
+				give: 'You get: a clear scope',
+				you: 'You tell me what you need, what you don’t and what you have.',
+				me: 'I hand back what ships in the first version and what waits.',
 			},
 			{
-				eyebrow: 'Phase 02',
 				title: 'I design with you',
-				items: [
-					{ kind: 'Hierarchy', label: 'Navigation and sections' },
-					{ kind: 'Typography', label: 'Scale, rhythm and tone' },
-					{ kind: 'System', label: 'Tokens, color and components' },
-				],
+				give: 'You get: a first version',
+				you: 'You decide hierarchy, tone and references.',
+				me: 'I put structure, typography and the system into a navigable version.',
 			},
 			{
-				eyebrow: 'Phase 03',
 				title: 'I build and review',
-				items: [
-					{ kind: 'Astro', label: 'Static routes and content' },
-					{ kind: 'Vue', label: 'Interaction without noise' },
-					{ kind: 'i18n', label: 'ES and EN from day one' },
-				],
+				give: 'You get: the site working',
+				you: 'You review what you see and what is missing.',
+				me: 'I build, fix and leave the site in both languages.',
 			},
 			{
-				eyebrow: 'Phase 04',
-				title: 'I deliver and hand over',
-				items: [
-					{ kind: 'Build', label: 'Verified static output' },
-					{ kind: 'Deploy', label: 'Domain, CDN and analytics' },
-					{ kind: 'Handover', label: 'Docs and how to edit' },
-				],
+				title: 'I deliver and leave you ready',
+				give: 'You get: the handover',
+				you: 'You receive the site and know how to edit it.',
+				me: 'I deploy, review and leave the documentation.',
 			},
 		],
 	},
+
 	contact: {
 		eyebrow: "Let's build together",
 		title: 'Your next site starts with a conversation.',
@@ -700,15 +874,14 @@ const en: HomeCopy = {
 		eyebrow: 'Projects · Solutions',
 		title: 'Experience and solutions.',
 		description:
-			'A selection of companies I have worked with, their projects, my participation and the solutions I applied in each one.',
+			'Five companies and ten projects. What I built in each and what stayed.',
 		experienceLabel: 'Companies',
 		projectsLabel: 'Projects',
 		participationLabel: 'My participation',
-		solutionsLabel: 'Star solutions',
+		solutionsLabel: 'Solutions',
 		stackLabel: 'Technologies',
-		openLabel: 'Open card',
-		closeLabel: 'Close card',
-		cardEyebrow: 'Experience card',
+		keyboardHint: '← → to switch',
+		groupLabel: 'Companies',
 		cta: "Let's talk",
 		items: [
 			{
@@ -716,13 +889,11 @@ const en: HomeCopy = {
 				name: 'Cuantia',
 				meta: 'Fintech · Frontend',
 				period: '2024 — 2025',
-				detail: 'Interfaces and components for a financial platform.',
+				mark: 'CU',
+				logo: '',
+				context:
+					'A financial platform where the team manages accounts, movements and reconciliation, and clients check balances and documents from their own login.',
 				tags: ['Vue 3', 'TypeScript', 'Vite'],
-				participation: [
-					'I built the financial dashboard interface and its loading, error and empty states.',
-					'I defined reusable components and the data flow between filters and tables.',
-					'I reviewed keyboard, focus and contrast with the product team.',
-				],
 				projects: [
 					{
 						name: 'Treasury dashboard',
@@ -738,7 +909,7 @@ const en: HomeCopy = {
 								detail: 'Filters, pagination and states without reloads.',
 							},
 							{
-								title: 'Component system',
+								title: 'Table components',
 								detail: 'Vue + TypeScript for dense views.',
 							},
 						],
@@ -754,8 +925,8 @@ const en: HomeCopy = {
 						],
 						solutions: [
 							{
-								title: 'Secure access',
-								detail: 'Sessions and recovery with clear messages.',
+								title: 'Access and recovery',
+								detail: 'Sessions, recovery and clear error messages.',
 							},
 							{
 								title: 'Documents',
@@ -771,13 +942,11 @@ const en: HomeCopy = {
 				name: 'OrinocoDev',
 				meta: 'Digital studio · Full stack',
 				period: '2023 — 2024',
-				detail: 'Sites and products for a development studio.',
+				mark: 'OD',
+				logo: '',
+				context:
+					'A development studio that builds sites and products for its clients; the work ran from the public site to the interface blocks reused in new projects.',
 				tags: ['Astro', 'Vue 3', 'Node.js'],
-				participation: [
-					'I designed the studio site architecture and static routes.',
-					'I built reusable sections and components in Vue.',
-					'I left deployment and documentation ready to edit without me.',
-				],
 				projects: [
 					{
 						name: 'Studio site',
@@ -785,7 +954,7 @@ const en: HomeCopy = {
 						participation: [
 							'I defined static routes and bilingual content.',
 							'I built reusable sections and components.',
-							'I left the deployment documented.',
+							'I handed over deployment and docs so the site could be edited without me.',
 						],
 						solutions: [
 							{
@@ -809,12 +978,12 @@ const en: HomeCopy = {
 						],
 						solutions: [
 							{
-								title: 'Design system',
+								title: 'Component system',
 								detail: 'Components and tokens for new products.',
 							},
 							{
-								title: 'Living documentation',
-								detail: 'Examples and usage rules next to the code.',
+								title: 'Usage rules',
+								detail: 'Examples and rules next to the component.',
 							},
 						],
 						stack: ['Vue 3', 'TypeScript', 'Tailwind CSS', 'Vite'],
@@ -826,13 +995,11 @@ const en: HomeCopy = {
 				name: 'glgfreight',
 				meta: 'Logistics · Web app',
 				period: '2023 — 2024',
-				detail: 'Operations dashboard for a freight and transport company.',
+				mark: 'GL',
+				logo: '',
+				context:
+					'A freight and transport company coordinating trips and carriers; operations needed to track loads, validate evidence and act on the day’s incidents.',
 				tags: ['Vue 3', 'Node.js', 'PostgreSQL'],
-				participation: [
-					'I developed the operations dashboard for freight and carrier tracking.',
-					'I integrated internal APIs and normalized filters, tables and states.',
-					'I added alerts and detail views for the operations team.',
-				],
 				projects: [
 					{
 						name: 'Control tower',
@@ -844,8 +1011,8 @@ const en: HomeCopy = {
 						],
 						solutions: [
 							{
-								title: 'Operations dashboard',
-								detail: 'Vue + APIs for daily tracking and management.',
+								title: 'Live tracking',
+								detail: 'Vue + APIs for loads and carriers.',
 							},
 							{
 								title: 'Incident alerts',
@@ -864,7 +1031,7 @@ const en: HomeCopy = {
 						],
 						solutions: [
 							{
-								title: 'Trip portal',
+								title: 'Trips and evidence',
 								detail: 'Trips, documents and evidence in one view.',
 							},
 							{
@@ -881,13 +1048,11 @@ const en: HomeCopy = {
 				name: 'Colegio Simón Bolívar',
 				meta: 'Education · Institutional site',
 				period: '2023',
-				detail: 'Site and admissions flow for a school.',
+				mark: 'CS',
+				logo: '',
+				context:
+					'A school that presents its programme and school life, and opens an online admissions process every year.',
 				tags: ['Astro', 'i18n'],
-				participation: [
-					'I built the institutional site and the admissions flow.',
-					'I organized bilingual content and contact forms.',
-					'I reviewed accessibility, local SEO and per-language metadata.',
-				],
 				projects: [
 					{
 						name: 'Institutional site',
@@ -899,8 +1064,8 @@ const en: HomeCopy = {
 						],
 						solutions: [
 							{
-								title: 'Bilingual site',
-								detail: 'Astro + i18n with per-language routes and canonical.',
+								title: 'Routes and metadata',
+								detail: 'Canonical, hreflang and per-language content.',
 							},
 							{
 								title: 'Institutional content',
@@ -936,13 +1101,11 @@ const en: HomeCopy = {
 				name: 'OrinocoIO',
 				meta: 'Product · Full stack',
 				period: '2024 — 2025',
-				detail: 'Web tools and services for a product team.',
+				mark: 'OI',
+				logo: '',
+				context:
+					'A product team working with internal tools; the goal was to automate request classification and organize access by role.',
 				tags: ['Node.js', 'Vue 3', 'PostgreSQL'],
-				participation: [
-					'I developed internal tools and user flows for the team.',
-					'I modeled APIs and data to automate repetitive tasks.',
-					'I left tests and deployment documented to keep iterating.',
-				],
 				projects: [
 					{
 						name: 'Internal console',
@@ -950,11 +1113,11 @@ const en: HomeCopy = {
 						participation: [
 							'I built the console and its user flows.',
 							'I modeled APIs and permissions.',
-							'I left tests and deployment documented.',
+							'I documented tests and deployment so the team could keep iterating.',
 						],
 						solutions: [
 							{
-								title: 'Internal console',
+								title: 'Operations view',
 								detail: 'Node + Vue for operations and support.',
 							},
 							{
@@ -974,8 +1137,8 @@ const en: HomeCopy = {
 						],
 						solutions: [
 							{
-								title: 'Assisted triage',
-								detail: 'Request classification with rules and a model.',
+								title: 'Assisted classification',
+								detail: 'Requests classified with rules and a model.',
 							},
 							{
 								title: 'Human review',
@@ -988,41 +1151,85 @@ const en: HomeCopy = {
 			},
 		],
 	},
+
 	tools: {
 		eyebrow: 'Tools · Technology and AI',
 		title: 'The kit I build with.',
 		description:
 			'Technologies I use every day and AI skills I apply to development.',
+		countLabel: 'tools',
+		detailLabel: 'What I use it for',
+		tabsLabel: 'Tool groups',
 		groups: [
 			{
+				slug: 'frontend',
 				title: 'Frontend',
 				note: 'Interfaces, components and design systems.',
-				items: ['Astro', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'HTML and CSS', 'Vite'],
+				items: [
+					{ name: 'Astro', use: 'Routes, layout and content generated at build time.' },
+					{ name: 'Vue 3', use: 'Components with state; here they render on the server.' },
+					{ name: 'TypeScript', use: 'Strict types across components, copy and config.' },
+					{ name: 'Tailwind CSS', use: 'Utilities in the markup; tokens live in CSS.' },
+					{ name: 'HTML and CSS', use: 'The base: semantics, layers and styles without a framework.' },
+					{ name: 'Vite', use: 'Build and reload while the project is edited.' },
+				],
 			},
 			{
+				slug: 'backend',
 				title: 'Backend',
 				note: 'APIs, server logic and integrations.',
-				items: ['Node.js', 'REST APIs', 'Webhooks', 'Authentication'],
+				items: [
+					{ name: 'Node.js', use: 'Build scripts and project utilities.' },
+					{ name: 'REST APIs', use: 'Integration with services in projects that needed them.' },
+					{ name: 'Webhooks', use: 'Service-to-service events for states and alerts.' },
+					{ name: 'Authentication', use: 'Access, sessions and recovery in client portals.' },
+				],
 			},
 			{
+				slug: 'data',
 				title: 'Data',
 				note: 'Modeling, storage and queries.',
-				items: ['PostgreSQL', 'Prisma', 'Redis', 'SQL'],
+				items: [
+					{ name: 'PostgreSQL', use: 'Relational data in projects with a backend.' },
+					{ name: 'Prisma', use: 'Model and typed queries over the database.' },
+					{ name: 'Redis', use: 'Cache and ephemeral data when the project needs it.' },
+					{ name: 'SQL', use: 'Direct queries to read and adjust data.' },
+				],
 			},
 			{
+				slug: 'ai',
 				title: 'AI',
 				note: 'Agents, context and assisted workflows.',
-				items: ['Agent skills', 'Context engineering', 'Firecrawl', 'Graphify', 'LLM APIs'],
+				items: [
+					{ name: 'Agent skills', use: 'Reusable instructions for project tasks.' },
+					{ name: 'Context engineering', use: 'Preparing the context a model needs to get it right.' },
+					{ name: 'Firecrawl', use: 'Extracting web content for research and references.' },
+					{ name: 'Graphify', use: 'Turning code and docs into queryable graphs.' },
+					{ name: 'LLM APIs', use: 'Assisted classification and replies with business rules.' },
+				],
 			},
 			{
+				slug: 'devops',
 				title: 'DevOps',
 				note: 'Delivery, environments and automation.',
-				items: ['Git and GitHub', 'Docker', 'CI/CD', 'Linux', 'Vercel'],
+				items: [
+					{ name: 'Git and GitHub', use: 'History, branches and change review.' },
+					{ name: 'Docker', use: 'Reproducible environments to test and deploy.' },
+					{ name: 'CI/CD', use: 'Automated build and checks before publishing.' },
+					{ name: 'Linux', use: 'Servers and terminal where deployments run.' },
+					{ name: 'Vercel', use: 'Publishing the static build with domain and CDN.' },
+				],
 			},
 			{
+				slug: 'design',
 				title: 'Design',
 				note: 'Typography, tokens and accessibility.',
-				items: ['Figma', 'Design tokens', 'Accessibility', 'Typography'],
+				items: [
+					{ name: 'Figma', use: 'Composition and visual review before code.' },
+					{ name: 'Design tokens', use: 'Color, type and radii in one place.' },
+					{ name: 'Accessibility', use: 'Keyboard, focus, contrast and semantic HTML.' },
+					{ name: 'Typography', use: 'Scale, rhythm and tracking for the system.' },
+				],
 			},
 		],
 	},
