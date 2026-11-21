@@ -231,15 +231,17 @@ blanco del botón primario.
 
 ## 8. Movimiento
 
-- Manifiesto: typewriter del titular con caret, disparado por `IntersectionObserver`.
+- Manifiesto: un eje vertical se dibuja y seis estaciones alternas aparecen en
+  cascada de 90 ms, con ramales discontinuos y un pulso de acento que lo recorre.
+  La entrada la dispara `IntersectionObserver`; sin JavaScript el contenido está
+  visible.
 - Herramientas: entrada escalonada de las tarjetas (`kit-enter`, 620 ms), una vez.
-- Proyectos: apertura de la carta en diálogo con giro 3D de la portada.
-- Proceso: cascada jerárquica. Nodos y pasos entran en orden de lectura con un
-  compás de 90 ms (fase, sus tres pasos, la siguiente fase) y los conectores
-  aparecen tras ellos. Dos pulsos por fase recorren el grafo en bucle de 2.4 s:
-  un punto de acento baja por el tronco y otro cruza el conector hacia la fase
-  siguiente, con 420 ms de desfase por nivel. Sin JavaScript el grafo queda
-  visible; fuera de escena los pulsos se pausan.
+- Proyectos: índice de empresas y ficha en la misma pantalla. El cambio usa
+  radios nativos y `:has()`, sin JavaScript ni diálogo.
+- Proceso: cuatro conversaciones en cascada. La regla superior de cada fase se
+  dibuja de izquierda a derecha y la fila entra con 90 ms de compás; la frase de
+  cierre llega última. La entrada la dispara `IntersectionObserver`; sin
+  JavaScript las cuatro fases quedan visibles.
 - Perfil: reveal por texto ligado al scroll (§11).
 - Ambiente: los orbes de hero, herramientas, manifiesto y servicios animan en
   bucle constante (22–56 s) y se pausan fuera de escena. Puro CSS; sin
@@ -418,6 +420,8 @@ el patrón «sticky full page slides» de la referencia de CodePen.
 ## 12. Pendientes de contenido
 
 - Retrato definitivo y su tratamiento (idealmente recorte con fondo transparente).
+- Logos de empresa en `public/logos/<slug>.png` o `.jpg`; hoy se muestra el
+  monograma dentro del mismo cuadrado.
 - Iconos de proyectos o servicios.
 - Enlaces sociales reales (el original usa X, LinkedIn y Product Hunt).
 - Testimonios reales; hoy son huecos rotulados.

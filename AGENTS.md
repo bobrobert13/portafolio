@@ -145,9 +145,20 @@ the language switcher and hreflang.
   locales in the dev server (`/es/`, `/en/`), not just the source.
 - Zero-JS rule: the built HTML must contain no `client:*` hydration scripts unless
   a component genuinely needs them. The home ships small non-hydrating scripts
-  only: theme toggle, slide navigation and section-local effects (typing,
-  dialogs, kit animation).
+  only: theme toggle, slide navigation and section-local effects (the company
+  browser, the manifesto and process cascades, kit animation).
 - No test suite exists. Add one only if the task asks for it.
+
+## Project documentation
+
+- `PRODUCT.md` — durable product truth: users, purpose, positioning, evidence and
+  constraints. Update it when a product fact changes, not for visual work.
+- `DESIGN.md` — visual system in the DESIGN.md format: tokens, typography, layout,
+  depth, shapes, components and guardrails. Tokens are normative.
+- `docs/system-design.md` — current architecture: module boundaries, rendering,
+  i18n, tokens, configuration, failure modes and verification.
+- `docs/decisions/` — ADRs for the decisions that shape the architecture. Read the
+  relevant ADR before changing a boundary; write a new one to supersede it.
 
 ## Documentation
 
