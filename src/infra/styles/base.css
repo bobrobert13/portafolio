@@ -92,4 +92,29 @@
 			display: none;
 		}
 	}
+
+	/*
+	 * Viewport blur while the page glides to a section. The script sets
+	 * `data-scrolling` on <html> only for programmatic jumps, so the wheel and
+	 * keyboard keep the page sharp.
+	 */
+	.scroll-blur {
+		position: fixed;
+		inset: 0;
+		z-index: 60;
+		pointer-events: none;
+		visibility: hidden;
+		opacity: 0;
+		-webkit-backdrop-filter: blur(2.5px);
+		backdrop-filter: blur(2.5px);
+		transition:
+			opacity 200ms ease,
+			visibility 0s linear 200ms;
+	}
+
+	:root[data-scrolling] .scroll-blur {
+		visibility: visible;
+		opacity: 1;
+		transition: opacity 200ms ease;
+	}
 }

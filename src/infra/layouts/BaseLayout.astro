@@ -53,6 +53,10 @@ const footerSections = [
 			} catch {
 				/* storage can be unavailable in private contexts */
 			}
+
+			/* A hash in the URL owns the position: the sheet script re-applies it
+			   after layout, so the browser must not restore an older scroll. */
+			if (location.hash) history.scrollRestoration = 'manual';
 		</script>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -76,6 +80,7 @@ const footerSections = [
 	<body class="flex min-h-dvh flex-col">
 		<div class="site-frame flex flex-1 flex-col">
 			<a class="skip-link" href="#main">{t(locale, 'a11y.skipToContent')}</a>
+			<div class="scroll-blur" aria-hidden="true"></div>
 
 			<header class="site-header sticky top-0 z-50 border-b border-line bg-page/85 backdrop-blur-md">
 				<div class="flex h-[62px] items-center gap-3 px-[1.125rem] md:gap-5 md:px-6 lg:px-11">

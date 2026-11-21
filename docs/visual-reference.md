@@ -238,6 +238,11 @@ blanco del botón primario.
 - Herramientas: entrada escalonada de las tarjetas (`kit-enter`, 620 ms), una vez.
 - Proyectos: índice de empresas y ficha en la misma pantalla. El cambio usa
   radios nativos y `:has()`, sin JavaScript ni diálogo.
+- Navegación: los saltos de sección usan un glide de 420–900 ms con curva
+  cúbica y aterrizaje exacto, y un desenfoque de 2.5 px en todo el viewport
+  mientras dura. Los enlaces del header con prefijo de locale se interceptan y
+  una recarga con hash aterriza en el borde de su pantalla, no en el elemento
+  interno.
 - Proceso: cuatro conversaciones en cascada. La regla superior de cada fase se
   dibuja de izquierda a derecha y la fila entra con 90 ms de compás; la frase de
   cierre llega última. La entrada la dispara `IntersectionObserver`; sin

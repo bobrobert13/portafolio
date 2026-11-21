@@ -330,6 +330,11 @@ No hay recortes decorativos. `overflow: clip` aparece solo donde una pantalla ap
 - **Open state:** cada celda es un radio; la activa tiñe el fondo, marca el borde izquierdo en acento y abre una banda de detalle debajo con nombre y uso de cada elemento. El resto de celdas sigue visible.
 - **Use:** el estante de herramientas. El mismo patrón sirve para cualquier inventario de seis a doce elementos.
 
+### Scroll Navigation
+- **Jump:** glide por tiempo de 420–900 ms con curva cúbica y aterrizaje exacto; la rueda y las teclas conservan el muelle exponencial.
+- **Blur:** 2.5 px de desenfoque de fondo sobre todo el viewport durante el salto, con fundido de 200 ms. En el camino nativo se limita a puntero fino.
+- **Hash:** una recarga con hash vuelve a colocar la pantalla que contiene el destino después del layout, las fuentes y el load.
+
 ### Contact Form
 - **Shape:** tres campos de 40 px, etiquetas mono encima, radio 8 px y fondo `paper-band`; botón primario de 42 px.
 - **Behavior:** validación nativa y línea de estado `aria-live`. Hasta conectar EmailJS compone un `mailto:` con nombre, correo y mensaje; el enlace directo queda debajo y funciona sin JavaScript.

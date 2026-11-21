@@ -179,17 +179,35 @@ const copy = homeCopy[lang];
 			if (sheet) goTo(sheet, behavior);
 		};
 
+		/* Header links carry the locale prefix (`/es/#perfil`), so matching only
+		   `#…` let the browser handle them and land on the inner element instead
+		   of the sheet top. Resolve the URL and match the same document. */
+		const sameDocument = (url: URL) =>
+			url.pathname.replace(/\/+$/, '') ===
+			window.location.pathname.replace(/\/+$/, '');
+
 		document.addEventListener('click', (event) => {
 			if (!active()) return;
-			const link = (event.target as Element | null)?.closest?.('a[href^="#"]');
-			if (!link) return;
-			const hash = link.getAttribute('href') ?? '';
-			if (hash.length < 2) return;
-			const sheet = sheetOf(document.getElementById(hash.slice(1)));
+			if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+			const link = (event.target as Element | null)?.closest?.('a[href]');
+			if (!(link instanceof HTMLAnchorElement)) return;
+
+			let url: URL;
+			try {
+				url = new URL(link.href, window.location.href);
+			} catch {
+				return;
+			}
+
+			if (!sameDocument(url) || url.hash.length < 2) return;
+
+			const sheet = sheetOf(document.getElementById(url.hash.slice(1)));
 			if (!sheet) return;
+
 			event.preventDefault();
 			goTo(sheet, 'smooth');
-			history.replaceState(null, '', hash);
+			history.replaceState(null, '', url.hash);
 		});
 
 		/* A sheet stays pinned while it is covered, so its layout position is
@@ -250,7 +268,39 @@ const copy = homeCopy[lang];
 			sectionNav.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
 		}
 
-		requestAnimationFrame(() => goToHash('instant'));
+		/*
+		 * A reload with a hash: the browser restores its old scroll or scrolls
+		 * to the inner element, which lands mid-sheet. Re-apply the sheet
+		 * position after layout, fonts and load, unless the visitor already
+		 * took over with wheel, keys or pointer.
+		 */
+		let locked = false;
+		const lock = () => {
+			locked = true;
+		};
+		const settleInitial = () => {
+			if (locked || !window.location.hash) return;
+			goToHash('instant');
+		};
+
+		window.addEventListener('wheel', lock, { once: true, passive: true });
+		window.addEventListener('keydown', lock, { once: true });
+		window.addEventListener('pointerdown', lock, { once: true });
+
+		settleInitial();
+		requestAnimationFrame(settleInitial);
+		window.addEventListener(
+			'load',
+			() => {
+				settleInitial();
+				requestAnimationFrame(settleInitial);
+			},
+			{ once: true },
+		);
+		window.addEventListener('pageshow', (event) => {
+			if (event.persisted) requestAnimationFrame(settleInitial);
+		});
+		document.fonts?.ready.then(() => requestAnimationFrame(settleInitial));
 	}
 </script>
 

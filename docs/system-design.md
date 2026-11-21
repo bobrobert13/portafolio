@@ -139,7 +139,7 @@ tema previo al pintado.
 |---|---|---|---|---|
 | Tema inicial | `BaseLayout.astro` (`is:inline`) | Antes del primer pintado | Aplicar `data-theme` guardado | Usa `prefers-color-scheme` |
 | Toggle de tema | `ThemeToggle.astro` | Al hacer clic | Alternar y persistir tema | El botón no cambia nada |
-| Scroll y pantallas | `Page.astro` | Al cargar | Suavizar rueda/teclas, `--drift`/`--fade`, navegación de secciones | Las pantallas siguen apiladas por CSS |
+| Scroll y pantallas | `Page.astro` + `smooth-scroll.ts` | Al navegar y al cargar | Glide por tiempo, blur de vista, `--drift`/`--fade`, anclas y hash | Las pantallas siguen apiladas por CSS |
 | Cascada del proceso | `BuildProcess.astro` | Al entrar en viewport | Dibujar las reglas y revelar las cuatro conversaciones | El proceso queda visible |
 | Cascada del manifiesto | `Manifesto.astro` | Al entrar en viewport | Dibujar el eje y revelar las seis estaciones en orden | El manifiesto queda visible |
 | Entrada del kit | `Tools.astro` | Al entrar en viewport | Animación escalonada | Las tarjetas quedan visibles |
@@ -227,7 +227,7 @@ npm run preview   # sirve el build localmente
 |---|---|
 | Sin JavaScript | Todo el contenido y las pantallas apiladas siguen visibles; el detalle de proyectos se cambia con radios nativos; el manifiesto aparece completo; el formulario no compone el correo y queda el enlace `mailto:`; solo falta el navegador de secciones |
 | Viewport menor de `1024 × 720` | El home vuelve al flujo vertical normal; el modo apilado no se activa |
-| `prefers-reduced-motion: reduce` | El scroll suave de rueda y teclas se desactiva; el desplazamiento nativo sigue intacto |
+| `prefers-reduced-motion: reduce` | La rueda y las teclas pasan al scroll nativo; los saltos de sección usan el scroll nativo y, en puntero fino, conservan el desenfoque de vista |
 | Puntero táctil o grueso | La rueda no se intercepta; se conserva la inercia del sistema |
 | `localStorage` no disponible | El tema funciona por sesión; el error se ignora |
 | `PUBLIC_CONTACT_EMAIL` vacío | Los CTAs apuntan a `#contacto`; el formulario se renderiza pero no puede enviar y muestra el aviso de no configurado |
