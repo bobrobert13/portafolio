@@ -160,6 +160,13 @@
 		transform: translateY(calc(var(--drift, 0) * 2.5rem));
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		.slide-anim {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
 	/* Shorter laptops: tighten further so nothing is clipped. */
 	@media (max-height: 820px) {
 		.slide #inicio > .hero-copy {

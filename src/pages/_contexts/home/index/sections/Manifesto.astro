@@ -32,7 +32,7 @@ const copy = homeCopy[lang].manifesto;
 			<span class="manifesto-axis" aria-hidden="true"></span>
 			<span class="manifesto-pulse" aria-hidden="true"></span>
 
-			<ul class="manifesto-list">
+			<ul class="manifesto-list" role="list">
 				{
 					copy.cards.map((card, index) => (
 						<li class="manifesto-station" style={`--i:${index}`}>
@@ -324,6 +324,10 @@ const copy = homeCopy[lang].manifesto;
 	/* The site keeps its motion here; reduced motion removes displacement
 	   and scale, the manifesto still fades in on the same cascade. */
 	@media (prefers-reduced-motion: reduce) {
+		.manifesto-pulse {
+			display: none;
+		}
+
 		.manifesto.is-animated .manifesto-copy {
 			translate: none;
 		}

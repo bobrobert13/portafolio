@@ -61,7 +61,7 @@
 	}
 
 	:focus-visible {
-		outline: 2px solid var(--color-accent);
+		outline: 2px solid var(--color-focus);
 		outline-offset: 3px;
 	}
 
@@ -98,6 +98,12 @@
 	 * `data-scrolling` on <html> only for programmatic jumps, so the wheel and
 	 * keyboard keep the page sharp.
 	 */
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+	}
+
 	.scroll-blur {
 		position: fixed;
 		inset: 0;

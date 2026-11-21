@@ -209,3 +209,9 @@
 .slide.is-offstage .ambient-orb {
 	animation-play-state: paused;
 }
+
+@media (prefers-reduced-motion: reduce) {
+	.ambient-orb {
+		animation: none;
+	}
+}

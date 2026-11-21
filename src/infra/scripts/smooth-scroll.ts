@@ -57,7 +57,7 @@ function endBlur() {
 }
 
 const nativeScroll = (goal: number, immediate: boolean) => {
-	if (immediate) {
+	if (immediate || window.matchMedia(REDUCED).matches) {
 		endBlur();
 		window.scrollTo({ top: goal, behavior: 'instant' });
 		return;

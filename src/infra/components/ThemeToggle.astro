@@ -46,13 +46,21 @@ const { label } = Astro.props;
 
 	const current = () => root.dataset.theme ?? (media.matches ? 'dark' : 'light');
 
+	const sync = () => {
+		button?.setAttribute('aria-pressed', String(current() === 'dark'));
+	};
+
 	button?.addEventListener('click', () => {
 		const next = current() === 'dark' ? 'light' : 'dark';
 		root.dataset.theme = next;
+		sync();
 		try {
 			localStorage.setItem('theme', next);
 		} catch {
 			/* storage can be unavailable in private contexts */
 		}
 	});
+
+	media.addEventListener('change', sync);
+	sync();
 </script>

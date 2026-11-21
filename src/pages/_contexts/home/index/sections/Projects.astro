@@ -137,7 +137,7 @@ const contactHref = '#contacto';
 									{company.context}
 								</p>
 
-								<ul class="mt-2 flex flex-wrap gap-1.5">
+								<ul class="mt-2 flex flex-wrap gap-1.5" role="list">
 									{company.tags.map((tag) => (
 										<li class="rounded-xs border border-line bg-ink/[0.03] px-2 py-0.5 font-mono text-[0.625rem] leading-normal text-muted">
 											{tag}
@@ -164,7 +164,7 @@ const contactHref = '#contacto';
 										<div class="company-project-grid">
 											<div>
 												<p class="eyebrow">{copy.participationLabel}</p>
-												<ul class="mt-1.5 grid gap-1 text-[0.75rem] leading-[1.55] text-muted">
+												<ul class="mt-1.5 grid gap-1 text-[0.75rem] leading-[1.55] text-muted" role="list">
 													{project.participation.map((line) => (
 														<li class="flex gap-2">
 															<span
@@ -178,7 +178,7 @@ const contactHref = '#contacto';
 											</div>
 											<div>
 												<p class="eyebrow">{copy.solutionsLabel}</p>
-												<ul class="mt-1.5 grid gap-1.5">
+												<ul class="mt-1.5 grid gap-1.5" role="list">
 													{project.solutions.map((solution) => (
 														<li class="border-s-2 border-accent/55 ps-2.5">
 															<p class="text-[0.75rem] font-medium leading-[1.35] text-ink/85">
@@ -195,7 +195,7 @@ const contactHref = '#contacto';
 
 										<div class="mt-3">
 											<p class="eyebrow">{copy.stackLabel}</p>
-											<ul class="mt-1.5 flex flex-wrap gap-1.5">
+											<ul class="mt-1.5 flex flex-wrap gap-1.5" role="list">
 												{project.stack.map((item) => (
 													<li class="rounded-xs border border-line bg-ink/[0.03] px-2 py-0.5 font-mono text-[0.625rem] leading-normal text-muted">
 														{item}
@@ -288,7 +288,7 @@ const contactHref = '#contacto';
 		font-family: var(--font-mono);
 		font-size: 0.5625rem;
 		letter-spacing: 0.02em;
-		color: var(--color-muted);
+		color: var(--logo-ink);
 	}
 
 	.company-mark img {
@@ -319,7 +319,7 @@ const contactHref = '#contacto';
 	}
 
 	.company-radio:focus-visible + .company-row {
-		outline: 2px solid var(--color-accent);
+		outline: 2px solid var(--color-focus);
 		outline-offset: -2px;
 	}
 

@@ -76,7 +76,7 @@ const specimens = copy.specimens;
 							<p class="mt-2 text-[0.8125rem] leading-[1.65] text-muted">
 								{item.description}
 							</p>
-							<ul class="mt-3 flex flex-wrap gap-1.5">
+							<ul class="mt-3 flex flex-wrap gap-1.5" role="list">
 								{item.tags.map((tag) => (
 									<li class="rounded-xs border border-line bg-ink/[0.03] px-2 py-0.5 font-mono text-[0.625rem] leading-normal text-muted">
 										{tag}
@@ -121,7 +121,7 @@ const specimens = copy.specimens;
 											{specimens.focus.hint}
 										</span>
 									</div>
-									<ul class="mt-4 grid gap-2">
+									<ul class="mt-4 grid gap-2" role="list">
 										{specimens.focus.swatches.map((swatch) => (
 											<li class="flex items-center gap-2 font-mono text-[0.5625rem] text-muted">
 												<span
@@ -167,7 +167,7 @@ const specimens = copy.specimens;
 							{item.specimen === 'docs' && (
 								<>
 									<p class="service-art-label">{specimens.docs.label}</p>
-									<ul class="grid gap-1.5">
+									<ul class="grid gap-1.5" role="list">
 										{specimens.docs.files.map((file) => (
 											<li class="flex justify-between gap-4 border-b border-line/60 pb-1.5 text-[0.6875rem]">
 												<code class="font-mono text-ink">{file.name}</code>
@@ -248,7 +248,7 @@ const specimens = copy.specimens;
 	}
 
 	.service-radio:focus-visible + .service-tab {
-		outline: 2px solid var(--color-accent);
+		outline: 2px solid var(--color-focus);
 		outline-offset: -2px;
 	}
 

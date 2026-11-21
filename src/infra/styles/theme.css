@@ -39,6 +39,8 @@
 	/* Burnt orange for small text: the vivid accent only clears 3:1 as text. */
 	--color-accent-text: #7a4a15;
 	--color-accent-ink: #241708;
+	/* Focus ring: the vivid accent only reaches 2.4:1 on the light page. */
+	--color-focus: #7a4a15;
 	--color-plate: #607938;
 
 	--font-sans:
@@ -68,6 +70,8 @@
 	/* Client logos are raster marks drawn for white paper: the plate stays
 	   light in both themes so a dark PNG or JPEG still reads. */
 	--logo-plate: #fbf7ef;
+	/* Fallback mark text stays dark on that fixed light plate. */
+	--logo-ink: #533416;
 	/* Orb glow: the accent and plate lifted in lightness and chroma so the
 	   moving wash reads on cream without darkening the text beneath it. */
 	--orb-accent: oklch(0.78 0.19 55 / 0.72);
@@ -90,6 +94,7 @@
 	--color-accent: #ce7f20;
 	--color-accent-text: #ce7f20;
 	--color-accent-ink: #241708;
+	--color-focus: #ce7f20;
 	--color-plate: #607938;
 	--glow-accent: color-mix(in oklab, var(--color-accent) 25%, transparent);
 	--glow-plate: color-mix(in oklab, var(--color-plate) 18%, transparent);
@@ -116,6 +121,7 @@
 		--color-accent: #ce7f20;
 		--color-accent-text: #ce7f20;
 		--color-accent-ink: #241708;
+		--color-focus: #ce7f20;
 		--color-plate: #607938;
 		--glow-accent: color-mix(in oklab, var(--color-accent) 25%, transparent);
 		--glow-plate: color-mix(in oklab, var(--color-plate) 18%, transparent);

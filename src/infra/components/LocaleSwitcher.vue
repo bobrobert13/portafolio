@@ -30,7 +30,7 @@ const items = computed(() =>
 			<a
 				:href="item.href"
 				:lang="item.locale"
-				:aria-label="item.label"
+				:aria-label="`${item.short} · ${item.label}`"
 				:aria-current="item.isCurrent ? 'page' : undefined"
 				class="text-subtle transition-colors hover:text-accent-text aria-[current=page]:text-ink"
 			>
