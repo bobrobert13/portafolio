@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-21T18:20:00.000Z",
+  "title": "Design System: Trebor Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Naranja de obra",
+        "canonical": "oklch(0.66 0.15 55)",
+        "tonalRamp": [
+          "oklch(0.28 0.09 55)",
+          "oklch(0.38 0.12 55)",
+          "oklch(0.48 0.15 55)",
+          "oklch(0.58 0.16 55)",
+          "oklch(0.66 0.15 55)",
+          "oklch(0.76 0.13 55)",
+          "oklch(0.87 0.08 55)",
+          "oklch(0.95 0.03 55)"
+        ]
+      },
+      "accent-deep": {
+        "role": "primary",
+        "displayName": "Naranja profundo",
+        "canonical": "#7a4a15"
+      },
+      "plate": {
+        "role": "secondary",
+        "displayName": "Oliva de archivo",
+        "canonical": "oklch(0.53 0.08 130)",
+        "tonalRamp": [
+          "oklch(0.22 0.05 130)",
+          "oklch(0.32 0.07 130)",
+          "oklch(0.42 0.09 130)",
+          "oklch(0.53 0.08 130)",
+          "oklch(0.64 0.09 130)",
+          "oklch(0.75 0.08 130)",
+          "oklch(0.86 0.05 130)",
+          "oklch(0.94 0.02 130)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Papel",
+        "canonical": "oklch(0.92 0.04 85)",
+        "tonalRamp": [
+          "oklch(0.24 0.03 70)",
+          "oklch(0.38 0.04 75)",
+          "oklch(0.52 0.04 78)",
+          "oklch(0.66 0.04 80)",
+          "oklch(0.78 0.04 82)",
+          "oklch(0.86 0.04 84)",
+          "oklch(0.92 0.04 85)",
+          "oklch(0.97 0.02 85)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta cacao",
+        "canonical": "oklch(0.32 0.04 45)",
+        "tonalRamp": [
+          "oklch(0.18 0.03 45)",
+          "oklch(0.26 0.04 45)",
+          "oklch(0.34 0.04 45)",
+          "oklch(0.44 0.04 48)",
+          "oklch(0.56 0.04 55)",
+          "oklch(0.70 0.03 65)",
+          "oklch(0.84 0.02 70)",
+          "oklch(0.94 0.01 70)"
+        ]
+      },
+      "paper-band": { "role": "neutral", "displayName": "Papel de banda", "canonical": "#e6d3b4" },
+      "paper-low": { "role": "neutral", "displayName": "Papel bajo", "canonical": "#e3cfae" },
+      "ink-muted": { "role": "neutral", "displayName": "Tinta apagada", "canonical": "#6e5236" },
+      "ink-subtle": { "role": "neutral", "displayName": "Tinta sutil", "canonical": "#7a5e42" },
+      "rule": { "role": "neutral", "displayName": "Regla", "canonical": "#d9c3a0" },
+      "logo-plate": { "role": "neutral", "displayName": "Placa de logo", "canonical": "#fbf7ef" },
+      "night-paper": { "role": "neutral", "displayName": "Cacao nocturno", "canonical": "#241708" },
+      "night-ink": { "role": "neutral", "displayName": "Crema nocturna", "canonical": "#eedfc7" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Solo el titular del hero; peso regular y tracking cerrado." },
+      "headline": { "displayName": "Headline", "purpose": "Títulos de sección, ancho máximo 672 px." },
+      "title": { "displayName": "Title", "purpose": "Títulos de tarjeta, ficha y proyecto." },
+      "body": { "displayName": "Body", "purpose": "Descripciones y párrafos; 17 px en escritorio." },
+      "label": { "displayName": "Eyebrow / Mono", "purpose": "Única mayúscula del sistema, numeración y metadatos." }
+    },
+    "shadows": [
+      {
+        "name": "button-inset",
+        "value": "inset 0 1px 0 0 rgb(255 255 255 / 0.16)",
+        "purpose": "Única sombra del sistema; da cuerpo al botón primario y al CTA de cabecera."
+      },
+      {
+        "name": "sheet-seam",
+        "value": "inset 0 20px 30px -26px rgb(0 0 0 / 0.5)",
+        "purpose": "Costura de la pantalla que acaba de entrar sobre la anterior."
+      }
+    ],
+    "motion": [
+      { "name": "state", "value": "150ms ease", "purpose": "Color de texto, borde y fondo en hover y focus." },
+      { "name": "panel", "value": "180ms ease", "purpose": "Cambio de superficie seleccionada." },
+      { "name": "kit-enter", "value": "620ms cubic-bezier(0.2, 0.8, 0.2, 1)", "purpose": "Entrada escalonada de las fichas del kit, 80 ms por ficha." },
+      { "name": "sheet", "value": "300ms ease", "purpose": "Deriva y fundido de la pantalla apilada." },
+      { "name": "ambient", "value": "24s–56s linear infinite", "purpose": "Recorrido de los orbes ambientales; se pausan fuera de escena." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "projects-md", "value": "900px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "wide", "value": "1200px" },
+      { "name": "sheet-min", "value": "1024 × 720" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción principal; relleno naranja y brillo interior de 1 px.",
+      "html": "<button class=\"ds-btn-primary\">Hablemos</button>",
+      "css": ".ds-btn-primary { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 10px; padding: 12px 18px; border: 1px solid color-mix(in oklab, var(--color-accent) 45%, transparent); border-radius: var(--radius-btn); background: var(--color-accent); color: var(--color-accent-ink); font-family: var(--font-sans); font-size: 14px; font-weight: 700; line-height: 1.4; box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.16); cursor: pointer; transition: filter 150ms ease; } .ds-btn-primary:hover { filter: brightness(1.05); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Acción secundaria; borde hairline y fondo transparente.",
+      "html": "<button class=\"ds-btn-ghost\">Ver proyectos</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 10px; padding: 12px 18px; border: 1px solid var(--color-line); border-radius: var(--radius-btn); background: transparent; color: var(--color-ink); font-family: var(--font-sans); font-size: 14px; font-weight: 500; line-height: 1.4; cursor: pointer; transition: border-color 150ms ease, background-color 150ms ease; } .ds-btn-ghost:hover { border-color: color-mix(in oklab, var(--color-ink) 25%, var(--color-line)); background: color-mix(in oklab, var(--color-ink) 5%, transparent); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Header CTA",
+      "kind": "button",
+      "refersTo": "cta-header",
+      "description": "Contacto en la cabecera; más pequeño y con radio de 7 px.",
+      "html": "<button class=\"ds-cta-header\">Hablemos</button>",
+      "css": ".ds-cta-header { display: inline-flex; min-height: 32px; align-items: center; gap: 8px; padding: 7px 14px; border: 0; border-radius: var(--radius-cta); background: var(--color-accent); color: var(--color-accent-ink); font-family: var(--font-sans); font-size: 12px; font-weight: 700; cursor: pointer; transition: filter 150ms ease; } .ds-cta-header:hover { filter: brightness(1.05); } .ds-cta-header:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Eyebrow Label",
+      "kind": "custom",
+      "description": "Única mayúscula del sistema; numera y nombra sin competir con el titular.",
+      "html": "<p class=\"ds-eyebrow\">Proyectos · Soluciones</p>",
+      "css": ".ds-eyebrow { margin: 0; font-family: var(--font-mono); font-size: 11px; font-weight: 400; line-height: 1.5; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-subtle); }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Etiqueta de stack o categoría; mono, borde hairline y radio de 5 px.",
+      "html": "<span class=\"ds-tag\">TypeScript</span>",
+      "css": ".ds-tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--color-line); border-radius: var(--radius-xs); background: color-mix(in oklab, var(--color-ink) 3%, transparent); color: var(--color-muted); font-family: var(--font-mono); font-size: 10px; line-height: 1.4; }"
+    },
+    {
+      "name": "Company Index Row",
+      "kind": "nav",
+      "refersTo": "index-row",
+      "description": "Fila del índice de empresas; el estado activo se marca con fondo y regla naranja.",
+      "html": "<div class=\"ds-index-row ds-is-active\"><span class=\"ds-index-number\">01</span><span class=\"ds-index-mark\">CU</span><span class=\"ds-index-copy\"><span class=\"ds-index-name\">Cuantia</span><span class=\"ds-index-meta\">Fintech · Frontend · 2024—2025</span></span><span class=\"ds-index-count\">02</span></div>",
+      "css": ".ds-index-row { display: grid; grid-template-columns: 22px 28px minmax(0, 1fr) auto; align-items: center; gap: 9px; padding: 9px 9px 9px 10px; border-left: 2px solid transparent; border-radius: 0 6px 6px 0; background: transparent; color: var(--color-ink); font-family: var(--font-sans); cursor: pointer; transition: background-color 160ms ease, border-color 160ms ease; } .ds-index-row:hover { background: color-mix(in oklab, var(--color-surface) 55%, transparent); } .ds-index-row.ds-is-active { border-left-color: var(--color-accent); background: var(--color-surface); } .ds-index-number, .ds-index-count { font-family: var(--font-mono); font-size: 10px; color: var(--color-subtle); } .ds-index-mark { display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid var(--color-line); border-radius: 6px; background: var(--logo-plate); font-family: var(--font-mono); font-size: 9px; color: var(--color-muted); } .ds-index-name { display: block; font-size: 15px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 500; } .ds-is-active .ds-index-name { font-weight: 600; } .ds-index-meta { display: block; margin-top: 2px; font-family: var(--font-mono); font-size: 9px; line-height: 1.4; letter-spacing: 0.02em; color: var(--color-muted); }"
+    },
+    {
+      "name": "Company Panel",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Ficha de empresa; cabecera fija, cuerpo con scroll propio y bloques de proyecto separados por hairline.",
+      "html": "<article class=\"ds-panel\"><header class=\"ds-panel-head\"><span class=\"ds-panel-mark\">CU</span><div><p class=\"ds-panel-title\">Cuantia</p><p class=\"ds-panel-meta\">Fintech · Frontend</p></div><span class=\"ds-panel-period\">2024 — 2025</span></header><div class=\"ds-panel-body\"><p class=\"ds-panel-context\">Plataforma financiera donde el equipo gestiona cuentas, movimientos y conciliación.</p><p class=\"ds-panel-label\">Mi participación</p><p class=\"ds-panel-line\">Modelé los estados de carga y error del panel.</p></div></article>",
+      "css": ".ds-panel { display: grid; grid-template-rows: auto minmax(0, 1fr); max-width: 720px; overflow: hidden; border: 1px solid var(--color-line); border-radius: var(--radius-card); background: var(--color-page); color: var(--color-ink); font-family: var(--font-sans); } .ds-panel-head { display: grid; gap: 8px; padding: 15px 21px 12px; border-bottom: 1px solid var(--color-line); } .ds-panel-head > div { display: inline-flex; align-items: center; gap: 12px; } .ds-panel-mark { display: grid; width: 48px; height: 48px; flex: none; place-items: center; border: 1px solid var(--color-line); border-radius: 8px; background: var(--logo-plate); font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); } .ds-panel-title { margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.028em; font-weight: 600; } .ds-panel-meta, .ds-panel-period { margin: 0; font-family: var(--font-mono); font-size: 10px; line-height: 1; letter-spacing: 0.03em; color: var(--color-subtle); } .ds-panel-body { padding: 12px 21px 16px; } .ds-panel-context { margin: 0; max-width: 54rem; font-size: 13px; line-height: 1.6; color: var(--color-muted); } .ds-panel-label { margin: 14px 0 0; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-subtle); } .ds-panel-line { margin: 4px 0 0; font-size: 12px; line-height: 1.55; color: var(--color-muted); }"
+    },
+    {
+      "name": "Section Header",
+      "kind": "custom",
+      "description": "Cabecera compartida por las ocho secciones: eyebrow, titular, descripción y CTA fantasma.",
+      "html": "<header class=\"ds-section-head\"><p class=\"ds-eyebrow\">Proyectos · Soluciones</p><h2 class=\"ds-section-title\">Experiencia y soluciones.</h2><p class=\"ds-section-lead\">Cinco empresas y diez proyectos. Qué construí en cada uno y qué soluciones quedaron.</p></header>",
+      "css": ".ds-section-head { max-width: 672px; font-family: var(--font-sans); color: var(--color-ink); } .ds-section-title { margin: 16px 0 0; font-size: clamp(30px, 3.1vw, 56px); font-weight: 400; line-height: 1.05; letter-spacing: -0.032em; text-wrap: balance; } .ds-section-lead { margin: 16px 0 0; max-width: 600px; font-size: 16px; line-height: 1.7; color: var(--color-muted); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "El cuaderno de obra",
+    "overview": "El sistema se comporta como un cuaderno de obra: papel cálido, márgenes generosos, reglas de 1 px que separan sin decorar y anotaciones en monoespaciada que numeran lo que importa. No hay superficies flotantes ni brillos. La jerarquía la llevan el tamaño y el espacio, no la sombra.\n\nLa calidez viene del material, no del adorno. El fondo es crema de papel y la tinta es cacao; el naranja funciona como marca de obra sobre el papel y el oliva como segunda voz. El modo oscuro invierte esa relación a cacao profundo y crema, sin volverse negro ni azul.\n\nEl tono es editorial y técnico al mismo tiempo: titulares grandes y ajustados, cuerpo corto, etiquetas mono en mayúscula y cifras que se leen como medidas. Los componentes son precisos y secos: borde de 1 px, radio contenido, sin sombra difusa, y el estado se nota en el borde y el fondo.",
+    "keyCharacteristics": [
+      "Papel cálido, tinta cacao, naranja de obra y oliva como acentos.",
+      "Reglas de 1 px como estructura; el hueco de una rejilla puede ser la línea.",
+      "Titulares grandes con peso regular y tracking negativo, no negritas pesadas.",
+      "Monoespaciada reservada a etiquetas, cifras, metadatos y atajos.",
+      "Plano por defecto: la profundidad viene del tono y del borde, no de la sombra."
+    ],
+    "rules": [
+      { "name": "The Two Oranges Rule", "body": "El naranja vivo se usa para rellenos y marcas grandes. Para texto pequeño se cambia al naranja profundo. Nunca se negocia el contraste por mantener el tono.", "section": "colors" },
+      { "name": "The Warm Paper Rule", "body": "No hay blanco ni negro puros. El fondo claro es crema y el oscuro es cacao; una superficie nueva que no salga de paper, paper-band o paper-low está fuera del sistema.", "section": "colors" },
+      { "name": "The One Caps Rule", "body": "Solo los eyebrows van en mayúscula. Cualquier otro texto en mayúscula sostenida rompe la voz.", "section": "typography" },
+      { "name": "The Negative Tracking Rule", "body": "El tracking se aprieta al crecer: -0.02em en título, -0.032em en titular de sección, -0.04em en display. Nunca se abre el tracking de un titular.", "section": "typography" },
+      { "name": "The Flat-by-Default Rule", "body": "Una superficie nueva no lleva sombra. Si necesita separarse, se le da un borde de 1 px o un tono distinto.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do usar paper, paper-band y paper-low para separar superficies antes de recurrir a un borde.",
+      "Do mantener las hairlines en 1 px y dejar que el hueco de una rejilla haga de línea.",
+      "Do apretar el tracking a medida que crece el titular.",
+      "Do cambiar al naranja profundo cuando el acento sea texto pequeño.",
+      "Do reservar la monoespaciada para etiquetas, cifras y metadatos.",
+      "Do dejar que la ficha de proyecto scrollee por dentro antes que romper la pantalla."
+    ],
+    "donts": [
+      "Don't añadir sombras difusas ni tarjetas flotantes.",
+      "Don't usar blanco puro, negro puro ni azul de interfaz.",
+      "Don't poner el naranja vivo como texto sobre crema por debajo de 18 px.",
+      "Don't abrir el tracking de un titular ni poner un titular en mayúsculas.",
+      "Don't usar radios mayores de 10 px ni convertir tarjetas en píldoras.",
+      "Don't introducir iconos fuera de las flechas y los dos iconos de tema."
+    ]
+  }
+}
