@@ -10,9 +10,10 @@
 
 /* Self-hosted latin subsets. No third-party font request at runtime. */
 @font-face {
-	font-family: 'DM Sans';
-	src: url('/fonts/dm-sans-latin.woff2') format('woff2');
-	font-weight: 300 800;
+	font-family: 'Archivo';
+	src: url('/fonts/archivo-latin.woff2') format('woff2');
+	font-weight: 100 900;
+	font-stretch: 62% 125%;
 	font-style: normal;
 	font-display: swap;
 }
@@ -41,7 +42,7 @@
 	--color-plate: #607938;
 
 	--font-sans:
-		'DM Sans', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
 	--font-mono:
 		'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 

@@ -22,31 +22,31 @@ colors:
   night-subtle: "#ad9878"
 typography:
   display:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "clamp(2.6875rem, 5.35vw, 7rem)"
     fontWeight: 400
     lineHeight: 1
     letterSpacing: "-0.04em"
   headline:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "clamp(1.875rem, 3.1vw, 3.5rem)"
     fontWeight: 400
     lineHeight: 1.05
     letterSpacing: "-0.032em"
   title:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 500
     lineHeight: 1.15
     letterSpacing: "-0.02em"
   subtitle:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "0.9375rem"
     fontWeight: 600
     lineHeight: 1.25
     letterSpacing: "-0.015em"
   body:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.6
@@ -58,39 +58,39 @@ typography:
     lineHeight: 1.5
     letterSpacing: "0.1em"
   lead:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
     lineHeight: 1.7
   body-lg:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "0.9375rem"
     fontWeight: 400
     lineHeight: 1.6
   body-md:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "0.8125rem"
     fontWeight: 400
     lineHeight: 1.6
   body-sm:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 400
     lineHeight: 1.5
   panel-title:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "1.5rem"
     fontWeight: 600
     lineHeight: 1.1
     letterSpacing: "-0.028em"
   panel-title-lg:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "1.75rem"
     fontWeight: 600
     lineHeight: 1.1
     letterSpacing: "-0.028em"
   manifesto-word:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "clamp(1.15rem, 1.7vw, 1.55rem)"
     fontWeight: 400
     lineHeight: 1.1
@@ -101,7 +101,7 @@ typography:
     fontWeight: 400
     lineHeight: 1.25
   heading-sm:
-    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"
     fontSize: "1.375rem"
     fontWeight: 400
     lineHeight: 1.2
@@ -224,11 +224,11 @@ Paleta de papel y pigmento: dos neutros cálidos, un acento naranja y un verde o
 
 ## Typography
 
-**Display Font:** DM Sans (con Helvetica Neue, Arial)
-**Body Font:** DM Sans
+**Display Font:** Archivo (con Helvetica Neue, Arial Nova, Arial)
+**Body Font:** Archivo
 **Label/Mono Font:** JetBrains Mono (con ui-monospace, Menlo, Consolas)
 
-**Character:** DM Sans aporta una geometría humanista que aguanta titulares muy grandes sin volverse fría. JetBrains Mono numera, etiqueta y mide; aparece poco y por eso pesa.
+**Character:** Archivo aporta una grotesca de raíz industrial, con proporciones anchas y un eje de ancho que permite condensar titulares sin salir de la familia. El eje se deja en su ancho normal; existe como recurso, no como norma. JetBrains Mono numera, etiqueta y mide; aparece poco y por eso pesa.
 
 ### Hierarchy
 - **Display** (400, `clamp(2.6875rem, 5.35vw, 7rem)`, 1.0, `-0.04em`): solo el titular del hero. El peso regular es deliberado: la escala y el tracking hacen el trabajo.

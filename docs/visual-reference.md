@@ -308,9 +308,10 @@ cabecera.
 
 ### Tipografía
 
-Se mantienen DM Sans y JetBrains Mono como pareja, autoalojadas en
-`public/fonts/` (subconjunto latin, 62 KB + 31 KB, `font-display: swap`). Sin
-peticiones a Google en runtime.
+Se sustituye DM Sans por Archivo y se mantiene JetBrains Mono como pareja,
+autoalojadas en `public/fonts/` (subconjunto latin, 88 KB + 31 KB,
+`font-display: swap`). Archivo es variable en peso y ancho; el ancho normal es
+el que se usa, sin condensar. Sin peticiones a Google en runtime.
 
 ### Imagen
 

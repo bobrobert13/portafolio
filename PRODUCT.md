@@ -40,7 +40,7 @@ Sitios estáticos, bilingües y accesibles generados en el build con Astro y Vue
 
 - Nombre «Trebor»; voz editorial técnica, primera persona, frases cortas y sin adjetivos de relleno.
 - Español por defecto, inglés completo.
-- Paleta cocoa, crema, naranja y oliva; DM Sans y JetBrains Mono autoalojadas.
+- Paleta cocoa, crema, naranja y oliva; Archivo y JetBrains Mono autoalojadas.
 - Marco editorial sin sombras difusas: la profundidad viene de bordes y fondos. Las flechas son el único icono.
 
 ## Evidence on Hand
