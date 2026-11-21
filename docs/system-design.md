@@ -131,7 +131,7 @@ Astro renderiza todas las rutas en el build. Los componentes Vue
 no llevan `client:*`, así que **no se hidratan**. Esto es cero-hidratación, no
 cero-JavaScript: el sitio envía scripts pequeños y explícitos.
 
-La tabla enumera las seis piezas de JavaScript por origen. Astro agrupa los
+La tabla enumera las siete piezas de JavaScript por origen. Astro agrupa los
 scripts de componentes en un único módulo de página y conserva inline el script de
 tema previo al pintado.
 
@@ -143,6 +143,7 @@ tema previo al pintado.
 | Cascada del proceso | `BuildProcess.astro` | Al entrar en viewport | Dibujar las reglas y revelar las cuatro conversaciones | El proceso queda visible |
 | Cascada del manifiesto | `Manifesto.astro` | Al entrar en viewport | Dibujar el eje y revelar las seis estaciones en orden | El manifiesto queda visible |
 | Entrada del kit | `Tools.astro` | Al entrar en viewport | Animación escalonada | Las tarjetas quedan visibles |
+| Formulario de contacto | `Contact.astro` | Al enviar | Validar y componer el correo | El enlace `mailto:` sigue |
 
 La sección de proyectos no aparece en la tabla: el índice de empresas cambia la
 ficha con radios nativos y `:has()`, sin script. Es el único comportamiento
@@ -224,12 +225,12 @@ npm run preview   # sirve el build localmente
 
 | Escenario | Comportamiento |
 |---|---|
-| Sin JavaScript | Todo el contenido y las pantallas apiladas siguen visibles; el detalle de proyectos se cambia con radios nativos; el manifiesto aparece completo; solo falta el navegador de secciones |
+| Sin JavaScript | Todo el contenido y las pantallas apiladas siguen visibles; el detalle de proyectos se cambia con radios nativos; el manifiesto aparece completo; el formulario no compone el correo y queda el enlace `mailto:`; solo falta el navegador de secciones |
 | Viewport menor de `1024 × 720` | El home vuelve al flujo vertical normal; el modo apilado no se activa |
 | `prefers-reduced-motion: reduce` | El scroll suave de rueda y teclas se desactiva; el desplazamiento nativo sigue intacto |
 | Puntero táctil o grueso | La rueda no se intercepta; se conserva la inercia del sistema |
 | `localStorage` no disponible | El tema funciona por sesión; el error se ignora |
-| `PUBLIC_CONTACT_EMAIL` vacío | Los CTAs apuntan a `#perfil-contacto`; no se renderiza un enlace muerto |
+| `PUBLIC_CONTACT_EMAIL` vacío | Los CTAs apuntan a `#contacto`; el formulario se renderiza pero no puede enviar y muestra el aviso de no configurado |
 | `PUBLIC_SITE_URL` vacío | Se usa `http://localhost:4321` para canonical y `hreflang` |
 | Navegador sin `IntersectionObserver` | Las animaciones de entrada no se ejecutan; el contenido permanece visible (`BuildProcess` lo comprueba explícitamente, el resto falla en silencio) |
 | Host sin reescrituras | Solo funcionan las rutas de archivo reales; `/` es un archivo generado |
@@ -241,7 +242,7 @@ Cualquier cambio:
 1. `npm run build` debe terminar sin errores.
 2. Revisar `/es/` y `/en/` en el servidor de desarrollo, no solo el fuente.
 3. Comprobar que el HTML construido no incorpora scripts de hidratación de Vue
-   (`client:*`). Los scripts permitidos son los seis de la tabla de §6.
+   (`client:*`). Los scripts permitidos son los siete de la tabla de §6.
 4. Revisar que el texto visible no esté codificado en `.astro` o `.vue`: debe
    venir de `src/i18n/ui.ts` o del `i18n.ts` del slice.
 5. Si se tocó configuración, verificar los tres sitios de §9 y reconstruir.
@@ -256,6 +257,8 @@ No existe suite de tests, linter ni `astro check`. No se asume que existan.
   instalado). La validación real es el build.
 - Los logos de empresa son monogramas hasta que existan los archivos en
   `public/logos/`; el hueco, la placa y el tamaño ya están en el componente.
+- El formulario de contacto compone un `mailto:` con nombre, correo y mensaje;
+  EmailJS todavía no está conectado y, sin `PUBLIC_CONTACT_EMAIL`, no puede enviar.
 - El build emite un `dist/_astro/client.*.js` (runtime de Vue) que ningún HTML
   referencia. No se descarga, pero ocupa espacio en `dist/`; comprobar que no
   aparezca un `<script src>` hacia él al añadir una isla.

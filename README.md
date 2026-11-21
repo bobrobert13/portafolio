@@ -1,46 +1,94 @@
-# Astro Starter Kit: Basics
+# trebor-portfolio
+
+Portafolio personal bilingüe (español por defecto, inglés) construido con Astro.
+El sitio se genera por completo en el build y se sirve como archivos estáticos: no
+hay servidor de aplicación ni base de datos.
+
+## Inicio rápido
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+cp .env.example .env   # opcional en desarrollo
+npm run dev            # http://localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Abre `/es/` o `/en/`. La raíz `/` redirige a `/es/`.
 
-## 🚀 Project Structure
+## Comandos
 
-Inside of your Astro project, you'll see the following folders and files:
+| Comando | Acción |
+|---|---|
+| `npm install` | Instalar dependencias |
+| `npm run dev` | Servidor de desarrollo en `localhost:4321` |
+| `npm run build` | Build estático en `dist/` |
+| `npm run preview` | Servir el build |
+| `npm run astro -- <cmd>` | Cualquier comando del CLI de Astro |
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+Requiere Node `>=22.23.4`.
+
+## Stack
+
+- Astro `^7.4.8` con `output: 'static'`
+- Vue 3 vía `@astrojs/vue`, sin directivas `client:*`
+- TypeScript estricto, alias `@/*` → `src/*`
+- Tailwind CSS 4 vía `@tailwindcss/vite`, configurado en CSS
+- Sin content collections, router, Pinia ni librería i18n
+
+## Estructura
+
+```
+src/
+├── config/                  # entorno tipado, locales, sitio y rutas
+├── i18n/                    # chrome compartido (t()) y helpers de URL
+├── infra/                   # componentes, layout, scripts y estilos
+└── pages/
+    ├── index.astro          # / → /es/
+    ├── es/, en/             # cableado de rutas por locale
+    └── _contexts/           # slices de página, fuera del router
+        └── home/index/      # Page.astro, sections/ e i18n.ts
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Los slices de página viven bajo `src/pages/_contexts/`. Los archivos de
+`src/pages/{es,en}/` solo importan el slice y le pasan el locale. `src/infra/` no
+importa páginas; un componente usado por un solo slice vive en ese slice.
 
-## 🧞 Commands
+## Arquitectura
 
-All commands are run from the root of the project, from a terminal:
+El diseño completo —capas, reglas de dependencia, renderizado, i18n, tokens,
+configuración, degradación y verificación— está en
+[`docs/system-design.md`](docs/system-design.md).
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Las decisiones y sus alternativas están en
+[`docs/decisions/`](docs/decisions/):
 
-## 👀 Want to learn more?
+- [0001 — Astro estático con Vue solo en build](docs/decisions/0001-astro-estatico-vue-sin-hidratacion.md)
+- [0002 — Contextos delimitados y slices verticales](docs/decisions/0002-contextos-y-slices.md)
+- [0003 — Rutas con prefijo de locale](docs/decisions/0003-rutas-con-prefijo-de-locale.md)
+- [0004 — Mejora progresiva y cero hidratación](docs/decisions/0004-progressive-enhancement.md)
+- [0005 — Tailwind 4 CSS-first con tokens](docs/decisions/0005-tokens-css-first.md)
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+La referencia visual medida está en
+[`docs/visual-reference.md`](docs/visual-reference.md).
+
+## Entorno
+
+Todas las variables son públicas y se resuelven en el build:
+
+| Variable | Uso |
+|---|---|
+| `PUBLIC_SITE_URL` | URL absoluta para canonical y `hreflang` |
+| `PUBLIC_SITE_NAME` | Nombre mostrado en cabecera, pie y títulos |
+| `PUBLIC_CONTACT_EMAIL` | Enlaces `mailto:` y formulario; sin ella, los CTAs van a `#contacto` |
+
+Se declaran en `astro.config.mjs`, se documentan en `.env.example` y se consumen
+desde `@/config`; nunca directamente desde `import.meta.env`.
+
+## Verificación
+
+```sh
+npm run build
+```
+
+Después revisa `/es/` y `/en/` en el servidor de desarrollo. No hay tests, linter
+ni `astro check`; el build es la validación. El HTML construido no debe contener
+scripts de hidratación de Vue.

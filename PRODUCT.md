@@ -30,7 +30,7 @@ Sitios estáticos, bilingües y accesibles generados en el build con Astro y Vue
 ## Capabilities and Constraints
 
 - Astro estático con prefijo de locale; ocho secciones del home en pantallas apiladas de `100dvh` desde 1024 × 720 px.
-- Cero hidratación: Vue solo en build. Los comportamientos son scripts explícitos y pequeños (tema, scroll, cascada del proceso, cascada del manifiesto, entrada del kit); el navegador de empresas no usa JavaScript.
+- Cero hidratación: Vue solo en build. Los comportamientos son scripts explícitos y pequeños (tema, scroll, cascada del proceso, cascada del manifiesto, formulario de contacto, entrada del kit); el navegador de empresas no usa JavaScript.
 - Sin router, estado global, content collections, tests ni comprobación de tipos independiente.
 - Tokens en `src/infra/styles/theme.css`; utilidades en `utilities.css`; sin `tailwind.config.js`.
 - La sección de proyectos debe caber en una pantalla de escritorio y volver al flujo vertical por debajo de 1024 × 720 px.

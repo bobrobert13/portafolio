@@ -146,7 +146,7 @@ the language switcher and hreflang.
 - Zero-JS rule: the built HTML must contain no `client:*` hydration scripts unless
   a component genuinely needs them. The home ships small non-hydrating scripts
   only: theme toggle, slide navigation and section-local effects (the company
-  browser, the manifesto and process cascades, kit animation).
+  browser, the manifesto and process cascades, the contact form, kit animation).
 - No test suite exists. Add one only if the task asks for it.
 
 ## Project documentation

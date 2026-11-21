@@ -100,6 +100,12 @@ typography:
     fontSize: "1.4375rem"
     fontWeight: 400
     lineHeight: 1.25
+  heading-sm:
+    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    fontSize: "1.375rem"
+    fontWeight: 400
+    lineHeight: 1.2
+    letterSpacing: "-0.02em"
   meta:
     fontFamily: "'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace"
     fontSize: "0.625rem"
@@ -232,6 +238,7 @@ Paleta de papel y pigmento: dos neutros cálidos, un acento naranja y un verde o
 - **Panel title** (600, 1.5rem en móvil y 1.75rem en escritorio, 1.1, `-0.028em`): nombre de la empresa en la ficha.
 - **Manifesto word** (400, `clamp(1.15rem, 1.7vw, 1.55rem)`, 1.1, `-0.025em`): nombre de cada estación del manifiesto.
 - **Stat** (mono, 400, 1.4375rem, 1.25): cifra del hero.
+- **Heading SM** (400, 1.375rem, 1.2, `-0.02em`): subcabeza de contacto y líneas del panel.
 - **Body** (400, 1rem, 1.6): descripciones y párrafos; máximo 600 px de línea.
 - **Lead** (400, 1.0625rem, 1.7): descripción de sección en escritorio.
 - **Body LG** (400, 0.9375rem, 1.6): contexto de empresa y notas de grupo.
@@ -322,6 +329,11 @@ No hay recortes decorativos. `overflow: clip` aparece solo donde una pantalla ap
 - **Density:** tres columnas en escritorio, dos desde 640 px y una en móvil. Sin posicionamiento absoluto y sin alturas fijas.
 - **Open state:** cada celda es un radio; la activa tiñe el fondo, marca el borde izquierdo en acento y abre una banda de detalle debajo con nombre y uso de cada elemento. El resto de celdas sigue visible.
 - **Use:** el estante de herramientas. El mismo patrón sirve para cualquier inventario de seis a doce elementos.
+
+### Contact Form
+- **Shape:** tres campos de 40 px, etiquetas mono encima, radio 8 px y fondo `paper-band`; botón primario de 42 px.
+- **Behavior:** validación nativa y línea de estado `aria-live`. Hasta conectar EmailJS compone un `mailto:` con nombre, correo y mensaje; el enlace directo queda debajo y funciona sin JavaScript.
+- **Scope:** ocupa la columna derecha de «Trabajemos juntos», sin tarjeta. Se renderiza siempre; con `PUBLIC_CONTACT_EMAIL` compone el correo y sin ella muestra el aviso de no configurado.
 
 ### Signature: Conversation Ledger
 - **Shape:** cada fase abre con una regla de 1 px, su verbo y la entrega en mono a la derecha. Debajo, dos columnas Tú/Yo separadas por una hairline.
