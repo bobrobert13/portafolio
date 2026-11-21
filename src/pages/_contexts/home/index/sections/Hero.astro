@@ -1,6 +1,8 @@
 ---
+import { Picture } from 'astro:assets';
 import ArrowIcon from '@/infra/components/ArrowIcon.astro';
 import BaseButton from '@/infra/components/BaseButton.vue';
+import portrait from '@/assets/portrait-placeholder.jpg';
 import { site, type Locale } from '@/config';
 import { homeCopy } from '../i18n';
 
@@ -63,11 +65,12 @@ const contactHref = site.contactEmail ? `mailto:${site.contactEmail}` : '#contac
 	<div
 		class="slide-anim relative h-[390px] overflow-hidden bg-plate [mask-image:linear-gradient(#000_82%,transparent_100%)] lg:h-auto lg:min-h-[520px] lg:[mask-image:none]"
 	>
-		<img
-			src="/img/portrait-placeholder.jpg"
+		<Picture
+			src={portrait}
+			formats={['avif', 'webp']}
+			widths={[480, 800, 1200]}
+			sizes="(min-width: 1024px) 50vw, 100vw"
 			alt={copy.portraitAlt}
-			width="1200"
-			height="1800"
 			loading="eager"
 			fetchpriority="high"
 			decoding="async"

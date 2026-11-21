@@ -1,8 +1,20 @@
 ---
-import { defaultLocale } from '@/config';
+import { defaultLocale, site } from '@/config';
 
-// With `i18n.routing.redirectToDefaultLocale`, Astro turns this into the
-// redirect from `/` to the default locale. Returning it here keeps the intent
-// explicit and works under any static host.
-return Astro.redirect(`/${defaultLocale}/`, 302);
+const path = `/${defaultLocale}/`;
+const canonical = new URL(path, `${site.url}/`).href;
 ---
+
+<!doctype html>
+<html lang={defaultLocale}>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="refresh" content={`0;url=${path}`} />
+		<meta name="robots" content="noindex" />
+		<link rel="canonical" href={canonical} />
+		<title>Trebor · Redirigiendo…</title>
+	</head>
+	<body>
+		<p><a href={path}>Continuar a la versión en español</a></p>
+	</body>
+</html>

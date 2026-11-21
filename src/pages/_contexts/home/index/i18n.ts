@@ -6,9 +6,9 @@ import type { Locale } from '@/config';
  */
 const es = {
 	meta: {
-		title: 'Inicio',
+		title: 'Sitios estáticos, bilingües y accesibles',
 		description:
-			'Portafolio de Trebor: sitios estáticos, bilingües y accesibles construidos con Astro y Vue.',
+			'Portafolio de Trebor: sitios estáticos, bilingües y accesibles con Astro y Vue. Diseño, rendimiento y HTML semántico sin dependencias innecesarias.',
 	},
 	hero: {
 		eyebrow: 'Desarrollo web · Sitios estáticos',
@@ -633,9 +633,9 @@ export type HomeCopy = typeof es;
 
 const en: HomeCopy = {
 	meta: {
-		title: 'Home',
+		title: 'Fast, bilingual, accessible static sites',
 		description:
-			"Trebor's portfolio: static, bilingual, accessible sites built with Astro and Vue.",
+			"Trebor's portfolio: static, bilingual, accessible sites built with Astro and Vue. Design, performance and semantic HTML without unnecessary dependencies.",
 	},
 	hero: {
 		eyebrow: 'Web development · Static sites',

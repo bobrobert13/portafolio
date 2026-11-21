@@ -4,7 +4,7 @@ import ArrowIcon from '@/infra/components/ArrowIcon.astro';
 import LocaleSwitcher from '@/infra/components/LocaleSwitcher.vue';
 import ThemeToggle from '@/infra/components/ThemeToggle.astro';
 import { defaultLocale, locales, site, type Locale } from '@/config';
-import { localePath } from '@/i18n/utils';
+import { alternateLocale, localePath } from '@/i18n/utils';
 import { t } from '@/i18n/ui';
 
 interface Props {
@@ -21,6 +21,32 @@ const absoluteUrl = (localeCode: Locale) =>
 	new URL(localePath(localeCode, path), `${site.url}/`).href;
 
 const canonical = absoluteUrl(locale);
+const ogLocales: Record<Locale, string> = { es: 'es_ES', en: 'en_US' };
+const ogImage = new URL(`/og/${locale}.jpg`, `${site.url}/`).href;
+const ogLocale = ogLocales[locale];
+const alternateOgLocale = ogLocales[alternateLocale(locale)];
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'WebSite',
+			'@id': `${site.url}/#website`,
+			url: `${site.url}/`,
+			name: site.name,
+			description,
+			inLanguage: locale,
+			publisher: { '@id': `${site.url}/#person` },
+		},
+		{
+			'@type': 'Person',
+			'@id': `${site.url}/#person`,
+			name: site.name,
+			url: `${site.url}/`,
+			image: ogImage,
+			sameAs: [site.socials.linkedin, site.socials.github],
+		},
+	],
+};
 const localeHome = localePath(locale);
 const sectionHref = (hash: string) => `${localeHome}#${hash}`;
 const contactHref = site.contactEmail
@@ -44,6 +70,7 @@ const footerSections = [
 <!doctype html>
 <html lang={locale}>
 	<head>
+		<meta charset="utf-8" />
 		<script is:inline>
 			try {
 				const stored = localStorage.getItem('theme');
@@ -58,9 +85,10 @@ const footerSections = [
 			   after layout, so the browser must not restore an older scroll. */
 			if (location.hash) history.scrollRestoration = 'manual';
 		</script>
-		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#eedfc7" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#241708" media="(prefers-color-scheme: dark)" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
@@ -72,10 +100,25 @@ const footerSections = [
 		<link rel="alternate" hreflang="x-default" href={absoluteUrl(defaultLocale)} />
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={site.name} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
-		<meta property="og:locale" content={locale} />
+		<meta property="og:locale" content={ogLocale} />
+		<meta property="og:locale:alternate" content={alternateOgLocale} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={title} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+		/>
 	</head>
 	<body class="flex min-h-dvh flex-col">
 		<div class="site-frame flex flex-1 flex-col">
@@ -141,7 +184,7 @@ const footerSections = [
 
 						<nav aria-label={t(locale, 'a11y.footerNav')}>
 							<h2 class="mb-4.5 text-sm font-semibold">{t(locale, 'footer.explore')}</h2>
-							<ul class="space-y-3 text-[13px] text-muted">
+							<ul class="space-y-3 text-[13px] text-muted" role="list">
 								{
 									footerSections.map((item) => (
 										<li>
@@ -156,7 +199,7 @@ const footerSections = [
 
 						<div>
 							<h2 class="mb-4.5 text-sm font-semibold">{t(locale, 'footer.contact')}</h2>
-							<ul class="space-y-3 text-[13px] text-muted">
+							<ul class="space-y-3 text-[13px] text-muted" role="list">
 								<li>
 									<a class="transition-colors hover:text-ink" href={contactHref}>
 										{t(locale, 'cta.contact')}

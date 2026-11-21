@@ -11,15 +11,18 @@ colors:
   rule: "#d9c3a0"
   accent: "#ce7f20"
   accent-deep: "#7a4a15"
+  focus: "#7a4a15"
   accent-ink: "#241708"
   plate: "#607938"
   logo-plate: "#fbf7ef"
+  logo-ink: "#533416"
   night-paper: "#241708"
   night-band: "#2c1c0c"
   night-low: "#34220e"
   night-ink: "#eedfc7"
   night-muted: "#c9b492"
   night-subtle: "#ad9878"
+  night-focus: "#ce7f20"
 typography:
   display:
     fontFamily: "'Archivo', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif"

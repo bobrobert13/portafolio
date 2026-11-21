@@ -118,8 +118,9 @@ flowchart TB
 4. `Page.astro` selecciona `homeCopy[lang]`, monta `BaseLayout` y ordena las ocho
    secciones dentro de `.slide-stack`.
 5. `BaseLayout` importa `global.css` una sola vez, escribe todo el metadata del
-   documento (canonical, `hreflang`, `x-default`, Open Graph) y pinta cabecera,
-   `main` y pie.
+   documento (canonical, `hreflang`, `x-default`, Open Graph, Twitter y JSON-LD) y
+   pinta cabecera, `main` y pie. Los endpoints de `src/pages/` generan `robots.txt`
+   y `sitemap.xml`.
 6. Cada sección recibe `lang`, lee su parte de `homeCopy` y renderiza HTML. No
    recibe datos de red.
 7. El resultado se escribe en `dist/`; no queda proceso en ejecución.
@@ -158,7 +159,8 @@ siguen disponibles.
 
 - `locales = ['es', 'en']`, `defaultLocale = 'es'`.
 - `prefixDefaultLocale: true`: toda URL es `/es/…` o `/en/…`.
-- `/` redirige con 302 a `/es/` desde `src/pages/index.astro`.
+- `/` redirige a `/es/` con un meta refresh de 0 s (`src/pages/index.astro`). Los
+  hosts que leen `public/_redirects` emiten un 302 antes de servir el HTML.
 - El chrome (cabecera, pie, accesibilidad) vive en `src/i18n/ui.ts` y se resuelve
   con `t(locale, key)`; el copy de página vive en el `i18n.ts` del slice.
 - El tipo `Locale` se deriva de `locales`; añadir un idioma obliga al compilador a
@@ -196,7 +198,7 @@ reexportadas en `src/config/env.ts`:
 
 | Variable | Contexto | Obligatoria | Uso |
 |---|---|---|---|
-| `PUBLIC_SITE_URL` | cliente | no | `site`, canonical, `hreflang` |
+| `PUBLIC_SITE_URL` | cliente | sí (build) | `site`, canonical, `hreflang`, sitemap, OG |
 | `PUBLIC_SITE_NAME` | cliente | no (default `Trebor`) | Marca en cabecera, pie y títulos |
 | `PUBLIC_CONTACT_EMAIL` | cliente | no | Enlaces `mailto:` y CTA de contacto |
 
@@ -215,9 +217,13 @@ npm run preview   # sirve el build localmente
 
 - `dist/` es el artefacto completo. El despliegue es copiar ese directorio.
 - No hay variables de runtime ni funciones del servidor.
-- `PUBLIC_SITE_URL` debe fijarse en el build de producción: sin ella, canonical y
-  `hreflang` apuntan a `http://localhost:4321`.
-- Fuentes y retrato se sirven desde `public/`; no hay peticiones a terceros.
+- `PUBLIC_SITE_URL` es obligatoria en el build de producción: sin ella, el comando
+  `npm run build` falla antes de generar páginas. En desarrollo se usa
+  `http://localhost:4321`.
+- El build genera además `dist/robots.txt`, `dist/sitemap.xml`,
+  `dist/_redirects` y las tarjetas `dist/og/{es,en}.jpg`.
+- El retrato vive en `src/assets/` y `astro:assets` genera AVIF, WebP y JPEG con
+  `srcset`; las fuentes se sirven desde `public/`. No hay peticiones a terceros.
 - `dist/`, `.astro/`, `node_modules/` y `graphify-out/` no se versionan. `.env` y
   `.env.production` están en `.gitignore`; `.env.example` sí se versiona.
 
@@ -227,13 +233,13 @@ npm run preview   # sirve el build localmente
 |---|---|
 | Sin JavaScript | Todo el contenido y las pantallas apiladas siguen visibles; el detalle de proyectos se cambia con radios nativos; el manifiesto aparece completo; el formulario no compone el correo y queda el enlace `mailto:`; solo falta el navegador de secciones |
 | Viewport menor de `1024 × 720` | El home vuelve al flujo vertical normal; el modo apilado no se activa |
-| `prefers-reduced-motion: reduce` | La rueda y las teclas pasan al scroll nativo; los saltos de sección usan el scroll nativo y, en puntero fino, conservan el desenfoque de vista |
+| `prefers-reduced-motion: reduce` | La rueda, las teclas y los saltos usan scroll nativo; orbes, pulso del manifiesto y drift de las pantallas quedan detenidos |
 | Puntero táctil o grueso | La rueda no se intercepta; se conserva la inercia del sistema |
 | `localStorage` no disponible | El tema funciona por sesión; el error se ignora |
 | `PUBLIC_CONTACT_EMAIL` vacío | Los CTAs apuntan a `#contacto`; el formulario se renderiza pero no puede enviar y muestra el aviso de no configurado |
-| `PUBLIC_SITE_URL` vacío | Se usa `http://localhost:4321` para canonical y `hreflang` |
+| `PUBLIC_SITE_URL` vacía | El build de producción falla con un mensaje explícito; en desarrollo se usa `http://localhost:4321` |
 | Navegador sin `IntersectionObserver` | Las animaciones de entrada no se ejecutan; el contenido permanece visible (`BuildProcess` lo comprueba explícitamente, el resto falla en silencio) |
-| Host sin reescrituras | Solo funcionan las rutas de archivo reales; `/` es un archivo generado |
+| Host sin reescrituras | `/` sirve el HTML con meta refresh de 0 s; los hosts que leen `_redirects` emiten un 302 |
 
 ## 12. Verificación
 
@@ -246,6 +252,8 @@ Cualquier cambio:
 4. Revisar que el texto visible no esté codificado en `.astro` o `.vue`: debe
    venir de `src/i18n/ui.ts` o del `i18n.ts` del slice.
 5. Si se tocó configuración, verificar los tres sitios de §9 y reconstruir.
+6. Comprobar que `dist/robots.txt`, `dist/sitemap.xml` y `dist/og/*.jpg` existen, y
+   que el JSON-LD del HTML parsea como JSON válido.
 
 No existe suite de tests, linter ni `astro check`. No se asume que existan.
 
