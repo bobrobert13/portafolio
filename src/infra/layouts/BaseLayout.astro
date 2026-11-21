@@ -13,9 +13,11 @@ interface Props {
 	description: string;
 	/** Route path without the locale prefix, e.g. `''` or `'projects'`. */
 	path?: string;
+	/** Keeps error pages out of the index and drops their canonical metadata. */
+	noindex?: boolean;
 }
 
-const { locale, title, description, path = '' } = Astro.props;
+const { locale, title, description, path = '', noindex = false } = Astro.props;
 
 const absoluteUrl = (localeCode: Locale) =>
 	new URL(localePath(localeCode, path), `${site.url}/`).href;
@@ -91,19 +93,21 @@ const footerSections = [
 		<meta name="theme-color" content="#241708" media="(prefers-color-scheme: dark)" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<link rel="canonical" href={canonical} />
+		{noindex && <meta name="robots" content="noindex" />}
+		{!noindex && <link rel="canonical" href={canonical} />}
 		{
+			!noindex &&
 			locales.map((code) => (
 				<link rel="alternate" hreflang={code} href={absoluteUrl(code)} />
 			))
 		}
-		<link rel="alternate" hreflang="x-default" href={absoluteUrl(defaultLocale)} />
+		{!noindex && <link rel="alternate" hreflang="x-default" href={absoluteUrl(defaultLocale)} />}
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content={site.name} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:url" content={canonical} />
+		{!noindex && <meta property="og:url" content={canonical} />}
 		<meta property="og:locale" content={ogLocale} />
 		<meta property="og:locale:alternate" content={alternateOgLocale} />
 		<meta property="og:image" content={ogImage} />
@@ -115,10 +119,14 @@ const footerSections = [
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImage} />
-		<script
-			type="application/ld+json"
-			set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
-		/>
+		{
+			!noindex && (
+				<script
+					type="application/ld+json"
+					set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+				/>
+			)
+		}
 	</head>
 	<body class="flex min-h-dvh flex-col">
 		<div class="site-frame flex flex-1 flex-col">
