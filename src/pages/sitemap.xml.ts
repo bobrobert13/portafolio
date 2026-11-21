@@ -14,21 +14,23 @@ export const GET: APIRoute = () => {
   const alternate = (locale: string, href: string) =>
     `    <xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(href)}" />`;
 
-  const defaultHref = `${site.url}${localePath(defaultLocale)}`;
+  const paths = Object.values(site.routes);
 
-  const urls = locales
-    .map((locale) => {
-      const href = `${site.url}${localePath(locale)}`;
-      const alternates = [
-        ...locales.map((code) => alternate(code, `${site.url}${localePath(code)}`)),
-        alternate('x-default', defaultHref),
-      ].join('\n');
+  const urls = paths
+    .flatMap((route) =>
+      locales.map((locale) => {
+        const href = `${site.url}${localePath(locale, route)}`;
+        const alternates = [
+          ...locales.map((code) => alternate(code, `${site.url}${localePath(code, route)}`)),
+          alternate('x-default', `${site.url}${localePath(defaultLocale, route)}`),
+        ].join('\n');
 
-      return `  <url>
+        return `  <url>
     <loc>${escapeXml(href)}</loc>
 ${alternates}
   </url>`;
-    })
+      }),
+    )
     .join('\n');
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
