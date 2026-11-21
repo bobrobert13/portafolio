@@ -233,12 +233,20 @@ const es = {
 			{ label: 'Enfoque', value: 'Sitios estáticos y bilingües' },
 			{ label: 'Método', value: 'Diseño y código en el mismo proceso' },
 		],
-		panel: {
-			eyebrow: 'De 0 a 1',
-			from: '0',
-			to: '1',
-			lines: 'Una idea. Una primera versión. Un sitio propio.',
-			cta: 'Escríbeme',
+		form: {
+			eyebrow: 'Escríbeme',
+			lead: 'Una idea. Una primera versión. Un sitio propio.',
+			nameLabel: 'Nombre',
+			namePlaceholder: 'Tu nombre',
+			emailLabel: 'Correo',
+			emailPlaceholder: 'tu@correo.com',
+			messageLabel: 'Mensaje',
+			messagePlaceholder: 'Qué necesitas y para cuándo',
+			submit: 'Enviar mensaje',
+			status:
+				'Se abrió tu cliente de correo con el mensaje. Si no, usa el enlace de abajo.',
+			unconfigured: 'El envío no está configurado todavía.',
+			fallbackPrefix: 'O escríbeme a',
 		},
 	},
 	about: {
@@ -847,12 +855,20 @@ const en: HomeCopy = {
 			{ label: 'Focus', value: 'Static and bilingual sites' },
 			{ label: 'Method', value: 'Design and code in the same process' },
 		],
-		panel: {
-			eyebrow: 'From 0 to 1',
-			from: '0',
-			to: '1',
-			lines: 'An idea. A first version. A site of your own.',
-			cta: 'Email me',
+		form: {
+			eyebrow: 'Email me',
+			lead: 'An idea. A first version. A site of your own.',
+			nameLabel: 'Name',
+			namePlaceholder: 'Your name',
+			emailLabel: 'Email',
+			emailPlaceholder: 'you@email.com',
+			messageLabel: 'Message',
+			messagePlaceholder: 'What you need and for when',
+			submit: 'Send message',
+			status:
+				'Your email client opened with the message. If it didn’t, use the link below.',
+			unconfigured: 'Sending is not configured yet.',
+			fallbackPrefix: 'Or email me at',
 		},
 	},
 	about: {
