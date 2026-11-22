@@ -225,8 +225,6 @@ npm run preview   # sirve el build localmente
 - `public/_headers` (Netlify/Cloudflare) y `vercel.json` (Vercel) definen HSTS,
   CSP, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, cache inmutable
   de `_astro/` y el 302 de `/` a `/es/`. nginx necesita equivalentes.
-- GitHub Actions (`.github/workflows/security.yml`) ejecuta `npm ci`, `npm audit`,
-  `npm audit signatures`, el build y la comprobación de artefactos en cada push/PR.
 - El retrato vive en `src/assets/` y `astro:assets` genera AVIF, WebP y JPEG con
   `srcset`; las fuentes se sirven desde `public/`. No hay peticiones a terceros.
 - `dist/`, `.astro/`, `node_modules/` y `graphify-out/` no se versionan. `.env` y
@@ -264,7 +262,7 @@ Cualquier cambio:
 7. Si cambia el hero o la marca, regenerar `public/og/{es,en}.jpg` capturando
    `/es/` y `/en/` a 1200×630 con Chrome headless y convirtiendo a JPEG.
 
-No existe suite de tests, linter ni `astro check`. No se asume que existan.
+No existe CI, suite de tests, linter ni `astro check`. No se asume que existan.
 
 ## 13. Límites conocidos y deuda
 

@@ -99,14 +99,12 @@ En PowerShell: `$env:PUBLIC_SITE_URL='https://tu-dominio.com'; npm run build`.
 
 Después revisa `/es/` y `/en/` en el servidor de desarrollo. Comprueba también que
 `dist/robots.txt`, `dist/sitemap.xml`, `dist/404.html` y `dist/og/{es,en}.jpg`
-existen, y que el JSON-LD del HTML parsea. No hay tests, linter ni `astro check`;
-el build es la validación. El HTML construido no debe contener scripts de
-hidratación de Vue.
+existen, y que el JSON-LD del HTML parsea. No hay CI, tests, linter ni
+`astro check`; el build es la validación. El HTML construido no debe contener
+scripts de hidratación de Vue.
 
 ## Despliegue
 
 - `public/_headers` y `public/_redirects` cubren Netlify y Cloudflare Pages.
 - `vercel.json` cubre Vercel (redirect raíz, cabeceras y cache).
 - En nginx hay que replicar esas cabeceras y el 302 de `/` a `/es/`.
-- GitHub Actions (`.github/workflows/security.yml`) ejecuta `npm ci`, `npm audit`,
-  `npm audit signatures`, el build y la comprobación de artefactos en cada push/PR.

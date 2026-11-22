@@ -30,7 +30,7 @@ with `astro dev stop`, `astro dev status`, `astro dev logs`.
 Set `PUBLIC_SITE_URL` in `.env` (from `.env.example`) before `npm run build`.
 Development falls back to `http://localhost:4321`; production must use `https://`.
 
-Not configured: tests, linter, formatter, `astro check` (needs `@astrojs/check` +
+Not configured: CI, tests, linter, formatter, `astro check` (needs `@astrojs/check` +
 `typescript` added first). Do not assume or fabricate these commands.
 
 ## Skills
@@ -71,7 +71,7 @@ these vendored support files; that is expected.
 3. Security pass: `npm audit --audit-level=high`, `npm audit signatures`, then
    `web-security-review`, `secrets-scan` and `sca-audit`.
 4. Verify `dist/robots.txt`, `dist/sitemap.xml`, `dist/404.html`,
-   `dist/og/{es,en}.jpg` and `dist/_headers`. The CI workflow checks them too.
+   `dist/og/{es,en}.jpg` and `dist/_headers` before publishing.
 5. Report findings with evidence, `file:line`, severity and remediation. Do not
    run a fix skill against a finding that has not been reproduced.
 6. AccessLint's live tiers need a debuggable Chrome. If its CLI cannot attach,
