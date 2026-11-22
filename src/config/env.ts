@@ -11,6 +11,17 @@ if (!resolvedSiteUrl) {
   );
 }
 
+let parsedSiteUrl: URL;
+try {
+  parsedSiteUrl = new URL(resolvedSiteUrl);
+} catch {
+  throw new Error('PUBLIC_SITE_URL must be an absolute URL.');
+}
+
+if (!import.meta.env.DEV && parsedSiteUrl.protocol !== 'https:') {
+  throw new Error('PUBLIC_SITE_URL must use https:// in production builds.');
+}
+
 /**
  * Single entry point for environment values.
  *
@@ -19,7 +30,7 @@ if (!resolvedSiteUrl) {
  * Everything here is public by definition (it ends up in the client bundle).
  */
 export const env = {
-  siteUrl: resolvedSiteUrl.replace(/\/+$/, ''),
+  siteUrl: parsedSiteUrl.href.replace(/\/+$/, ''),
   siteName: PUBLIC_SITE_NAME,
   contactEmail: PUBLIC_CONTACT_EMAIL || undefined,
   mode: import.meta.env.MODE,

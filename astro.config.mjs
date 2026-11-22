@@ -17,6 +17,18 @@ if (isBuild && !PUBLIC_SITE_URL) {
   );
 }
 
+if (isBuild && PUBLIC_SITE_URL) {
+  let parsedSiteUrl;
+  try {
+    parsedSiteUrl = new URL(PUBLIC_SITE_URL);
+  } catch {
+    throw new Error('PUBLIC_SITE_URL must be an absolute URL.');
+  }
+  if (parsedSiteUrl.protocol !== 'https:') {
+    throw new Error('PUBLIC_SITE_URL must use https:// in production builds.');
+  }
+}
+
 export default defineConfig({
   // Fully static output: every route is prerendered at build time.
   output: 'static',
