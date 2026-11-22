@@ -26,6 +26,12 @@ Abre `/es/` o `/en/`. La raíz `/` redirige a `/es/`.
 
 Requiere Node `>=22.23.4`.
 
+## Skills
+
+Las skills de auditoría (calidad web, accesibilidad y seguridad) viven en
+`.agents/skills/` y están fijadas en `skills-lock.json`. `AGENTS.md` describe
+cuándo usar cada una y el flujo de auditoría.
+
 ## Stack
 
 - Astro `^7.4.8` con `output: 'static'`

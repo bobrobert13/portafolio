@@ -33,6 +33,51 @@ Development falls back to `http://localhost:4321`; production must use `https://
 Not configured: tests, linter, formatter, `astro check` (needs `@astrojs/check` +
 `typescript` added first). Do not assume or fabricate these commands.
 
+## Skills
+
+Project skills live in `.agents/skills/` and are pinned in `skills-lock.json`
+(source, commit and hash). They are instructions, not runtime code; review them
+before use. Install or refresh with `npx skills add <repo> --skill <name> --yes`
+and `npx skills update`; list with `npx skills ls`. Never edit a vendored skill by
+hand: change the source or the lockfile through the CLI.
+
+| Area | Skills | Use for |
+| --- | --- | --- |
+| Web quality | `web-quality-audit`, `performance`, `core-web-vitals`, `accessibility`, `seo`, `best-practices` | Lighthouse, Core Web Vitals, WCAG, SEO and source quality reviews |
+| Accessibility | `accessibility-audit`, `accessibility-scan`, `accessibility-inspect`, `accessibility-fix`, `accessibility-diff` | WCAG-EM audits, live scans, keyboard and screen-reader checks, fixes and regressions |
+| Semantics and UI | `semantic-html-and-seo`, `wcag-accessibility`, `better-accessibility`, `web-design-guidelines` | HTML semantics, WCAG 2.2, focus and keyboard behavior, interface rules |
+| Security | `web-security-review`, `code-review-security`, `secrets-scan`, `sca-audit`, `security-review`, `security-and-hardening` | OWASP Top 10, code review, secrets, dependency CVEs and hardening |
+
+Existing project skills: `astro`, `astro-vue`, `vue-patterns`,
+`context-engineering`, `impeccable`, `no-ai-slop`, `seo-vue-astro`,
+`documentation-and-adrs`. `seo-vue-astro` is the framework-specific SEO
+checklist; `seo` is the measurement-led audit.
+
+Shared references live in `.agents/skills/shared/` (AccessLint methodology) and
+`.agents/references/security-checklist.md` (hardening checklist).
+
+OWASP's per-skill install omits `plays/` and `templates/`; both are vendored
+inside each security skill. `npx skills update` can remove them, so re-copy
+after an update. `npx skills ls` may mark a skill as modified when it carries
+these vendored support files; that is expected.
+
+### Audit workflow
+
+1. Build with a real HTTPS URL: `PUBLIC_SITE_URL=https://... npm run build`
+   (PowerShell: `$env:PUBLIC_SITE_URL='https://...'; npm run build`).
+2. For rendered evidence, run `npm run preview` in the background and audit
+   `/es/` and `/en/`. Use `web-quality-audit`/Lighthouse for measurement and
+   `accessibility-audit` for WCAG-EM sampling.
+3. Security pass: `npm audit --audit-level=high`, `npm audit signatures`, then
+   `web-security-review`, `secrets-scan` and `sca-audit`.
+4. Verify `dist/robots.txt`, `dist/sitemap.xml`, `dist/404.html`,
+   `dist/og/{es,en}.jpg` and `dist/_headers`. The CI workflow checks them too.
+5. Report findings with evidence, `file:line`, severity and remediation. Do not
+   run a fix skill against a finding that has not been reproduced.
+6. AccessLint's live tiers need a debuggable Chrome. If its CLI cannot attach,
+   fall back to Lighthouse/axe plus manual keyboard and screen-reader checks;
+   automated passes are not manual coverage.
+
 ## Architecture
 
 ```
