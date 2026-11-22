@@ -1,6 +1,48 @@
 {
   "version": 2,
   "skills": {
+    "accessibility": {
+      "source": "addyosmani/web-quality-skills",
+      "commit": "afa8da942115f2961fdbfa80807ea0b232ff6c00",
+      "sourceType": "github",
+      "skillPath": "skills/accessibility/SKILL.md",
+      "computedHash": "c668809f5df57feb87cc06f1bc37fb340d1d92e26bacb6edbeab9258d22e76a5"
+    },
+    "accessibility-audit": {
+      "source": "AccessLint/skills",
+      "commit": "2e9d7336678302d0bc08848e92542560295b34d3",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-audit/SKILL.md",
+      "computedHash": "9664edf4d5c7b9ac7e416d1e198bebefb7565cbb0e3869d6c10df6d610fd026a"
+    },
+    "accessibility-diff": {
+      "source": "AccessLint/skills",
+      "commit": "2e9d7336678302d0bc08848e92542560295b34d3",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-diff/SKILL.md",
+      "computedHash": "ff2cc6767f7f9288018f2b4a5f6dbc374f571f00c2a10fbe1c291a0738a02917"
+    },
+    "accessibility-fix": {
+      "source": "AccessLint/skills",
+      "commit": "2e9d7336678302d0bc08848e92542560295b34d3",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-fix/SKILL.md",
+      "computedHash": "4b3435a1e6eaf7a4e6b7497d45831e0d4c338591bd980bfa48cc1597b522fa39"
+    },
+    "accessibility-inspect": {
+      "source": "AccessLint/skills",
+      "commit": "2e9d7336678302d0bc08848e92542560295b34d3",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-inspect/SKILL.md",
+      "computedHash": "c63f0b5e064c81de58eedc01ddac05456212f7d3e2658409f81bb4d949734f98"
+    },
+    "accessibility-scan": {
+      "source": "AccessLint/skills",
+      "commit": "2e9d7336678302d0bc08848e92542560295b34d3",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-scan/SKILL.md",
+      "computedHash": "f548cbfd3a0032758cc30605d4ba1485d0ee41ea4d98374c35311ed702409bde"
+    },
     "astro": {
       "source": "astrolicious/agent-skills",
       "sourceType": "github",
@@ -13,11 +55,39 @@
       "skillPath": "astro-vue/SKILL.md",
       "computedHash": ""
     },
+    "best-practices": {
+      "source": "addyosmani/web-quality-skills",
+      "commit": "afa8da942115f2961fdbfa80807ea0b232ff6c00",
+      "sourceType": "github",
+      "skillPath": "skills/best-practices/SKILL.md",
+      "computedHash": "071ad7608cf92ad980330a6b1646f6bc568f5651d615e4c4a9fde225ceb9360c"
+    },
+    "better-accessibility": {
+      "source": "jakubkrehel/skills",
+      "commit": "672ae44ace6aaed65b86cbb1e2fd6fbea0e79578",
+      "sourceType": "github",
+      "skillPath": "skills/better-accessibility/SKILL.md",
+      "computedHash": "1da0d428695e5bc317101ee09624fea07d56a72db6ca9eee9fe166b57de6c52d"
+    },
+    "code-review-security": {
+      "source": "OWASP/secure-agent-playbook",
+      "commit": "65d4efd2cd0b081d52101e9708792b944e4ddebb",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/code-review-security/SKILL.md",
+      "computedHash": "581d8d6f79d2f1216170b40f7171786ffbc26b4f02de19fb37edf75ad581821b"
+    },
     "context-engineering": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/context-engineering/SKILL.md",
       "computedHash": ""
+    },
+    "core-web-vitals": {
+      "source": "addyosmani/web-quality-skills",
+      "commit": "afa8da942115f2961fdbfa80807ea0b232ff6c00",
+      "sourceType": "github",
+      "skillPath": "skills/core-web-vitals/SKILL.md",
+      "computedHash": "de50c203aa9dafa8dee9dd8c06782e3fc610704b83c1c408e4c5ee2337c4cd2a"
     },
     "documentation-and-adrs": {
       "source": "addyosmani/agent-skills",
@@ -38,6 +108,55 @@
       "skillPath": "skills/no-ai-slop/SKILL.md",
       "computedHash": ""
     },
+    "performance": {
+      "source": "addyosmani/web-quality-skills",
+      "commit": "afa8da942115f2961fdbfa80807ea0b232ff6c00",
+      "sourceType": "github",
+      "skillPath": "skills/performance/SKILL.md",
+      "computedHash": "06902ebc4a8b91bfb8d1a99a03f186f0535b03d1a776ef751206104ef9b86c4c"
+    },
+    "sca-audit": {
+      "source": "OWASP/secure-agent-playbook",
+      "commit": "65d4efd2cd0b081d52101e9708792b944e4ddebb",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/sca-audit/SKILL.md",
+      "computedHash": "8531a2d8697bbda9450b95cb1f6aa7e0a6f9a6434ec453d96c936cec2b18f687"
+    },
+    "secrets-scan": {
+      "source": "OWASP/secure-agent-playbook",
+      "commit": "65d4efd2cd0b081d52101e9708792b944e4ddebb",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/secrets-scan/SKILL.md",
+      "computedHash": "c85fa870d7e71754d4c7ac4f206b914969282a2a836bda5dfd1a6429340a6cfd"
+    },
+    "security-and-hardening": {
+      "source": "addyosmani/agent-skills",
+      "commit": "8c99fa36d90068c82d547f7c12a9d67a3e95f4ee",
+      "sourceType": "github",
+      "skillPath": "skills/security-and-hardening/SKILL.md",
+      "computedHash": "9bfc78e1ee2e23f3d226f610d8ed8e0cf6fb4f7e90a44db0a41b636735a24767"
+    },
+    "security-review": {
+      "source": "getsentry/skills",
+      "commit": "a582c51ee29d0f35e6ac321340796f77d43da733",
+      "sourceType": "github",
+      "skillPath": "skills/security-review/SKILL.md",
+      "computedHash": "4af8c6b37142b46cbbca40d5f5e6c505699b8785486a7306faf1b79dcce7ff47"
+    },
+    "semantic-html-and-seo": {
+      "source": "dembrandt/dembrandt-skills",
+      "commit": "905b7a54a8bacb64bb62e8432e14c26510f57576",
+      "sourceType": "github",
+      "skillPath": "skills/semantic-html-and-seo/SKILL.md",
+      "computedHash": "3a8479accd2ab744ef9026f81604e0dd756afeb182188f3577b60c82395bb9a7"
+    },
+    "seo": {
+      "source": "addyosmani/web-quality-skills",
+      "commit": "afa8da942115f2961fdbfa80807ea0b232ff6c00",
+      "sourceType": "github",
+      "skillPath": "skills/seo/SKILL.md",
+      "computedHash": "fa30e94756c5c40663f4527e8220a985393abbe3a6256e43d02589948027467e"
+    },
     "seo-vue-astro": {
       "source": "chaoticsurfer/seo-skills",
       "sourceType": "github",
@@ -49,6 +168,34 @@
       "sourceType": "github",
       "skillPath": "skills/vue-patterns/SKILL.md",
       "computedHash": ""
+    },
+    "wcag-accessibility": {
+      "source": "dembrandt/dembrandt-skills",
+      "commit": "905b7a54a8bacb64bb62e8432e14c26510f57576",
+      "sourceType": "github",
+      "skillPath": "skills/wcag-accessibility/SKILL.md",
+      "computedHash": "a1b615379c5e0124ebdc82caebebb23808d46621d284ec3260c6ee4aced20e37"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "commit": "5a37a6329fbad3666c3207392a6a7c0110e92efb",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "5994e4cfd86144903d2ba750f862b9e36af15e3297aac983679e347b99f6cb71"
+    },
+    "web-quality-audit": {
+      "source": "addyosmani/web-quality-skills",
+      "commit": "afa8da942115f2961fdbfa80807ea0b232ff6c00",
+      "sourceType": "github",
+      "skillPath": "skills/web-quality-audit/SKILL.md",
+      "computedHash": "fed16ecc3591b557381b15f4c1659b5536f064cecea851799c2dad4668b325b4"
+    },
+    "web-security-review": {
+      "source": "OWASP/secure-agent-playbook",
+      "commit": "65d4efd2cd0b081d52101e9708792b944e4ddebb",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/web-security-review/SKILL.md",
+      "computedHash": "4616411513f87759f62286ac51d099e14e113b3925e73baba020cf646b8c516e"
     }
   }
 }

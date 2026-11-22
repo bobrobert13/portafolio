@@ -32,3 +32,4 @@ graphify-out/
 
 # local agent config
 .claude/
+.commandcode/skills/
