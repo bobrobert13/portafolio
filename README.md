@@ -8,7 +8,7 @@ hay servidor de aplicación ni base de datos.
 
 ```sh
 npm install
-cp .env.example .env   # opcional en desarrollo
+cp .env.example .env   # necesario para el build de producción
 npm run dev            # http://localhost:4321
 ```
 
@@ -20,7 +20,7 @@ Abre `/es/` o `/en/`. La raíz `/` redirige a `/es/`.
 |---|---|
 | `npm install` | Instalar dependencias |
 | `npm run dev` | Servidor de desarrollo en `localhost:4321` |
-| `npm run build` | Build estático en `dist/` |
+| `npm run build` | Build estático en `dist/` (requiere `PUBLIC_SITE_URL`) |
 | `npm run preview` | Servir el build |
 | `npm run astro -- <cmd>` | Cualquier comando del CLI de Astro |
 
@@ -76,7 +76,7 @@ Todas las variables son públicas y se resuelven en el build:
 
 | Variable | Uso |
 |---|---|
-| `PUBLIC_SITE_URL` | URL absoluta para canonical y `hreflang` |
+| `PUBLIC_SITE_URL` | URL absoluta para canonical, hreflang, sitemap y OG. Obligatoria en el build |
 | `PUBLIC_SITE_NAME` | Nombre mostrado en cabecera, pie y títulos |
 | `PUBLIC_CONTACT_EMAIL` | Enlaces `mailto:` y formulario; sin ella, los CTAs van a `#contacto` |
 
@@ -86,9 +86,19 @@ desde `@/config`; nunca directamente desde `import.meta.env`.
 ## Verificación
 
 ```sh
-npm run build
+PUBLIC_SITE_URL=https://tu-dominio.com npm run build
 ```
 
-Después revisa `/es/` y `/en/` en el servidor de desarrollo. No hay tests, linter
-ni `astro check`; el build es la validación. El HTML construido no debe contener
-scripts de hidratación de Vue.
+En PowerShell: `$env:PUBLIC_SITE_URL='https://tu-dominio.com'; npm run build`.
+
+Después revisa `/es/` y `/en/` en el servidor de desarrollo. Comprueba también que
+`dist/robots.txt`, `dist/sitemap.xml`, `dist/404.html` y `dist/og/{es,en}.jpg`
+existen, y que el JSON-LD del HTML parsea. No hay tests, linter ni `astro check`;
+el build es la validación. El HTML construido no debe contener scripts de
+hidratación de Vue.
+
+## Despliegue
+
+- `public/_headers` y `public/_redirects` cubren Netlify y Cloudflare Pages.
+- `vercel.json` cubre Vercel (redirect raíz, cabeceras y cache).
+- En nginx hay que replicar esas cabeceras y el 302 de `/` a `/es/`.

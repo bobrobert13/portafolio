@@ -20,12 +20,15 @@ Add tooling only when the task requires it; ask first.
 | --- | --- |
 | `npm install` | Install dependencies |
 | `npm run dev` | Dev server on `localhost:4321` |
-| `npm run build` | Static build to `dist/` |
+| `npm run build` | Static build to `dist/` (requires `PUBLIC_SITE_URL`) |
 | `npm run preview` | Serve the build |
 | `npm run astro -- <cmd>` | Any Astro CLI command |
 
 Dev server: run it in background mode — `astro dev --background` — and manage it
 with `astro dev stop`, `astro dev status`, `astro dev logs`.
+
+Set `PUBLIC_SITE_URL` in `.env` (from `.env.example`) before `npm run build`.
+Development falls back to `http://localhost:4321`; production must not.
 
 Not configured: tests, linter, formatter, `astro check` (needs `@astrojs/check` +
 `typescript` added first). Do not assume or fabricate these commands.
@@ -141,8 +144,10 @@ the language switcher and hreflang.
 
 ## Verification
 
-- Any change: `npm run build` must pass, then check the rendered page for **both**
-  locales in the dev server (`/es/`, `/en/`), not just the source.
+- Any change: `PUBLIC_SITE_URL=https://example.com npm run build` must pass
+  (PowerShell: `$env:PUBLIC_SITE_URL='https://example.com'; npm run build`), then
+  check the rendered page for **both** locales in the dev server (`/es/`, `/en/`),
+  not just the source.
 - Zero-JS rule: the built HTML must contain no `client:*` hydration scripts unless
   a component genuinely needs them. The home ships small non-hydrating scripts
   only: theme toggle, slide navigation and section-local effects (the company

@@ -220,8 +220,11 @@ npm run preview   # sirve el build localmente
 - `PUBLIC_SITE_URL` es obligatoria en el build de producción: sin ella, el comando
   `npm run build` falla antes de generar páginas. En desarrollo se usa
   `http://localhost:4321`.
-- El build genera además `dist/robots.txt`, `dist/sitemap.xml`,
-  `dist/_redirects` y las tarjetas `dist/og/{es,en}.jpg`.
+- El build genera además `dist/robots.txt`, `dist/sitemap.xml`, `dist/404.html`,
+  `dist/_redirects`, `dist/_headers` y las tarjetas `dist/og/{es,en}.jpg`.
+- `public/_headers` (Netlify/Cloudflare) y `vercel.json` (Vercel) definen HSTS,
+  CSP, `Referrer-Policy`, `Permissions-Policy`, cache inmutable de `_astro/` y el
+  302 de `/` a `/es/`. nginx necesita equivalentes.
 - El retrato vive en `src/assets/` y `astro:assets` genera AVIF, WebP y JPEG con
   `srcset`; las fuentes se sirven desde `public/`. No hay peticiones a terceros.
 - `dist/`, `.astro/`, `node_modules/` y `graphify-out/` no se versionan. `.env` y
@@ -231,7 +234,9 @@ npm run preview   # sirve el build localmente
 
 | Escenario | Comportamiento |
 |---|---|
-| Sin JavaScript | Todo el contenido y las pantallas apiladas siguen visibles; el detalle de proyectos se cambia con radios nativos; el manifiesto aparece completo; el formulario no compone el correo y queda el enlace `mailto:`; solo falta el navegador de secciones |
+| Sin JavaScript | Todo el contenido y las pantallas apiladas siguen visibles; el detalle de proyectos se cambia con radios nativos; el manifiesto aparece completo; el formulario no compone el correo y queda el enlace `mailto:`; falta el botón flotante de secciones, pero la cabecera móvil muestra los enlaces vía `<noscript>` |
+| Formulario inválido | Cada campo expone `aria-invalid` y un error inline asociado; el foco va al primer campo inválido |
+| Ruta desconocida | `dist/404.html` sirve una página bilingüe `noindex` con enlaces a `/es/` y `/en/` |
 | Viewport menor de `1024 × 720` | El home vuelve al flujo vertical normal; el modo apilado no se activa |
 | `prefers-reduced-motion: reduce` | La rueda, las teclas y los saltos usan scroll nativo; orbes, pulso del manifiesto y drift de las pantallas quedan detenidos |
 | Puntero táctil o grueso | La rueda no se intercepta; se conserva la inercia del sistema |
@@ -252,8 +257,10 @@ Cualquier cambio:
 4. Revisar que el texto visible no esté codificado en `.astro` o `.vue`: debe
    venir de `src/i18n/ui.ts` o del `i18n.ts` del slice.
 5. Si se tocó configuración, verificar los tres sitios de §9 y reconstruir.
-6. Comprobar que `dist/robots.txt`, `dist/sitemap.xml` y `dist/og/*.jpg` existen, y
-   que el JSON-LD del HTML parsea como JSON válido.
+6. Comprobar que `dist/robots.txt`, `dist/sitemap.xml`, `dist/404.html` y
+   `dist/og/*.jpg` existen, y que el JSON-LD del HTML parsea como JSON válido.
+7. Si cambia el hero o la marca, regenerar `public/og/{es,en}.jpg` capturando
+   `/es/` y `/en/` a 1200×630 con Chrome headless y convirtiendo a JPEG.
 
 No existe suite de tests, linter ni `astro check`. No se asume que existan.
 
@@ -267,9 +274,11 @@ No existe suite de tests, linter ni `astro check`. No se asume que existan.
   `public/logos/`; el hueco, la placa y el tamaño ya están en el componente.
 - El formulario de contacto compone un `mailto:` con nombre, correo y mensaje;
   EmailJS todavía no está conectado y, sin `PUBLIC_CONTACT_EMAIL`, no puede enviar.
-- El build emite un `dist/_astro/client.*.js` (runtime de Vue) que ningún HTML
-  referencia. No se descarga, pero ocupa espacio en `dist/`; comprobar que no
-  aparezca un `<script src>` hacia él al añadir una isla.
+- El runtime cliente de Vue se emite aunque no haya islas;
+  `scripts/prune-unused-client.mjs` lo elimina después del build solo si ningún
+  HTML lo referencia, así que una isla futura conserva el archivo.
+- El CLI de AccessLint no es compatible con Chrome 150 en este entorno; la capa
+  medida se cubre con Lighthouse/axe.
 - `docs/visual-reference.md` conserva una propuesta de paleta anterior; la paleta
   vigente es la de `src/infra/styles/theme.css`.
 - El sitio no tiene CMS: el copy se edita en los `i18n.ts` y se reconstruye.
