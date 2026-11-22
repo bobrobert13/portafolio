@@ -76,7 +76,7 @@ Todas las variables son públicas y se resuelven en el build:
 
 | Variable | Uso |
 |---|---|
-| `PUBLIC_SITE_URL` | URL absoluta para canonical, hreflang, sitemap y OG. Obligatoria en el build |
+| `PUBLIC_SITE_URL` | URL absoluta para canonical, hreflang, sitemap y OG. Obligatoria en el build y `https://` en producción |
 | `PUBLIC_SITE_NAME` | Nombre mostrado en cabecera, pie y títulos |
 | `PUBLIC_CONTACT_EMAIL` | Enlaces `mailto:` y formulario; sin ella, los CTAs van a `#contacto` |
 
@@ -102,3 +102,5 @@ hidratación de Vue.
 - `public/_headers` y `public/_redirects` cubren Netlify y Cloudflare Pages.
 - `vercel.json` cubre Vercel (redirect raíz, cabeceras y cache).
 - En nginx hay que replicar esas cabeceras y el 302 de `/` a `/es/`.
+- GitHub Actions (`.github/workflows/security.yml`) ejecuta `npm ci`, `npm audit`,
+  `npm audit signatures`, el build y la comprobación de artefactos en cada push/PR.

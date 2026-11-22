@@ -217,14 +217,16 @@ npm run preview   # sirve el build localmente
 
 - `dist/` es el artefacto completo. El despliegue es copiar ese directorio.
 - No hay variables de runtime ni funciones del servidor.
-- `PUBLIC_SITE_URL` es obligatoria en el build de producción: sin ella, el comando
-  `npm run build` falla antes de generar páginas. En desarrollo se usa
-  `http://localhost:4321`.
+- `PUBLIC_SITE_URL` es obligatoria en el build de producción y debe usar
+  `https://`: sin ella, el comando `npm run build` falla antes de generar páginas.
+  En desarrollo se usa `http://localhost:4321`.
 - El build genera además `dist/robots.txt`, `dist/sitemap.xml`, `dist/404.html`,
   `dist/_redirects`, `dist/_headers` y las tarjetas `dist/og/{es,en}.jpg`.
 - `public/_headers` (Netlify/Cloudflare) y `vercel.json` (Vercel) definen HSTS,
-  CSP, `Referrer-Policy`, `Permissions-Policy`, cache inmutable de `_astro/` y el
-  302 de `/` a `/es/`. nginx necesita equivalentes.
+  CSP, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, cache inmutable
+  de `_astro/` y el 302 de `/` a `/es/`. nginx necesita equivalentes.
+- GitHub Actions (`.github/workflows/security.yml`) ejecuta `npm ci`, `npm audit`,
+  `npm audit signatures`, el build y la comprobación de artefactos en cada push/PR.
 - El retrato vive en `src/assets/` y `astro:assets` genera AVIF, WebP y JPEG con
   `srcset`; las fuentes se sirven desde `public/`. No hay peticiones a terceros.
 - `dist/`, `.astro/`, `node_modules/` y `graphify-out/` no se versionan. `.env` y

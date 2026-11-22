@@ -28,7 +28,7 @@ Dev server: run it in background mode — `astro dev --background` — and manag
 with `astro dev stop`, `astro dev status`, `astro dev logs`.
 
 Set `PUBLIC_SITE_URL` in `.env` (from `.env.example`) before `npm run build`.
-Development falls back to `http://localhost:4321`; production must not.
+Development falls back to `http://localhost:4321`; production must use `https://`.
 
 Not configured: tests, linter, formatter, `astro check` (needs `@astrojs/check` +
 `typescript` added first). Do not assume or fabricate these commands.
